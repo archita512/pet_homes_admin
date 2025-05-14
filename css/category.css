@@ -1,0 +1,650 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+:root {
+  --k-sidebar-bg: #976239;
+  --k-sidebar-text: #ffffff;
+  --k-sidebar-hover: #fff9f6;
+  --k-sidebar-active: #fff9f6;
+  --k-header-bg: #ffffff;
+  --k-content-bg: #f9f9f9;
+  --k-table-header-bg: #eee6d3;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: var(--k-content-bg);
+  overflow-x: hidden;
+}
+
+.k-sidebar {
+  background-color: var(--k-sidebar-bg);
+  color: var(--k-sidebar-text);
+  min-height: 100vh;
+  position: fixed;
+  width: 300px;
+  left: 0;
+  top: 0;
+  transition: all 0.3s;
+  z-index: 1000;
+}
+
+.k-sidebar .k-logo {
+  padding: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.k-sidebar-menu {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.k-sidebar-menu li {
+  margin: 10px 12px;
+}
+
+.k-sidebar-menu a {
+  color: var(--k-sidebar-text);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  transition: all 0.3s;
+  border-radius: 4px;
+}
+
+.k-sidebar-menu a:hover {
+  background-color: var(--k-sidebar-hover);
+  color: #976239;
+}
+
+.k-sidebar-menu a.active {
+  background-color: var(--k-sidebar-active);
+  color: #976239;
+}
+
+.k-sidebar-menu i {
+  width: 20px;
+  margin-right: 10px;
+}
+
+.k-content {
+  margin-left: 300px;
+  transition: all 0.3s;
+}
+
+.k-header {
+  background-color: var(--k-header-bg);
+  padding: 12px 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.k-user-info {
+  display: flex;
+  align-items: center;
+}
+
+.k-user-info img {
+  width: 35px;
+  height: 35px;
+  margin-right: 10px;
+}
+
+.k-breadcrumb {
+  margin-bottom: 15px;
+}
+
+/* Responsive Page Header Styles */
+.k-page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+  margin: 0 25px 20px 25px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.k-page-header .input-group {
+  width: 250px;
+  max-width: 100%;
+}
+
+@media (max-width: 991px) {
+  .k-page-header {
+    margin: 0 15px 20px 15px;
+  }
+}
+
+@media (max-width: 767px) {
+  .k-page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .k-page-header > div:last-child {
+    gap: 10px;
+  }
+
+  .k-page-header .input-group {
+    width: 100%;
+    margin-right: 0 !important;
+  }
+
+  .k-add-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 575px) {
+  .k-page-header {
+    margin: 0 10px 15px 10px;
+  }
+}
+
+.k-table-container {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  margin: 0 25px;
+  height: 75vh;
+}
+
+.k-table th {
+  background-color: #eae0d7;
+  color: #333;
+  font-weight: 600;
+}
+
+.k-table th,
+.k-table td {
+  padding: 12px 15px;
+}
+
+.k-empty-state {
+  text-align: center;
+  color: #0f0f0f99;
+}
+
+.k-empty-state img {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+.k-pagination {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 0.6px solid #0f0f0f33;
+}
+
+.k-toggle-sidebar {
+  display: none;
+  background: transparent;
+  border: none;
+  color: var(--k-sidebar-bg);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Sidebar responsive adjustments */
+@media (max-width: 991px) {
+  .k-sidebar {
+    width: 70px;
+    overflow: hidden;
+  }
+
+  .k-sidebar .k-logo {
+    font-size: 18px;
+    text-align: center;
+    position: relative;
+  }
+
+  .k-close-sidebar {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: none;
+  }
+
+  .k-sidebar-menu a {
+    justify-content: center;
+    padding: 12px 0;
+  }
+
+  .k-sidebar-menu a span {
+    display: none;
+  }
+
+  .k-sidebar-menu i,
+  .k-sidebar-menu img {
+    margin-right: 0;
+    font-size: 18px;
+  }
+
+  .k-content {
+    margin-left: 70px;
+  }
+
+  .k-toggle-sidebar {
+    display: block;
+  }
+
+  .k-sidebar.expanded {
+    width: 240px;
+  }
+
+  .k-sidebar.expanded .k-sidebar-menu a {
+    justify-content: flex-start;
+    padding: 12px 20px;
+  }
+
+  .k-sidebar.expanded .k-sidebar-menu a span {
+    display: inline;
+  }
+
+  .k-sidebar.expanded .k-sidebar-menu i,
+  .k-sidebar.expanded .k-sidebar-menu img {
+    margin-right: 10px;
+  }
+
+  .k-sidebar.expanded .k-close-sidebar {
+    display: block;
+  }
+}
+
+@media (max-width: 767px) {
+  .k-sidebar {
+    width: 0;
+    overflow: hidden;
+  }
+
+  .k-content {
+    margin-left: 0;
+  }
+
+  .k-toggle-sidebar {
+    display: block;
+  }
+
+  .k-sidebar.expanded {
+    width: 240px;
+  }
+}
+
+/* Only show close button on smaller screens when sidebar is expanded */
+@media (max-width: 425px) {
+  .k-sidebar.expanded .k-close-sidebar {
+    display: block;
+    position: absolute;
+    top: 20px;
+    right: 15px;
+  }
+}
+
+.k-link-text-color {
+  color: #0f0f0f99 !important;
+}
+.k-link-text-color-active {
+  color: #0f0f0f !important;
+}
+
+.k-add-btn {
+  background-color: #976239;
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 11px 30px;
+  border: none;
+}
+
+.page-item:not(:first-child) .page-link {
+  margin-left: 0 !important;
+}
+
+.page-link {
+  background-color: transparent;
+  border: none;
+}
+
+.k-prev {
+  border: 0.6px solid #976239;
+}
+
+.k-prev span {
+  color: #0f0f0f99;
+}
+
+.k-next {
+  border: 0.6px solid #976239;
+}
+
+.k-next span {
+  color: #0f0f0f;
+}
+.k-tr {
+  border: none !important;
+}
+td {
+  border: none;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 30px;
+  transition: 0.4s;
+}
+
+input:checked + .toggle-slider {
+  background-color: #976239;
+}
+
+/* Responsive Table Styles */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.k-table {
+  min-width: 600px; /* Ensures table doesn't get too compressed */
+}
+
+.k-pet-box {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #eae0d7;
+  border-radius: 2px;
+}
+
+.k-pet-box img {
+  max-width: 30px;
+  max-height: 30px;
+  object-fit: contain;
+}
+
+.action-buttons {
+  white-space: nowrap;
+  display: flex;
+  gap: 5px;
+}
+
+/* For very small screens */
+@media (max-width: 576px) {
+  .k-table-container {
+    padding: 10px;
+    margin: 0 15px;
+  }
+
+  .k-pagination {
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+}
+
+.k-input {
+  padding: 11px 20px;
+  border: 0.5px solid #0f0f0f99;
+}
+
+.form-control:focus {
+  box-shadow: none;
+  border: 0.5px solid #0f0f0f99;
+}
+
+td {
+  border: none;
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 45px;
+  height: 22px;
+}
+
+.toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+input:checked + .toggle-slider:before {
+  transform: translateX(23px);
+}
+
+.edit-btn {
+  background-color: transparent;
+  border: 0.6px solid #976239;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+.delete-btn {
+  background-color: transparent;
+  border: 0.6px solid #976239;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+.k-pet-box {
+  width: 35px;
+  background-color: #ebebeb;
+}
+
+.k-close-sidebar {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  background: transparent;
+  border: none;
+  color: var(--k-sidebar-text);
+  font-size: 18px;
+  cursor: pointer;
+  display: none;
+}
+
+/* Tablet-specific sidebar behavior */
+@media (min-width: 768px) and (max-width: 991px) {
+  .k-sidebar {
+    width: 0;
+    overflow: hidden;
+    transition: all 0.3s;
+  }
+
+  .k-sidebar.expanded {
+    width: 240px;
+  }
+
+  .k-content {
+    margin-left: 0;
+    transition: all 0.3s;
+  }
+
+  .k-content.with-sidebar {
+    margin-left: 240px;
+  }
+}
+
+.k-icon-plus {
+  font-size: 12px;
+}
+
+.offcanvas {
+  max-width: 80%;
+}
+
+/* Offcanvas sidebar styles */
+.offcanvas .k-sidebar {
+  position: relative;
+  min-height: auto;
+  width: 100%;
+  height: 100%;
+  left: auto;
+  top: auto;
+}
+
+.offcanvas-body {
+  padding: 0;
+}
+
+.offcanvas .k-close-sidebar {
+  display: block !important;
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  z-index: 1050;
+}
+
+.offcanvas .k-sidebar-menu {
+  margin-top: 0;
+}
+
+.offcanvas .k-logo {
+  padding: 15px;
+}
+
+/* Hide default offcanvas header */
+.offcanvas-header {
+  display: none;
+}
+
+/* Ensure sidebar menu items display correctly in offcanvas */
+.offcanvas .k-sidebar-menu a {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 12px 20px;
+}
+
+.offcanvas .k-sidebar-menu a span {
+  display: inline;
+}
+
+.offcanvas .k-sidebar-menu i,
+.offcanvas .k-sidebar-menu img {
+  margin-right: 10px;
+  width: 20px;
+}
+
+/* Ensure toggle button is visible on mobile */
+@media (max-width: 767px) {
+  .k-toggle-sidebar {
+    display: block;
+  }
+}
+
+/* Sidebar and content transitions */
+.k-sidebar,
+.k-content {
+  transition: all 0.3s ease;
+}
+
+
+/* Delete Modal Styles */
+.k-delete-modal {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.k-modal-header {
+  border-bottom: 1px solid #eee;
+  padding: 15px 20px;
+}
+
+.k-modal-title {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.k-warning-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  color: #976239;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  margin: 0 auto;
+}
+
+.k-modal-footer {
+  border-top: 1px solid #eee;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.k-cancel-btn {
+  background-color: #f5f5f5;
+  color: #333;
+  border: 1px solid #0F0F0F80;
+  padding: 10px 45px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.k-delete-confirm-btn {
+  background-color: #976239;
+  color: white;
+  border: none;
+  padding: 10px 45px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.k-cancel-btn:hover {
+  background-color: #e9e9e9;
+}
+
+/* Responsive modal adjustments */
+@media (max-width: 576px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .k-modal-footer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .k-cancel-btn, .k-delete-confirm-btn {
+    width: 100%;
+  }
+}
