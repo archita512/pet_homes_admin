@@ -13,8 +13,9 @@ body {
 }
 
 .k-modal-title {
-  font-size: 18px;
+  font-size: 25px;
   font-weight: bold;
+  margin-left: 26px;
 }
 
 .k-close-btn {
@@ -40,7 +41,7 @@ body {
 }
 
 .k-form-control {
-  width: 100%;
+  width: 124%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -86,7 +87,7 @@ body {
 
 .k-modal-footer {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   gap: 20px;
   padding: 15px 20px;
   border-top: 1px solid #eee;

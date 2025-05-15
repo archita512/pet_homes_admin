@@ -18,6 +18,13 @@ include 'config.php';
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/category.css" />
   </head>
+  <style>
+    .k-pet-box img {
+     max-width: 76px !important;
+    max-height: 77px !important;    
+    object-fit: contain;
+}
+  </style>
   <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -47,7 +54,7 @@ include 'config.php';
            
             <div>
               <a
-              href="addcategory.php"
+              href="addsubcategory.php"
                 class="k-add-btn d-flex align-items-center justify-content-center text-decoration-none"
               >
                 <i class="fas fa-plus me-1 k-icon-plus"></i>
@@ -66,13 +73,14 @@ include 'config.php';
                   <th>No</th>
                   <th style="width: 15%;">Image</th>
                   <th>Category Name</th>
+                  <th>Name</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                $query = mysqli_query($cnn,"SELECT * FROM category ORDER BY id DESC");
+                $query = mysqli_query($cnn,"SELECT s.*,c.name AS cat_name FROM subcategory AS s JOIN category AS c ON s.cat_id=c.id ORDER BY s.id DESC");
                 $cnt = 1;
                 while($row = mysqli_fetch_array($query)){
                   $c_id = encryptor('encrypt',$row['id']);
@@ -83,6 +91,7 @@ include 'config.php';
                          <img src="../pet_homes/img/' . $row['image'] . '" alt="dog" />
                        </div>
                      </td>
+                      <td>' . $row['cat_name'] . '</td>
                      <td>' . $row['name'] . '</td>
                      <td class="status">
                           <label class="toggle-switch">
@@ -91,7 +100,7 @@ include 'config.php';
                           </label>
                       </td>
                       <td class="action-buttons">
-                          <a href="addcategory.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
+                          <a href="addsubcategory.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
                               <img src="images/update.svg" alt="" />
                           </a>
                           <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
@@ -258,7 +267,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     // Add event listener for the delete button
     const deleteButton = deleteCategoryModal.querySelector('.d_deletebtn');
     deleteButton.onclick = function() {
-        fetch(`crud.php?what=delete_category`, {
+        fetch(`crud.php?what=delete_subcategory`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -285,7 +294,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 const status = this.checked ? 'Active' : 'Block';
 
                 // AJAX request to update status
-                fetch('crud.php?what=update_status', {
+                fetch('crud.php?what=update_status_sub', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

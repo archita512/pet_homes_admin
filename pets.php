@@ -47,7 +47,7 @@ include 'config.php';
            
             <div>
               <a
-              href="addcategory.php"
+              href="addpets.php"
                 class="k-add-btn d-flex align-items-center justify-content-center text-decoration-none"
               >
                 <i class="fas fa-plus me-1 k-icon-plus"></i>

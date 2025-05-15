@@ -5,6 +5,9 @@ $(document).ready(function() {
             name: {
                 required: true
             },
+            cat_id: {
+                required: true
+            },
         
            
         },
@@ -13,6 +16,9 @@ $(document).ready(function() {
             name: {
                 required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
             },
+            cat_id: {
+                required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
+            }
            
         },
         submitHandler: function(form) {
@@ -28,7 +34,7 @@ $("#btnSubmit").click(function (event) {
         console.log(formData);
         $.ajax({
             type: "POST",
-            url: "crud.php?what=add_category",
+            url: "crud.php?what=add_subcategory",
             data: formData,
             contentType: false, // Prevent jQuery from overriding content type
             processData: false, // Prevent jQuery from processing the data
@@ -63,7 +69,7 @@ $("#btnSubmit").click(function (event) {
                     // Remove toast from DOM after hiding
                     toastEl.addEventListener('hidden.bs.toast', function () {
                         toastEl.remove();
-                        window.location.href = "category.php"; // Redirect
+                        window.location.href = "subcategory.php"; // Redirect
                     });
                 } else {
                     const toastHTML = `
@@ -105,7 +111,7 @@ $("#btnUpdate").click(function (event) {
         console.log(formData);
         $.ajax({
             type: "POST",
-            url: "crud.php?what=update_category",
+            url: "crud.php?what=update_subcategory",
             data: formData,
             contentType: false, // Prevent jQuery from overriding content type
             processData: false, // Prevent jQuery from processing the data
@@ -140,7 +146,7 @@ $("#btnUpdate").click(function (event) {
                     // Remove toast from DOM after hiding
                     toastEl.addEventListener('hidden.bs.toast', function () {
                         toastEl.remove();
-                        window.location.href = "category.php"; // Redirect
+                        window.location.href = "subcategory.php"; // Redirect
                     });
                 } else {
                     const toastHTML = `

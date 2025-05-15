@@ -31,10 +31,11 @@ include 'config.php';
           if (isset($_GET['id']) && !empty($_GET['id'])) {
               $id_a=$_GET['id'];
               $id=encryptor('decrypt', $id_a);
-              $query = mysqli_query($cnn, "select * from category where id=" . $id . "");
+              $query = mysqli_query($cnn, "select * from subcategory where id=" . $id . "");
               $row = mysqli_fetch_array($query);
               $name = $row['name'];
               $image = $row['image'];
+              $cat_id = $row['cat_id'];
 
           }
           ?>
@@ -48,7 +49,7 @@ include 'config.php';
        <?php include 'header.php'; ?>
         <div class="k-modal">
           <div class="add-btn">
-            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Category'; } else { echo 'Add Category'; } ?></h2>
+            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Subcategory'; } else { echo 'Add Subcategory'; } ?></h2>
           </div>
           <form id="frm" action="" method="POST" enctype="multipart/form-data">
           <div class="card" style="width: 889px; margin-left: 50px; margin-top: 30px;">
@@ -59,6 +60,26 @@ include 'config.php';
                 <input id="txtUId" name="txtUId" value="<?php if (isset($_GET['id'])) {
                     echo $row['id'];
                 } ?>" hidden />
+
+                <div class="mb-3">
+                <div class="k-form-group">
+                <label class="k-form-label">Category</label>
+                        <select name="cat_id" id="cat_id" class="k-form-control">
+                        <option value="">Select Category</option>
+                        <?php
+                        // Retrieve the restaurant ID if updating
+                        if (isset($_GET['id'])) {
+                            $cat_id = $row['cat_id']; // Use cat_id for comparison
+                        }
+                        $query = mysqli_query($cnn, "select * from category where status='Active'");    
+                        while ($row = mysqli_fetch_array($query)) {
+                            $selected = (isset($_GET['id']) && $row['id'] == $cat_id) ? 'selected' : '';  
+                            echo "<option value='".$row['id']."' $selected>".$row['name']."</option>";
+                        }
+                        ?>
+                        </select>
+                      </div>
+                    </div>
                 <div class="mb-3">
                 <div class="k-form-group">
                         <label class="k-form-label">Category</label>
@@ -69,8 +90,8 @@ include 'config.php';
                           name="name"
                           id="name"
                           value="<?php if (isset($_GET['id'])) {
-                                                      echo $name;
-                                                  } ?>"
+                            echo $name;
+                        } ?>"
                         />
                       </div>
                     </div>
@@ -197,7 +218,7 @@ include 'config.php';
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.js" integrity="sha512-vG793m0UbmHpDP9w5eGmPczh4JJ5HUZKi+WBReYTPzaefQ/eLInVo/MeDYvnE0LsM7NlUbgtf/jGG5c6JmO6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.min.js" integrity="sha512-bPZBFTQxrZnfFHJqMjP9VVXVigWPjrDHWoPVgsdo2hGNUEY9WF9HQjWfvWnFEduF9cwmsbtKoQ9QkiPkTTUHwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/fileUpload.js"></script>
-    <script src="js/catgeory.js"></script>
+    <script src="js/subcatgeory.js"></script>
     <script>
       $("#image").on("change", function () {
     var img = this;
