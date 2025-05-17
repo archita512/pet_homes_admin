@@ -25,22 +25,54 @@ include 'config.php';
                 width: 100% !important;
             }
     </style>
-     <style>
-        .imgBox {
-            border: 1px solid black;
-            width: 230px;
-            height: 200px;
-        }
-    </style>
+        <style>
+    
+                #imagePreviewContainer {
+                    display: flex;
+                    flex-wrap: wrap; /* Allows wrapping to the next line if necessary */
+                    gap: 10px; /* Space between images */
+                }
+                .image-preview {
+                    position: relative;
+                    width: 150px; /* Set a fixed width for each image */
+                }
+                .image-preview img {
+                    width: 90%;
+                    height: 108px; /* Set a fixed height for each image */
+                    object-fit: cover; /* Maintain aspect ratio */
+                }
+
+        </style>
      <?php
           if (isset($_GET['id']) && !empty($_GET['id'])) {
               $id_a=$_GET['id'];
               $id=encryptor('decrypt', $id_a);
-              $query = mysqli_query($cnn, "select * from subcategory where id=" . $id . "");
+              $query = mysqli_query($cnn, "select * from pets where id=" . $id . "");
               $row = mysqli_fetch_array($query);
               $name = $row['name'];
-              $image = $row['image'];
+              if (is_array($row['image'])) {
+                $image = $row['image']; // Already an array
+            } else {
+                $image = json_decode($row['image'], true); // Decode JSON string to array
+            }
               $cat_id = $row['cat_id'];
+              $sub_id = $row['sub_id'];
+              $price = $row['price'];
+              $description = $row['des'];
+              $type_listing = $row['type_listing'];
+              $pet_age = $row['pet_age'];
+              $pets_littel = $row['pets_littel'];
+              $pets_available = $row['pets_available'];
+              $adv_location = $row['adv_location'];
+              $health_check = $row['health_check'];
+              $origina_breeder = $row['origina_breeder'];
+              $warm_flat = $row['warm_flat'];
+              $Vaccination = $row['Vaccination'];
+              $pet_viewable = $row['pet_viewable'];
+              $kc_register = $row['kc_register'];
+              $microchipped = $row['microchipped'];
+
+
 
           }
           ?>
@@ -69,17 +101,17 @@ include 'config.php';
                 <div class="mb-3">
                 <div class="k-form-group">
                 <label class="k-form-label">Category</label>
-                        <select name="cat_id" id="cat_id" class="k-form-control">
+                <select name="cat_id" id="cat_id" class="k-form-control">
                         <option value="">Select Category</option>
                         <?php
-                        // Retrieve the restaurant ID if updating
+                        // Retrieve the category ID if updating
                         if (isset($_GET['id'])) {
                             $cat_id = $row['cat_id']; // Use cat_id for comparison
                         }
                         $query = mysqli_query($cnn, "select * from category where status='Active'");    
-                        while ($row = mysqli_fetch_array($query)) {
-                            $selected = (isset($_GET['id']) && $row['id'] == $cat_id) ? 'selected' : '';  
-                            echo "<option value='".$row['id']."' $selected>".$row['name']."</option>";
+                        while ($category = mysqli_fetch_array($query)) { // Changed variable name to avoid conflict
+                            $selected = (isset($_GET['id']) && $category['id'] == $cat_id) ? 'selected' : '';  // Ensure correct comparison
+                            echo "<option value='".$category['id']."' $selected>".$category['name']."</option>";
                         }
                         ?>
                         </select>
@@ -103,11 +135,10 @@ include 'config.php';
 
                   
                     <div class="k-form-group">
-                    <label for="image" class="k-form-label mt-3">Image</label>
-                    <input type="file" id="image" name="image" accept="image/*" class="k-form-control" value="<?php if (isset($_GET['id'])) {
-                        echo $image;
-                    } ?>" multiple/>
-                </div>
+                    <label for="images">Pet Images</label>
+                    <input type="file" class="form-control" id="images" name="images[]" multiple>
+                    <small class="form-text text-muted">Select multiple images (jpg, jpeg, png, gif)</small>
+                    </div>
                 </div>
                 <div class="mb-3">
                      <div class="k-form-group">
@@ -134,7 +165,7 @@ include 'config.php';
                           name="age"
                           id="age"
                           value="<?php if (isset($_GET['id'])) {
-                            echo $age;
+                            echo $pet_age;
                         } ?>"
                         />
                       </div>
@@ -160,9 +191,9 @@ include 'config.php';
                                 <div class="k-form-group">
                                     <label class="k-form-label"><b>Health Check</b></label>
                                     <div>
-                                        <input type="radio" id="h_check1" name="h_check1" value="Yes">
+                                        <input type="radio" id="h_check1" name="h_check1" value="Yes" <?php if (isset($_GET['id']) && $health_check == 'Yes') echo 'checked'; ?>>
                                         <label for="h_check1">Yes</label> 
-                                        <input type="radio" id="h_check1_no" name="h_check1" value="No">
+                                        <input type="radio" id="h_check1_no" name="h_check1" value="No" <?php if (isset($_GET['id']) && $health_check == 'No') echo 'checked'; ?>>
                                         <label for="h_check1_no">No</label>
                                     </div>
                                 </div>
@@ -173,9 +204,9 @@ include 'config.php';
                                 <div class="k-form-group">
                                     <label class="k-form-label"><b>Origina Breeder</b></label>
                                     <div>
-                                        <input type="radio" id="h_check2" name="h_check2" value="Yes">
+                                        <input type="radio" id="h_check2" name="h_check2" value="Yes" <?php if (isset($_GET['id']) && $origina_breeder == 'Yes') echo 'checked'; ?>>
                                         <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check2" value="No">
+                                        <input type="radio" id="h_check2_no" name="h_check2" value="No" <?php if (isset($_GET['id']) && $origina_breeder == 'No') echo 'checked'; ?>>
                                         <label for="h_check2_no">No</label>
                                     </div>
                                 </div>
@@ -186,9 +217,9 @@ include 'config.php';
                                 <div class="k-form-group">
                                     <label class="k-form-label"><b>Warm Flat</b></label>
                                     <div>
-                                        <input type="radio" id="h_check2" name="h_check3" value="Yes">
+                                        <input type="radio" id="h_check2" name="h_check3" value="Yes" <?php if (isset($_GET['id']) && $warm_flat == 'Yes') echo 'checked'; ?>>
                                         <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check3" value="No">
+                                        <input type="radio" id="h_check2_no" name="h_check3" value="No" <?php if (isset($_GET['id']) && $warm_flat == 'No') echo 'checked'; ?>>
                                         <label for="h_check2_no">No</label>
                                     </div>
                                 </div>
@@ -206,10 +237,10 @@ include 'config.php';
                           placeholder="Description"
                           name="description"
                           id="description"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $pets_littel;
-                        } ?>"
-                        ></textarea>
+                         
+                        > <?php if (isset($_GET['id'])) {
+                            echo $description;
+                        } ?></textarea>
                       </div>
                     </div>
               </div>
@@ -248,11 +279,25 @@ include 'config.php';
                         />
                       </div>
                         </div>
-                    <div class="mt-4">
-                    <img src="<?php if (isset($_GET['id'])) {
-                        echo "../pet_homes/img/" . $image;
-                    } ?>" id="txtImport" name="txtImport" class="imgBox" width="100%" height="100%" style="margin-left: 128px;" />
-                </div>
+                        <div class="mt-4" id="imagePreviewContainer">
+                        <!-- This will be populated with selected images -->
+                        <?php if (isset($_GET['id'])): ?>
+                            <?php 
+                            // Assuming $images is an array of image URLs
+                            // $images = explode(',', $image); // Split the image string into an array
+                            foreach ($image as $img): // Loop through each image
+                              // print_r($img); die();
+                            ?>
+                                <div class="image-preview">
+                                    <img src="../pet_homes/img/<?php echo trim($img); ?>" class="img-thumbnail">
+                                    <button type="button" class="btn btn-sm btn-danger position-absolute" 
+                                            style="top: 5px;right: 29px;padding: 0 5px;width: 23px;">
+                                        &times;
+                                    </button>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
                     <div class="mb-3">
                         <div class="k-form-group">
                         <label class="k-form-label">Pet little</label>
@@ -290,9 +335,9 @@ include 'config.php';
                                 <div class="k-form-group">
                                     <label class="k-form-label"><b>Vaccination</b></label>
                                     <div>
-                                        <input type="radio" id="h_check1" name="h_check4" value="Yes">
+                                        <input type="radio" id="h_check1" name="h_check4" value="Yes" <?php if (isset($_GET['id']) && $Vaccination == 'Yes') echo 'checked'; ?>>
                                         <label for="h_check1">Yes</label> 
-                                        <input type="radio" id="h_check1_no" name="h_check4" value="No">
+                                        <input type="radio" id="h_check1_no" name="h_check4" value="No" <?php if (isset($_GET['id']) && $Vaccination == 'No') echo 'checked'; ?>>
                                         <label for="h_check1_no">No</label>
                                     </div>
                                 </div>
@@ -303,9 +348,9 @@ include 'config.php';
                                 <div class="k-form-group">
                                     <label class="k-form-label"><b>Pet Viewable</b></label>
                                     <div>
-                                        <input type="radio" id="h_check2" name="h_check5" value="Yes">
+                                        <input type="radio" id="h_check2" name="h_check5" value="Yes" <?php if (isset($_GET['id']) && $pet_viewable == 'Yes') echo 'checked'; ?>>
                                         <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check5" value="No">
+                                        <input type="radio" id="h_check2_no" name="h_check5" value="No" <?php if (isset($_GET['id']) && $pet_viewable == 'No') echo 'checked'; ?>>
                                         <label for="h_check2_no">No</label>
                                     </div>
                                 </div>
@@ -316,9 +361,9 @@ include 'config.php';
                                 <div class="k-form-group">
                                     <label class="k-form-label"><b>KC Register</b></label>
                                     <div>
-                                        <input type="radio" id="h_check2" name="h_check6" value="Yes">
+                                        <input type="radio" id="h_check2" name="h_check6" value="Yes" <?php if (isset($_GET['id']) && $kc_register == 'Yes') echo 'checked'; ?>>
                                         <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check6" value="No">
+                                        <input type="radio" id="h_check2_no" name="h_check6" value="No" <?php if (isset($_GET['id']) && $kc_register == 'No') echo 'checked'; ?>>
                                         <label for="h_check2_no">No</label>
                                     </div>
                                 </div>
@@ -329,9 +374,9 @@ include 'config.php';
                                 <div class="k-form-group">
                                     <label class="k-form-label"><b>Microchipped</b></label>
                                     <div>
-                                        <input type="radio" id="h_check2" name="h_check7" value="Yes">
+                                        <input type="radio" id="h_check2" name="h_check7" value="Yes" <?php if (isset($_GET['id']) && $microchipped == 'Yes') echo 'checked'; ?>>
                                         <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check7" value="No">
+                                        <input type="radio" id="h_check2_no" name="h_check7" value="No" <?php if (isset($_GET['id']) && $microchipped == 'No') echo 'checked'; ?>>
                                         <label for="h_check2_no">No</label>
                                     </div>
                                 </div>
@@ -453,7 +498,7 @@ include 'config.php';
     <script src="js/fileUpload.js"></script>
     <script src="js/pets.js"></script>
     <script>
-      $("#image").on("change", function () {
+      $("#images").on("change", function () {
     var img = this;
     // console.log(img);
     if (img.files && img.files[0]) {
@@ -464,6 +509,58 @@ include 'config.php';
         reader.readAsDataURL(img.files[0]);
     }
 
+});
+
+$(document).ready(function() {
+    // Image preview functionality
+    $('#images').on('change', function() {
+        const previewContainer = $('#imagePreviewContainer');
+        
+        // Only clear existing previews if new files are selected
+        if (this.files.length > 0) {
+            previewContainer.empty(); // Clear existing previews
+        }
+        
+        if (this.files) {
+            const files = Array.from(this.files);
+            
+            // Check if too many files are selected (optional)
+            if (files.length > 10) {
+                alert('Please select a maximum of 10 images');
+                this.value = '';
+                return;
+            }
+            
+            files.forEach(file => {
+                if (!file.type.match('image.*')) {
+                    return; // Skip non-image files
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const preview = $(`
+                        <div class="image-preview">
+                            <img src="${e.target.result}" class="img-thumbnail">
+                            <button type="button" class="btn btn-sm btn-danger position-absolute" 
+                                    style="top: 5px;right: 29px;padding: 0 5px;width: 23px;">
+                                &times;
+                            </button>
+                        </div>
+                    `);
+                    
+                    // Add remove functionality
+                    preview.find('button').on('click', function() {
+                        preview.remove();
+                    });
+                    
+                    previewContainer.append(preview);
+                };
+                
+                reader.readAsDataURL(file);
+            });
+        }
+    });
 });
     </script>
   </body>

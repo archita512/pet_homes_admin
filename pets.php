@@ -18,6 +18,13 @@ include 'config.php';
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/category.css" />
   </head>
+  <style>
+    .k-pet-box img {
+     max-width: 76px !important;
+    max-height: 77px !important;    
+    object-fit: contain;
+}
+  </style>
   <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -66,23 +73,33 @@ include 'config.php';
                   <th>No</th>
                   <th style="width: 15%;">Image</th>
                   <th>Category Name</th>
+                  <th>Subcategory Name</th>
+                  <th>Name</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                $query = mysqli_query($cnn,"SELECT * FROM category ORDER BY id DESC");
+                $query = mysqli_query($cnn,"SELECT c.name AS cat_name,s.name AS sub_name,p.* FROM pets AS p JOIN category AS c ON c.id = p.cat_id JOIN subcategory AS s ON s.id = p.sub_id ORDER BY p.id DESC");
                 $cnt = 1;
                 while($row = mysqli_fetch_array($query)){
-                  $c_id = encryptor('encrypt',$row['id']);
-                  echo '<tr class="k-tr">
-                     <td>#' . $cnt . '</td>
-                     <td>
-                       <div class="k-pet-box">
-                         <img src="../pet_homes/img/' . $row['image'] . '" alt="dog" />
-                       </div>
-                     </td>
+                    $c_id = encryptor('encrypt',$row['id']);
+                    echo '<tr class="k-tr">
+                       <td>#' . $cnt . '</td>
+                       <td>
+                         <div class="k-pet-box">';
+                   
+                    // Decode the JSON array
+                    $images = json_decode($row['image'], true);
+                    // Display only the first image
+                    if (!empty($images)) {
+                        echo '<img src="../pet_homes/img/' . $images[0] . '" alt="pet image" /> ';
+                    }
+                         echo '</div>
+                       </td>
+                      <td>' . $row['cat_name'] . '</td>
+                       <td>' . $row['sub_name'] . '</td>
                      <td>' . $row['name'] . '</td>
                      <td class="status">
                           <label class="toggle-switch">
@@ -91,7 +108,7 @@ include 'config.php';
                           </label>
                       </td>
                       <td class="action-buttons">
-                          <a href="addcategory.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
+                          <a href="addpets.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
                               <img src="images/update.svg" alt="" />
                           </a>
                           <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
