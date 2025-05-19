@@ -256,7 +256,7 @@ const deleteCategoryModal = document.getElementById('deleteConfirmModal');
 deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget; // Button that triggered the modal
     const categoryId = button.getAttribute('data-id'); // Extract info from data-* attributes
-    const message = `Are you sure you want to delete Category ID: ${categoryId}?`;
+    const message = `Are you sure you want to delete Subcategory`;
 
     console.log(categoryId);
     

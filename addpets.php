@@ -279,26 +279,26 @@ include 'config.php';
                         />
                       </div>
                         </div>
+                       
                         <div class="mt-4" id="imagePreviewContainer">
-                        <!-- This will be populated with selected images -->
-                        <?php if (isset($_GET['id'])): ?>
-                            <?php 
-                            // Assuming $images is an array of image URLs
-                            // $images = explode(',', $image); // Split the image string into an array
-                            foreach ($image as $img): // Loop through each image
-                              // print_r($img); die();
-                            ?>
-                                <div class="image-preview">
-                                    <img src="../pet_homes/img/<?php echo trim($img); ?>" class="img-thumbnail">
-                                    <button type="button" class="btn btn-sm btn-danger position-absolute" 
-                                            style="top: 5px;right: 29px;padding: 0 5px;width: 23px;">
-                                        &times;
-                                    </button>
-                                </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
-                    <div class="mb-3">
+                                 <!-- This will be populated with selected images -->
+                              <?php if (isset($_GET['id'])): ?>
+                                  <?php 
+                                  // Assuming $images is an array of image URLs
+                                  foreach ($image as $img): // Loop through each image
+                                  ?>
+                                      <div class="image-preview">
+                                          <img src="../pet_homes/img/<?php echo trim($img); ?>" class="img-thumbnail">
+                                          <!-- <button type="button" class="btn btn-sm btn-danger position-absolute" 
+                                                  style="top: 5px;right: 29px;padding: 0 5px;width: 23px;" 
+                                                  onclick="removeImage(this, '<?php echo trim($img); ?>')">
+                                              &times;
+                                          </button> -->
+                                      </div>
+                                  <?php endforeach; ?>
+                              <?php endif; ?>
+                          </div>
+                        <div class="mb-3">
                         <div class="k-form-group">
                         <label class="k-form-label">Pet little</label>
                         <input
@@ -391,7 +391,7 @@ include 'config.php';
             
 
             <div class="k-modal-footer">
-            <button type="button" class="k-btn-cancel" onclick="window.location.href='category.php'">Cancel</button>
+            <button type="button" class="k-btn-cancel" onclick="window.location.href='pets.php'">Cancel</button>
             <button type="submit"  name="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>"
             id="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>" class="k-btn-save">Save</button>
           </div>
@@ -510,58 +510,71 @@ include 'config.php';
     }
 
 });
+function removeImage(button, imgSrc) {
+    // Remove the image preview from the DOM
+    $(button).closest('.image-preview').remove();
+    
+    // Update the hidden input field to reflect the remaining images
+    let existingImages = $('#existingImages').val().split(',');
+    existingImages = existingImages.filter(img => img !== imgSrc.trim());
+    $('#existingImages').val(existingImages.join(','));
+    
+    // Optionally, you can also update the displayed count of images if needed
+    // For example, you can show a message or update a counter
+}
 
-$(document).ready(function() {
-    // Image preview functionality
-    $('#images').on('change', function() {
-        const previewContainer = $('#imagePreviewContainer');
-        
-        // Only clear existing previews if new files are selected
-        if (this.files.length > 0) {
-            previewContainer.empty(); // Clear existing previews
-        }
-        
-        if (this.files) {
-            const files = Array.from(this.files);
+    $(document).ready(function() {
+        // Image preview functionality
+        $('#images').on('change', function() {
+            const previewContainer = $('#imagePreviewContainer');
             
-            // Check if too many files are selected (optional)
-            if (files.length > 10) {
-                alert('Please select a maximum of 10 images');
-                this.value = '';
-                return;
+            // Only clear existing previews if new files are selected
+            if (this.files.length > 0) {
+                previewContainer.empty(); // Clear existing previews
             }
             
-            files.forEach(file => {
-                if (!file.type.match('image.*')) {
-                    return; // Skip non-image files
+            if (this.files) {
+                const files = Array.from(this.files);
+                
+                // Check if too many files are selected (optional)
+                if (files.length > 10) {
+                    alert('Please select a maximum of 10 images');
+                    this.value = '';
+                    return;
                 }
                 
-                const reader = new FileReader();
-                
-                reader.onload = function(e) {
-                    const preview = $(`
-                        <div class="image-preview">
-                            <img src="${e.target.result}" class="img-thumbnail">
-                            <button type="button" class="btn btn-sm btn-danger position-absolute" 
-                                    style="top: 5px;right: 29px;padding: 0 5px;width: 23px;">
-                                &times;
-                            </button>
-                        </div>
-                    `);
+                files.forEach(file => {
+                    if (!file.type.match('image.*')) {
+                        return; // Skip non-image files
+                    }
                     
-                    // Add remove functionality
-                    preview.find('button').on('click', function() {
-                        preview.remove();
-                    });
+                    const reader = new FileReader();
                     
-                    previewContainer.append(preview);
-                };
-                
-                reader.readAsDataURL(file);
-            });
-        }
+                    reader.onload = function(e) {
+                        const preview = $(`
+                            <div class="image-preview">
+                                <img src="${e.target.result}" class="img-thumbnail">
+                                
+                            </div>
+                        `);
+                        
+                        // Add remove functionality
+                        preview.find('button').on('click', function() {
+                            preview.remove(); // Remove the specific image preview
+                        });
+                        
+                        previewContainer.append(preview);
+                    };
+                    
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
     });
-});
     </script>
   </body>
 </html>
+<!-- <button type="button" class="btn btn-sm btn-danger position-absolute" 
+                                //         style="top: 5px;right: 29px;padding: 0 5px;width: 23px;">
+                                //     &times;
+                                // </button> -->

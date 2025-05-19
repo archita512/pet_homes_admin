@@ -101,13 +101,16 @@ include 'config.php';
                       <td>' . $row['cat_name'] . '</td>
                        <td>' . $row['sub_name'] . '</td>
                      <td>' . $row['name'] . '</td>
-                     <td class="status">
+                      <td class="status">
                           <label class="toggle-switch">
                               <input type="checkbox" value="' . ($row['status'] === 'Active' ? '1' : '0') . '" ' . ($row['status'] === 'Active' ? 'checked' : '') . ' class="status-checkbox" data-id="' . $row['id'] . '">
                               <span class="toggle-slider"></span>
                           </label>
                       </td>
                       <td class="action-buttons">
+                        <a href="view_pets.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
+                              <img src="images/view.png" alt=""  style="width: 24px;height: 25px;"/>
+                          </a>
                           <a href="addpets.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
                               <img src="images/update.svg" alt="" />
                           </a>
@@ -264,7 +267,7 @@ const deleteCategoryModal = document.getElementById('deleteConfirmModal');
 deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget; // Button that triggered the modal
     const categoryId = button.getAttribute('data-id'); // Extract info from data-* attributes
-    const message = `Are you sure you want to delete Category ID: ${categoryId}?`;
+    const message = `Are you sure you want to delete Pet`;
 
     console.log(categoryId);
     
@@ -275,7 +278,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     // Add event listener for the delete button
     const deleteButton = deleteCategoryModal.querySelector('.d_deletebtn');
     deleteButton.onclick = function() {
-        fetch(`crud.php?what=delete_category`, {
+        fetch(`crud.php?what=delete_pets`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -302,7 +305,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 const status = this.checked ? 'Active' : 'Block';
 
                 // AJAX request to update status
-                fetch('crud.php?what=update_status', {
+                fetch('crud.php?what=update_status_pets', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
