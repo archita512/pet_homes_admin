@@ -38,14 +38,14 @@ include 'config.php';
       <div class="k-page-content">
         <div class="k-page-header">
           <div>
-            <h4 class="mb-1">Category</h4>
+            <h4 class="mb-1">Pets</h4>
             <nav class="k-breadcrumb small">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
                   <a href="#" class="k-link-text-color text-decoration-none">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active k-link-text-color-active">
-                  Category
+                  Pets
                 </li>
               </ol>
             </nav>

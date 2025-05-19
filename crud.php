@@ -524,4 +524,14 @@ if ($_GET['what'] == "delete_pets") {
     echo json_encode($response);
    
 }
+if($_GET['what'] == "fetch_subcategories"){
+    if (isset($_POST['category_id'])) {
+        $categoryId = $_POST['category_id'];
+        $query = mysqli_query($cnn, "SELECT * FROM subcategory WHERE cat_id = '$categoryId' AND status='Active'");
+        
+        while ($row = mysqli_fetch_array($query)) {
+            echo "<option value='".$row['id']."'>".$row['name']."</option>";
+        }
+    }
+}
 ?>

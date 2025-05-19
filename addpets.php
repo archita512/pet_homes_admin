@@ -101,7 +101,7 @@ include 'config.php';
                 <div class="mb-3">
                 <div class="k-form-group">
                 <label class="k-form-label">Category</label>
-                <select name="cat_id" id="cat_id" class="k-form-control">
+                <select name="cat_id" id="cat_id" class="k-form-control" onchange="fetchSubcategories(this.value)">
                         <option value="">Select Category</option>
                         <?php
                         // Retrieve the category ID if updating
@@ -247,18 +247,18 @@ include 'config.php';
                 <div class="col-sm-6">
                 <div class="mb-3">
                 <div class="k-form-group">
-                        <label class="k-form-label">Subcategory</label>
+                <label class="k-form-label">Subcategory</label>
                         <select name="subcat_id" id="subcat_id" class="k-form-control">
                         <option value="">Select Subcategory</option>
                         <?php
-                        // Retrieve the restaurant ID if updating
+                        // Fetch subcategories based on the selected category
                         if (isset($_GET['id'])) {
-                            $sub_id = $row['sub_id']; // Use sub_id for comparison
-                        }
-                        $query = mysqli_query($cnn, "select * from subcategory where status='Active'");    
-                        while ($row = mysqli_fetch_array($query)) {
-                            $selected = (isset($_GET['id']) && $row['id'] == $sub_id) ? 'selected' : '';  
-                            echo "<option value='".$row['id']."' $selected>".$row['name']."</option>";
+                            $sub_id = $row['sub_id']; // Get the subcategory ID from the fetched row
+                            $query_subcategories = mysqli_query($cnn, "SELECT * FROM subcategory WHERE cat_id = '$cat_id' AND status='Active'");
+                            while ($subcategory = mysqli_fetch_array($query_subcategories)) {
+                                $selected = ($subcategory['id'] == $sub_id) ? 'selected' : ''; // Check if this subcategory is the selected one
+                                echo "<option value='".$subcategory['id']."' $selected>".$subcategory['name']."</option>";
+                            }
                         }
                         ?>
                         </select>
@@ -571,6 +571,21 @@ function removeImage(button, imgSrc) {
             }
         });
     });
+
+    function fetchSubcategories(categoryId) {
+            if (categoryId) {
+                $.ajax({
+                    url: 'crud.php?what=fetch_subcategories', // Create this file to handle the request
+                    type: 'POST',
+                    data: { category_id: categoryId },
+                    success: function(data) {
+                        $('#subcat_id').html(data); // Populate subcategory dropdown
+                    }
+                });
+            } else {
+                $('#subcat_id').html('<option value="">Select Subcategory</option>'); // Reset subcategory dropdown
+            }
+        }
     </script>
   </body>
 </html>
