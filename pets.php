@@ -20,8 +20,8 @@ include 'config.php';
   </head>
   <style>
     .k-pet-box img {
-     max-width: 76px !important;
-    max-height: 77px !important;    
+     max-width: 58px !important;
+    max-height: 75px !important;    
     object-fit: contain;
 }
   </style>
