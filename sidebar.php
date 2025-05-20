@@ -1,4 +1,3 @@
-
 <div class="k-sidebar" id="sidebar">
       <div class="k-logo">
         <div>
@@ -36,7 +35,13 @@
           </a>
         </li>
         <li>
-          <a href="#" class="d-flex align-items-center">
+          <a href="acc_category.php" class="d-flex align-items-center">
+            <i class="fas fa-shopping-basket"></i>
+            <span>Accessories Catgeory</span>
+          </a>
+        </li>
+        <li>
+          <a href="accessories.php" class="d-flex align-items-center">
             <i class="fas fa-shopping-basket"></i>
             <span>Accessories</span>
           </a>
@@ -66,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Get the subcategory and pets links specifically
   const subcategoryLink = document.querySelector('.k-sidebar-menu li a[href="subcategory.php"]');
   const petsLink = document.querySelector('.k-sidebar-menu li a[href="pets.php"]');
+  const accCategoryLink = document.querySelector('.k-sidebar-menu li a[href="acc_catgeory.php"]');
   
   // Check if we're on the subcategory or pets page
   const currentPage = window.location.pathname.split('/').pop();
@@ -113,6 +119,19 @@ document.addEventListener('DOMContentLoaded', function() {
       });
       
       // Add active class to only the pets link
+      this.classList.add('active');
+    });
+  }
+  
+  // Add click event listener to accessories category link
+  if (accCategoryLink) {
+    accCategoryLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
       this.classList.add('active');
     });
   }

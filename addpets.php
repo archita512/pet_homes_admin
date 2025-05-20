@@ -8,7 +8,7 @@ include 'config.php';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add category</title>
+    <title>Add Pets</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
@@ -71,6 +71,7 @@ include 'config.php';
               $pet_viewable = $row['pet_viewable'];
               $kc_register = $row['kc_register'];
               $microchipped = $row['microchipped'];
+              $country = $row['country'];
 
 
 
@@ -89,7 +90,7 @@ include 'config.php';
             <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Category'; } else { echo 'Add Category'; } ?></h2>
           </div>
           <form id="frm" action="" method="POST" enctype="multipart/form-data">
-          <div class="card" style="width: 1517px; margin-left: 50px; margin-top: 30px;height: 953px;">
+          <div class="card" style="width: 1517px; margin-left: 50px; margin-top: 30px;height: 1053px;">
           <div class="k-modal-body">
           <div class="row">
             <div class="col-sm-6">
@@ -133,7 +134,21 @@ include 'config.php';
                       </div>
                     </div>
 
-                  
+                    <div class="mb-3">
+                   <div class="k-form-group">
+                        <label class="k-form-label">Country</label>
+                        <input
+                          type="text"
+                          class="k-form-control"
+                          placeholder="Country"
+                          name="country"
+                          id="country"
+                          value="<?php if (isset($_GET['id'])) {
+                            echo $country;
+                        } ?>"
+                        />
+                      </div>
+                    </div>
                     <div class="k-form-group">
                     <label for="images">Pet Images</label>
                     <input type="file" class="form-control" id="images" name="images[]" multiple>
