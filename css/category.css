@@ -653,3 +653,6 @@ input:checked + .toggle-slider:before {
   color: #fff;
   background-color: #976239;
 }
+a:hover {
+  color: white;
+}

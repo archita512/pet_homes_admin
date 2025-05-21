@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
 <div class="k-sidebar" id="sidebar">
       <div class="k-logo">
         <div>
@@ -18,7 +20,7 @@
         </li>
         <li>
           <a href="category.php" class="active d-flex align-items-center">
-            <img src="images/s2.svg" alt="" class="text-dark" />
+          <i class="bi bi-grid-fill"></i>
             <span class="ps-2">Category</span>
           </a>
         </li>
@@ -36,7 +38,7 @@
         </li>
         <li>
           <a href="acc_category.php" class="d-flex align-items-center">
-            <i class="fas fa-shopping-basket"></i>
+          <i class="bi bi-tags-fill"></i>
             <span>Accessories Catgeory</span>
           </a>
         </li>
@@ -47,13 +49,25 @@
           </a>
         </li>
         <li>
-          <a href="#" class="d-flex align-items-center">
+          <a href="service.php" class="d-flex align-items-center">
             <i class="fas fa-concierge-bell"></i>
             <span>Services</span>
           </a>
         </li>
         <li>
-          <a href="#" class="d-flex align-items-center">
+          <a href="offer.php" class="d-flex align-items-center">
+          <i class="bi bi-bookmark-star-fill"></i>
+            <span>Offers</span>
+          </a>
+        </li>
+        <li>
+          <a href="banner.php" class="d-flex align-items-center">
+          <i class="fa-solid fa-image"></i>
+            <span>Banner</span>
+          </a>
+        </li>
+        <li>
+          <a href="" class="d-flex align-items-center">
             <i class="fas fa-user"></i>
             <span>User</span>
           </a>
@@ -71,7 +85,11 @@ document.addEventListener('DOMContentLoaded', function() {
   // Get the subcategory and pets links specifically
   const subcategoryLink = document.querySelector('.k-sidebar-menu li a[href="subcategory.php"]');
   const petsLink = document.querySelector('.k-sidebar-menu li a[href="pets.php"]');
-  const accCategoryLink = document.querySelector('.k-sidebar-menu li a[href="acc_catgeory.php"]');
+  const accCategoryLink = document.querySelector('.k-sidebar-menu li a[href="acc_category.php"]');
+  const accessoriesLink = document.querySelector('.k-sidebar-menu li a[href="accessories.php"]');
+  const serviceLink = document.querySelector('.k-sidebar-menu li a[href="service.php"]');
+  const offerLink = document.querySelector('.k-sidebar-menu li a[href="offer.php"]');
+  const bannerLink = document.querySelector('.k-sidebar-menu li a[href="banner.php"]');
   
   // Check if we're on the subcategory or pets page
   const currentPage = window.location.pathname.split('/').pop();
@@ -94,6 +112,55 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add active class to pets link
     if (petsLink) {
       petsLink.classList.add('active');
+    }
+  } else if(currentPage === 'acc_category.php'){
+    document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+      link.classList.remove('active');
+    });
+    
+    // Add active class to pets link
+    if (accCategoryLink) {
+      accCategoryLink.classList.add('active');
+    }
+  }
+  else if(currentPage === 'accessories.php'){
+    document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+      link.classList.remove('active');
+    });
+    
+    // Add active class to pets link
+    if (accessoriesLink) {
+      accessoriesLink.classList.add('active');
+    }
+  }
+  else if(currentPage === 'service.php'){
+    document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+      link.classList.remove('active');
+    });
+    
+    // Add active class to pets link
+    if (serviceLink) {
+      serviceLink.classList.add('active');
+    }
+  }
+  else if(currentPage === 'offer.php'){
+    document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+      link.classList.remove('active');
+    });
+    
+    // Add active class to pets link
+    if (offerLink) {
+      offerLink.classList.add('active');
+    }
+  }
+  else if(currentPage === 'banner.php'){
+    document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+      link.classList.remove('active');
+    });
+    
+    // Add active class to pets link
+    if (bannerLink) {
+      bannerLink.classList.add('active');
     }
   }
   
@@ -123,7 +190,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
   
-  // Add click event listener to accessories category link
   if (accCategoryLink) {
     accCategoryLink.addEventListener('click', function(e) {
       // Remove active class from all links
@@ -135,7 +201,50 @@ document.addEventListener('DOMContentLoaded', function() {
       this.classList.add('active');
     });
   }
-  
+  if (accessoriesLink) {
+    accessoriesLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (serviceLink) {
+    serviceLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (offerLink) {
+    offerLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (bannerLink) {
+    bannerLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
   // Handle close sidebar button if present
   const closeSidebarBtn = document.getElementById('closeSidebar');
   if (closeSidebarBtn) {

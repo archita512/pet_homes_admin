@@ -18,6 +18,17 @@ include 'config.php';
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/category.css" />
   </head>
+  <style>
+    .k-pet-box img {
+    max-width: 92px !important;
+    max-height: 51px !important;
+    object-fit: contain;
+}
+.k-pet-box {
+    width: 35px;
+    background-color: #ebebeb00 !important;
+}
+  </style>
   <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -31,14 +42,14 @@ include 'config.php';
       <div class="k-page-content">
         <div class="k-page-header">
           <div>
-            <h4 class="mb-1">Accessories</h4>
+            <h4 class="mb-1">Banner</h4>
             <nav class="k-breadcrumb small">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
                   <a href="#" class="k-link-text-color text-decoration-none">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active k-link-text-color-active">
-                  Accessories
+                  Banner
                 </li>
               </ol>
             </nav>
@@ -47,7 +58,7 @@ include 'config.php';
            
             <div>
               <a
-              href="add_accessories.php"
+              href="add_banner.php"
                 class="k-add-btn d-flex align-items-center justify-content-center text-decoration-none"
               >
                 <i class="fas fa-plus me-1 k-icon-plus"></i>
@@ -65,68 +76,56 @@ include 'config.php';
                 <tr>
                   <th>No</th>
                   <th style="width: 15%;">Image</th>
-                  <th>Category Name</th>
+
                   <th>Name</th>
-                  <th>Price</th>
+               
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                                $query = mysqli_query($cnn,"SELECT ac.name AS cat_name,a.* FROM accessories AS a JOIN acce_catgeory AS ac ON a.cat_id = ac.id ORDER BY a.id DESC");
-                                $cnt = 1;
-                                while($row = mysqli_fetch_array($query)){
-                                  $c_id = encryptor('encrypt',$row['id']);
-                
-                                  $keyValueArray = explode(',', $row['key']); // Assuming 'key' is the column name
-                                  $keyValueArray = array_unique($keyValueArray); // Remove duplicates
-                                  $keyValueString = implode(', ', $keyValueArray); // Join with commas
-                                  $key = str_replace(['[', ']', '"'], '', $keyValueString); // Remove brackets and quotes
-                                  // print_r($key);
-                                  // die();
-                
-                                  $ValueArray = explode(',', $row['value']); // Assuming 'value' is the column name
-                                  $ValueArray = array_unique($ValueArray); // Remove duplicates
-                                  $ValueString = implode(', ', $ValueArray); // Join with commas
-                                  $value = str_replace(['[', ']', '"'], '', $ValueString); // Remove brackets and quotes
-                                  echo '<tr class="k-tr">
-                                     <td>#' . $cnt . '</td>
-                                     <td>
-                                       <div class="k-pet-box">
-                                         <img src="../pet_homes/img/' . $row['image'] . '" alt="dog" />
-                                       </div>
-                                     </td>
-                                     <td>' . $row['cat_name'] . '</td>
-                                     <td>' . $row['name'] . '</td>
-                                     <td>' . $row['price'] . '</td>
-                                     <td class="status">
-                                       <label class="toggle-switch">
-                                           <input type="checkbox" value="' . ($row['status'] === 'Active' ? '1' : '0') . '" ' . ($row['status'] === 'Active' ? 'checked' : '') . ' class="status-checkbox" data-id="' . $row['id'] . '">
-                                           <span class="toggle-slider"></span>
-                                       </label>
-                                     </td>
-                                     <td class="action-buttons">
-                                       <a href="#" 
-                                             class="edit-btn text-decoration-none" 
-                                             data-bs-toggle="modal" 
-                                             data-bs-target="#accessoryDetailModal" 
-                                             data-key=\'' . json_encode($keyValueArray) . '\' 
-                                             data-value=\'' . json_encode($ValueArray) . '\'>  
-                                             <img src="images/view.png" alt="" style="width: 24px;height: 25px;" />
-                                         </a>
-                                         <a href="add_accessories.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
-                                             <img src="images/update.svg" alt="" />
-                                         </a>
-                                         <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-                                             <img src="images/delete.svg" alt="" />
-                                         </div>
-                                     </td>
-                                   </tr>'; // Corrected closing of the echo statement
-                
-                                  $cnt++;
-                                } // Correctly closing the while loop
-                                ?>
+                  $query = mysqli_query($cnn,"SELECT * FROM `banner` ORDER BY id DESC");
+                  $cnt = 1;
+                  while($row = mysqli_fetch_array($query)){
+                    $c_id = encryptor('encrypt',$row['id']);
+  
+                    echo '<tr class="k-tr">
+                        <td>#' . $cnt . '</td>
+                        <td>
+                          <div class="k-pet-box">
+                            <img src="../pet_homes/img/' . $row['image'] . '" alt="dog" />
+                          </div>
+                        </td>
+
+                        <td>' . $row['name'] . '</td>
+                       
+                        <td class="status">
+                          <label class="toggle-switch">
+                              <input type="checkbox" value="' . ($row['status'] === 'Active' ? '1' : '0') . '" ' . ($row['status'] === 'Active' ? 'checked' : '') . ' class="status-checkbox" data-id="' . $row['id'] . '">
+                              <span class="toggle-slider"></span>
+                          </label>
+                        </td>
+                        <td class="action-buttons">
+                          <a href="#" 
+                                class="edit-btn text-decoration-none" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#accessoryDetailModal"
+                                data-description="' . htmlspecialchars($row['des']) . '"> <!-- Added data-description attribute -->
+                                <img src="images/view.png" alt="" style="width: 24px;height: 25px;" />
+                          </a>
+                            <a href="add_banner.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
+                                <img src="images/update.svg" alt="" />
+                            </a>
+                            <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                                <img src="images/delete.svg" alt="" />
+                            </div>
+                        </td>
+                      </tr>'; // Corrected closing of the echo statement
+  
+                    $cnt++;
+                  } // Correctly closing the while loop
+                  ?>
                 
               </tbody>
             </table>
@@ -146,8 +145,7 @@ include 'config.php';
       class="offcanvas offcanvas-start"
       tabindex="-1"
       id="offcanvasExample"
-      aria-labelledby="offcanvasExampleLabel"
-    >
+      aria-labelledby="offcanvasExampleLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
         <button
@@ -256,12 +254,12 @@ include 'config.php';
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="accessoryDetailModalLabel">Accessory Details</h5>
+        <h5 class="modal-title" id="accessoryDetailModalLabel">Service Description</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p id="accessoryKey"></p>
-        <p id="accessoryValue"></p>
+        <p id="des"></p>
+       
         <!-- Add more fields as necessary -->
       </div>
       <div class="modal-footer">
@@ -291,40 +289,21 @@ include 'config.php';
 });
 
 document.getElementById('accessoryDetailModal').addEventListener('show.bs.modal', function (event) {
-    const button = event.relatedTarget;
-    const accessoryKey = button.getAttribute('data-key');
-    const accessoryValue = button.getAttribute('data-value');
+    const button = event.relatedTarget; // Button that triggered the modal
+    const description = button.getAttribute('data-description'); // Get the description from data-* attribute
 
-    if (accessoryKey && accessoryValue) {
-        try {
-            // Parse the keys and values into arrays
-            const keysArray = JSON.parse(accessoryKey);
-            const valuesArray = JSON.parse(accessoryValue);
-
-            // Format the keys and values for display, filtering out empty strings
-            const formattedDetails = keysArray
-                .map((key, index) => {
-                    const cleanKey = key.replace(/"/g, '').trim().replace(/^\[|\]$/g, ''); // Remove brackets from key
-                    const cleanValue = valuesArray[index] ? valuesArray[index].replace(/"/g, '').trim().replace(/^\[|\]$/g, '') : ''; // Remove brackets from value
-                    return `${cleanKey}: ${cleanValue}`; // Create key: value pairs
-                })
-                .filter(detail => detail.split(': ')[1] !== '') // Filter out empty values
-                .join('<br>'); // Join pairs with line breaks
-
-            // Update the modal's content
-            const modalContent = this.querySelector('.modal-body'); // Select the modal body
-            modalContent.innerHTML = formattedDetails;  // Display formatted key: value pairs
-        } catch (error) {
-            console.error('Error parsing JSON:', error);
-        }
-    }
+    // Update the modal's content
+    const modalContent = this.querySelector('#des'); // Select the paragraph for description
+    modalContent.textContent = description; // Set the description text
 });
+
+
 
 const deleteCategoryModal = document.getElementById('deleteConfirmModal');
 deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget; // Button that triggered the modal
     const categoryId = button.getAttribute('data-id'); // Extract info from data-* attributes
-    const message = `Are you sure you want to delete Accessories?`;
+    const message = `Are you sure you want to delete Banner Image?`;
 
     console.log(categoryId);
     
@@ -335,7 +314,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     // Add event listener for the delete button
     const deleteButton = deleteCategoryModal.querySelector('.d_deletebtn');
     deleteButton.onclick = function() {
-        fetch(`crud.php?what=delete_accessories`, {
+        fetch(`crud.php?what=delete_banner`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -362,7 +341,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 const status = this.checked ? 'Active' : 'Block';
 
                 // AJAX request to update status
-                fetch('crud.php?what=update_status_acceccrios', {
+                fetch('crud.php?what=update_status_banner', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

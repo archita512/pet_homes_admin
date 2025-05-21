@@ -718,6 +718,497 @@ if ($_GET['what'] == "add_accessories") {
     header('Content-Type: application/json');
     echo json_encode($response);
 }
+if ($_GET['what'] == "update_accessories") {
+    $id = mysqli_real_escape_string($cnn, $_POST['txtUId']);
+    $cat_id = mysqli_real_escape_string($cnn, $_POST['cat_id']);
+    $name = mysqli_real_escape_string($cnn, $_POST['name']);
+    $price = mysqli_real_escape_string($cnn, $_POST['price']);
+    $des = mysqli_real_escape_string($cnn, $_POST['des']);
+    
+    // Expecting arrays
+    $keys = isset($_POST['key']) ? $_POST['key'] : []; // Ensure it's an array
+    $values = isset($_POST['value']) ? $_POST['value'] : []; // Ensure it's an array
+    
+    $response = [];
 
+    // Convert keys and values to JSON strings for storage
+    $keys_json = mysqli_real_escape_string($cnn, json_encode($keys));
+    $values_json = mysqli_real_escape_string($cnn, json_encode($values));
 
+    // Fetch existing image name from the database
+    $existingQuery = mysqli_query($cnn, "SELECT image FROM accessories WHERE id = '$id'");
+    $existingRow = mysqli_fetch_assoc($existingQuery);
+    $existingImage = $existingRow['image'];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $targetDir = "../pet_homes/img/";
+        $fileName = basename($_FILES["image"]["name"]);
+        $uniqueName = time() . "_" . $fileName;
+        $targetFilePath = $targetDir . $uniqueName;
+    
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+            // Only store the new file name in DB
+            $imageName = $uniqueName;
+        } else {
+            // If image upload fails, use the existing image name
+            $imageName = $existingImage;
+        }
+    } else {
+        // If no new image is uploaded, use the existing image name
+        $imageName = $existingImage;
+    }
+
+    if (!empty($name)) {
+        // Update category with status, including keys and values
+        $query_update = mysqli_query($cnn, "UPDATE accessories SET name = '$name', image = '$imageName', cat_id = '$cat_id', des = '$des', price = '$price', `key` = '$keys_json', `value` = '$values_json' WHERE id = '$id'");
+        if ($query_update) {
+            $response['success'] = true;
+            $response['message'] = "Accessories updated successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to update Accessories. SQL Error: " . mysqli_error($cnn);
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Accessories name is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if($_GET['what'] == "update_status_acceccrios"){
+    // Get the JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+    $status = $input['status'];
+
+    // Update the status in the database
+    $query = "UPDATE accessories SET status = ? WHERE id = ?";
+    $stmt = $cnn->prepare($query);
+    $stmt->bind_param("si", $status, $id);
+    
+    if($stmt->execute()){
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    $stmt->close();
+}
+
+if ($_GET['what'] == "delete_accessories") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM accessories WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+   
+}
+if ($_GET['what'] == "add_services") {
+   
+    $name = mysqli_real_escape_string($cnn, $_POST['name']);
+    $price = mysqli_real_escape_string($cnn, $_POST['price']);
+    $des = mysqli_real_escape_string($cnn, $_POST['des']);
+
+    $response = [];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $targetDir = "../pet_homes/img/";
+        $fileName = basename($_FILES["image"]["name"]);
+        $uniqueName = time() . "_" . $fileName;
+        $targetFilePath = $targetDir . $uniqueName;
+    
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+            // Only store the file name in DB
+            $imageName = $uniqueName;
+        } else {
+            echo json_encode(["success" => false, "message" => "Image upload failed."]);
+            exit; // Exit if image upload fails
+        }
+    }
+
+    if (!empty($name)) {
+        // Insert category with status, including keys and values
+        $query_insert = mysqli_query($cnn, "INSERT INTO service (name, image, status,des, price) VALUES ('$name', '$imageName', 'Active','$des', '$price')");
+        if ($query_insert) {
+            $response['success'] = true;
+            $response['message'] = "Services added successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to add Services. SQL Error: " . mysqli_error($cnn);
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Services name is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if ($_GET['what'] == "update_services") {
+    $id = mysqli_real_escape_string($cnn, $_POST['txtUId']);
+  
+    $name = mysqli_real_escape_string($cnn, $_POST['name']);
+    $price = mysqli_real_escape_string($cnn, $_POST['price']);
+    $des = mysqli_real_escape_string($cnn, $_POST['des']);
+    
+   
+    
+    $response = [];
+
+    
+
+    // Fetch existing image name from the database
+    $existingQuery = mysqli_query($cnn, "SELECT image FROM `service` WHERE id = '$id'");
+    $existingRow = mysqli_fetch_assoc($existingQuery);
+    $existingImage = $existingRow['image'];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $targetDir = "../pet_homes/img/";
+        $fileName = basename($_FILES["image"]["name"]);
+        $uniqueName = time() . "_" . $fileName;
+        $targetFilePath = $targetDir . $uniqueName;
+    
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+            // Only store the new file name in DB
+            $imageName = $uniqueName;
+        } else {
+            // If image upload fails, use the existing image name
+            $imageName = $existingImage;
+        }
+    } else {
+        // If no new image is uploaded, use the existing image name
+        $imageName = $existingImage;
+    }
+
+    if (!empty($name)) {
+        // Update category with status, including keys and values
+        $query_update = mysqli_query($cnn, "UPDATE `service` SET name = '$name', image = '$imageName', des = '$des', price = '$price' WHERE id = '$id'");
+        if ($query_update) {
+            $response['success'] = true;
+            $response['message'] = "Service updated successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to update Service. SQL Error: " . mysqli_error($cnn);
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Service name is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if($_GET['what'] == "update_status_service"){
+    // Get the JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+    $status = $input['status'];
+
+    // Update the status in the database
+    $query = "UPDATE `service` SET status = ? WHERE id = ?";
+    $stmt = $cnn->prepare($query);
+    $stmt->bind_param("si", $status, $id);
+    
+    if($stmt->execute()){
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    $stmt->close();
+}
+
+if ($_GET['what'] == "delete_services") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM `service` WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+   
+}
+
+if ($_GET['what'] == "add_offer") {
+   
+    $name = mysqli_real_escape_string($cnn, $_POST['name']);
+    $des = mysqli_real_escape_string($cnn, $_POST['des']);
+
+    $response = [];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $targetDir = "../pet_homes/img/";
+        $fileName = basename($_FILES["image"]["name"]);
+        $uniqueName = time() . "_" . $fileName;
+        $targetFilePath = $targetDir . $uniqueName;
+    
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+            // Only store the file name in DB
+            $imageName = $uniqueName;
+        } else {
+            echo json_encode(["success" => false, "message" => "Image upload failed."]);
+            exit; // Exit if image upload fails
+        }
+    }
+
+    if (!empty($name)) {
+        // Insert category with status, including keys and values
+        $query_insert = mysqli_query($cnn, "INSERT INTO offer (name, image, status,des) VALUES ('$name', '$imageName', 'Active','$des')");
+        if ($query_insert) {
+            $response['success'] = true;
+            $response['message'] = "Offer added successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to add Offer. SQL Error: " . mysqli_error($cnn);
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Offer name is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if ($_GET['what'] == "update_offer") {
+    $id = mysqli_real_escape_string($cnn, $_POST['txtUId']);
+  
+    $name = mysqli_real_escape_string($cnn, $_POST['name']);
+    
+    $des = mysqli_real_escape_string($cnn, $_POST['des']);
+    
+   
+    
+    $response = [];
+
+    
+
+    // Fetch existing image name from the database
+    $existingQuery = mysqli_query($cnn, "SELECT image FROM `offer` WHERE id = '$id'");
+    $existingRow = mysqli_fetch_assoc($existingQuery);
+    $existingImage = $existingRow['image'];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $targetDir = "../pet_homes/img/";
+        $fileName = basename($_FILES["image"]["name"]);
+        $uniqueName = time() . "_" . $fileName;
+        $targetFilePath = $targetDir . $uniqueName;
+    
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+            // Only store the new file name in DB
+            $imageName = $uniqueName;
+        } else {
+            // If image upload fails, use the existing image name
+            $imageName = $existingImage;
+        }
+    } else {
+        // If no new image is uploaded, use the existing image name
+        $imageName = $existingImage;
+    }
+
+    if (!empty($name)) {
+        // Update category with status, including keys and values
+        $query_update = mysqli_query($cnn, "UPDATE `offer` SET name = '$name', image = '$imageName', des = '$des' WHERE id = '$id'");
+        if ($query_update) {
+            $response['success'] = true;
+            $response['message'] = "Offer updated successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to update Offer. SQL Error: " . mysqli_error($cnn);
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Offer name is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if($_GET['what'] == "update_status_offer"){
+    // Get the JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+    $status = $input['status'];
+
+    // Update the status in the database
+    $query = "UPDATE `offer` SET status = ? WHERE id = ?";
+    $stmt = $cnn->prepare($query);
+    $stmt->bind_param("si", $status, $id);
+    
+    if($stmt->execute()){
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    $stmt->close();
+}
+
+if ($_GET['what'] == "delete_offer") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM `offer` WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+   
+}
+if ($_GET['what'] == "add_banner") {
+   
+    $name = mysqli_real_escape_string($cnn, $_POST['name']);
+    $des = mysqli_real_escape_string($cnn, $_POST['des']);
+
+    $response = [];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $targetDir = "../pet_homes/img/";
+        $fileName = basename($_FILES["image"]["name"]);
+        $uniqueName = time() . "_" . $fileName;
+        $targetFilePath = $targetDir . $uniqueName;
+    
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+            // Only store the file name in DB
+            $imageName = $uniqueName;
+        } else {
+            echo json_encode(["success" => false, "message" => "Image upload failed."]);
+            exit; // Exit if image upload fails
+        }
+    }
+
+    if (!empty($name)) {
+        // Insert category with status, including keys and values
+        $query_insert = mysqli_query($cnn, "INSERT INTO banner (name, image, status,des) VALUES ('$name', '$imageName', 'Active','$des')");
+        if ($query_insert) {
+            $response['success'] = true;
+            $response['message'] = "Banner Image added successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to add Banner Image. SQL Error: " . mysqli_error($cnn);
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Banner Image name is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if ($_GET['what'] == "update_banner") {
+    $id = mysqli_real_escape_string($cnn, $_POST['txtUId']);
+  
+    $name = mysqli_real_escape_string($cnn, $_POST['name']);
+    
+    $des = mysqli_real_escape_string($cnn, $_POST['des']);
+    
+   
+    
+    $response = [];
+
+    
+
+    // Fetch existing image name from the database
+    $existingQuery = mysqli_query($cnn, "SELECT image FROM `banner` WHERE id = '$id'");
+    $existingRow = mysqli_fetch_assoc($existingQuery);
+    $existingImage = $existingRow['image'];
+
+    if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+        $targetDir = "../pet_homes/img/";
+        $fileName = basename($_FILES["image"]["name"]);
+        $uniqueName = time() . "_" . $fileName;
+        $targetFilePath = $targetDir . $uniqueName;
+    
+        if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+            // Only store the new file name in DB
+            $imageName = $uniqueName;
+        } else {
+            // If image upload fails, use the existing image name
+            $imageName = $existingImage;
+        }
+    } else {
+        // If no new image is uploaded, use the existing image name
+        $imageName = $existingImage;
+    }
+
+    if (!empty($name)) {
+        // Update category with status, including keys and values
+        $query_update = mysqli_query($cnn, "UPDATE `banner` SET name = '$name', image = '$imageName', des = '$des' WHERE id = '$id'");
+        if ($query_update) {
+            $response['success'] = true;
+            $response['message'] = "Banner Image updated successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to update Banner Image. SQL Error: " . mysqli_error($cnn);
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Banner Image name is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if($_GET['what'] == "update_status_banner"){
+    // Get the JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+    $status = $input['status'];
+
+    // Update the status in the database
+    $query = "UPDATE `banner` SET status = ? WHERE id = ?";
+    $stmt = $cnn->prepare($query);
+    $stmt->bind_param("si", $status, $id);
+    
+    if($stmt->execute()){
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    $stmt->close();
+}
+
+if ($_GET['what'] == "delete_banner") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM `banner` WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+   
+}
 ?>
