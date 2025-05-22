@@ -22,6 +22,7 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/category.css" />
+    <link rel="stylesheet" href="css/profile.css" />
   </head>
   <style>
     .k-pet-box img {

@@ -24,6 +24,7 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     />
     <link rel="stylesheet" href="css/category.css" />
     <link rel="stylesheet" href="css/addcategory.css" />
+    <link rel="stylesheet" href="css/profile.css" />
   </head>
     <style>
             .k-form-control{

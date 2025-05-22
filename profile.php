@@ -49,111 +49,114 @@
             <div class="k-profile-header">
               <div class="k-profile-bg"></div>
               <div class="k-profile-img">
-                <img src="images/profile-img.png" alt="Profile Image" />
+                <img src="images/<?php echo $image; ?>" alt="Profile Image" />
               </div>
               <h4 class="k-profile-name"><?php echo $name; ?></h4>
-              <p class="k-profile-email">wadewarren123@gmail.com</p>
+              <p class="k-profile-email"><?php echo $email; ?></p>
             </div>
 
             <div class="k-profile-info">
               <h5 class="mb-3">Personal Info</h5>
               <div class="k-profile-info-item">
                 <div class="k-profile-info-label">Full Name</div>
-                <div class="k-profile-info-value">: Wade Warren</div>
+                <div class="k-profile-info-value">: <?php echo $name; ?></div>
               </div>
               <div class="k-profile-info-item">
                 <div class="k-profile-info-label">Email</div>
                 <div class="k-profile-info-value text-nowrap text-truncate">
-                  : wadewarren123@gmail.com
+                  : <?php echo $email; ?>
                 </div>
               </div>
               <div class="k-profile-info-item">
                 <div class="k-profile-info-label">Contact Number</div>
-                <div class="k-profile-info-value">: (403) 555-0128</div>
+                <div class="k-profile-info-value">: <?php echo $mno; ?></div>
               </div>
               <div class="k-profile-info-item">
                 <div class="k-profile-info-label">Gender</div>
-                <div class="k-profile-info-value">: Male</div>
+                <div class="k-profile-info-value">: <?php echo $gender; ?></div>
               </div>
             </div>
           </div>
 
           <!-- Profile Edit Section -->
           <div class="k-profile-edit">
+            <form class="k-profile-edit-form" id="profileEditForm">
             <h4 class="k-profile-edit-title">Edit Profile</h4>
             <div class="k-profile-edit-img">
               <img
-                src="images/profile-img.png"
+                src="images/<?php echo $image; ?>"  
                 alt="Profile Image"
                 id="profilePreview"
               />
               <div
                 class="camera-icon"
-                onclick="document.getElementById('profileImageInput').click()"
-              >
+                onclick="document.getElementById('profileImageInput').click()">
                 <i class="fas fa-camera"></i>
               </div>
               <input
                 type="file"
                 id="profileImageInput"
+                name="profileImageInput"
                 accept="image/*"
                 style="display: none"
                 onchange="previewImage(this)"
               />
             </div>
-
-            <form class="k-profile-edit-form">
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <label for="name">Name</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="name"
-                    value="Wade Warren"
-                  />
-                </div>
-                <div class="col-md-6 form-group">
-                  <label for="email">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    value="wadewarren123@gmail.com"
-                  />
-                </div>
+            <!-- Moved the form fields below the image -->
+            <div class="row mt-3">
+              <div class="col-md-6 form-group">
+                <label for="name">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  value="<?php echo $name; ?>"
+                />
               </div>
-
-              <div class="row mt-3">
-                <div class="col-md-6 form-group">
-                  <label for="contact">Contact</label>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="contact"
-                    value="Wade Warren"
-                  />
-                </div>
-                <div class="col-md-6 form-group">
-                  <label for="gender">Gender</label>
-                  <select class="form-select" id="gender">
-                    <option value="male" selected>Male</option>
-                    <option value="female">Female</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
+              <div class="col-md-6 form-group">
+                <label for="email">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  value="<?php echo $email; ?>" disabled
+                />
               </div>
+            </div>
 
-              <div class="k-profile-actions">
-                <button type="button" class="btn-cancel">Cancel</button>
-                <button type="submit" class="btn-save">Save Changes</button>
+            <div class="row mt-3">
+              <div class="col-md-6 form-group">
+                <label for="contact">Contact</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="contact"
+                  name="contact"
+                  value="<?php echo $mno; ?>"
+                />
               </div>
+              <div class="col-md-6 form-group">
+                <label for="gender">Gender</label>
+                <select class="form-select" id="gender" name="gender">
+                  <option value="Male" <?php echo ($gender == 'Male') ? 'selected' : ''; ?>>Male</option>
+                  <option value="Female" <?php echo ($gender == 'Female') ? 'selected' : ''; ?>>Female</option>
+                  <option value="other" <?php echo ($gender == 'other') ? 'selected' : ''; ?>>Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="k-profile-actions">
+            <button type="button" class="btn-cancel" onclick="window.location.href='dashbord.php';">Cancel</button>
+              <button type="submit" class="btn-save" id="btnsave">Save Changes</button>
+            </div>
             </form>
           </div>
+          <!--  -->
         </div>
       </div>
     </div>
-
     <!-- offcanvas sidebar -->
 
     <div
@@ -240,123 +243,22 @@
         </div>
       </div>
     </div>
-    <!-- Change Password Modal -->
-    <div
-      class="modal fade"
-      id="changePasswordModal"
-      tabindex="-1"
-      aria-labelledby="changePasswordModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-          <div class="modal-header border-bottom">
-            <h5 class="modal-title fw-bold" id="changePasswordModalLabel">
-              Change Password
-            </h5>
-            <button
-              type="button"
-              class="btn-close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            ></button>
-          </div>
-          <div class="modal-body py-3">
-            <form id="changePasswordForm">
-              <div class="mb-3">
-                <label for="oldPassword" class="form-label">Old Password</label>
-                <div class="position-relative">
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="oldPassword"
-                    placeholder="Your Password"
-                  />
-                  <span
-                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
-                    onclick="togglePassword('oldPassword')"
-                  >
-                    <i class="fas fa-eye-slash"></i>
-                  </span>
-                </div>
-              </div>
-              <div class="mb-3">
-                <label for="newPassword" class="form-label">New Password</label>
-                <div class="position-relative">
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="newPassword"
-                    placeholder="Your Password"
-                  />
-                  <span
-                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
-                    onclick="togglePassword('newPassword')"
-                  >
-                    <i class="fas fa-eye"></i>
-                  </span>
-                </div>
-              </div>
-              <div class="mb-4">
-                <label for="confirmPassword" class="form-label"
-                  >Confirm Password</label
-                >
-                <div class="position-relative">
-                  <input
-                    type="password"
-                    class="form-control"
-                    id="confirmPassword"
-                    placeholder="Your Password"
-                  />
-                  <span
-                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
-                    onclick="togglePassword('confirmPassword')"
-                  >
-                    <i class="fas fa-eye-slash"></i>
-                  </span>
-                </div>
-              </div>
-              <div class="d-flex justify-content-center">
-                <button
-                  type="button"
-                  class="k-btn-cancel"
-                  data-bs-dismiss="modal"
-                >
-                  Cancel
-                </button>
-                <button type="submit" class="k-btn-reset">
-                  Reset Password
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-      <!-- Logout Modal -->
-      <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header border-bottom-4">
-              <h5 class="modal-title fw-bold" id="logoutModalLabel">Logout</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body text-center pb-4">
-              <div class="k-logout-icon mb-3">
-                <img src="images/delete-conform.png" alt="">
-              </div>
-              <h5 class="mb-3">Are you sure?</h5>
-              <p class="text-muted mb-4">You are about to log out of the admin panel. Any unsaved changes will be lost.</p>
-              <div class="d-flex justify-content-center gap-3">
-                <button type="button" class="k-btn-cancel" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="k-btn-logout">Logout</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+   
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+      <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- jQuery Validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+    
+    <script src="js/forgot_password.js"></script>
+
+      <script src="js/chnage_password.js"></script>
     <script>
       function previewImage(input) {
         if (input.files && input.files[0]) {

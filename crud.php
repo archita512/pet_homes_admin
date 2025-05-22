@@ -1302,5 +1302,69 @@ if ($_GET['what'] == "delete_banner") {
     echo json_encode($response);
    
 }
+if($_GET['what'] == "update_profile"){
+    $name = $_POST['name'];
+    $contact = $_POST['contact'];
+    $gender = $_POST['gender'];
+    $email = $_SESSION['admin']; // Assuming the email is stored in session
+
+    // Handle file upload
+    if (isset($_FILES['profileImageInput']) && $_FILES['profileImageInput']['error'] == UPLOAD_ERR_OK) {
+        $imageTmpPath = $_FILES['profileImageInput']['tmp_name'];
+        $imageName = $_FILES['profileImageInput']['name'];
+        $imagePath = 'images/' . basename($imageName);
+
+        // Move the uploaded file to the /images directory
+        if (move_uploaded_file($imageTmpPath, $imagePath)) {
+            // Update query with image name
+            $query = "UPDATE `login` SET `name`='$name', `mno`='$contact', `gender`='$gender', `image`='$imageName' WHERE `email`='$email'";
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded file.']);
+            exit;
+        }
+    } else {
+        // If no image is uploaded, just update other fields
+        $query = "UPDATE `login` SET `name`='$name', `mno`='$contact', `gender`='$gender' WHERE `email`='$email'";
+    }
+
+    if (mysqli_query($cnn, $query)) {
+        echo json_encode(['status' => 'success']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => mysqli_error($cnn)]);
+    }
+}
+if ($_GET['what'] == "admin_changepwd") {
+    $id = $_POST['id'];
+    $cpwd = $_POST['cpwd'];
+    $npwd = $_POST['npwd'];
+    $cnpwd = $_POST['cnpwd'];
+    // $pass = $_POST['password'];
+    $sql = mysqli_query($cnn,"SELECT * FROM login WHERE id = '$id'");
+    $row = mysqli_fetch_assoc($sql);
+    $check = password_verify($cpwd,$row['password']);
+    if($check == true){
+        // Check if new password and confirm password match
+        if ($cnpwd == $npwd) {
+            $new_password = password_hash($npwd, PASSWORD_DEFAULT);
+            $query = mysqli_query($cnn, "UPDATE login SET password = '$new_password' WHERE id = '$id'");
+            if ($query) {
+                $response['success'] = true;
+                $response['message'] = "Password changed successfully.";
+            } else {
+                $response['success'] = false;
+                $response['message'] = "Failed to change password. SQL Error: " . mysqli_error($cnn);
+            }
+        } else {
+            $response['success'] = false;
+            $response['message'] = "Confirm Password and New Password do not match.";
+        }
+    } else {
+        // Change the message to be more user-friendly
+        $response['success'] = false;
+        $response['message'] = "The current password you entered is incorrect. Please try again.";
+    }
+    
+   echo json_encode($response);
+}
 
 ?>

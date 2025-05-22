@@ -24,6 +24,7 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     <!-- custom css -->
     <link rel="stylesheet" href="css/category.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
+    <link rel="stylesheet" href="css/profile.css" />
   </head>
   <body>
     <!-- Sidebar -->

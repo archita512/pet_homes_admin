@@ -388,3 +388,31 @@ $("#resetPwd").click(function () {
         });
     }
 });
+document.getElementById('profileEditForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Create a FormData object to hold the form data
+    const formData = new FormData(this);
+
+    // Send the form data to the server using fetch
+    fetch('crud.php?what=update_profile', {
+      method: 'POST',
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Handle success or error response
+      if (data.status === 'success') { // Change to check for 'status'
+        showToast("Success", "Profile updated successfully!", "success");
+        setTimeout(function() {
+            window.location.href = "profile.php"; // Redirect after 3 seconds
+            }, 2000); // 3000 milliseconds = 3 seconds;
+      } else {
+        showToast("Error", "Error updating profile: " + data.message, "error");
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      showToast("Error", "An error occurred while updating the profile.", "error");
+    });
+});
