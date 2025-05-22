@@ -1,0 +1,573 @@
+/* Dashboard Styles */
+.k-dashboard {
+  background-color: #f5f5f5;
+  padding: 10px 0;
+}
+
+.k-stat-card {
+  background-color: #ffffff;
+  border-radius: 4px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  height: 100%;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.k-stat-content {
+  flex: 1;
+}
+
+.k-stat-title {
+  color: #6c757d;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.k-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #212529;
+}
+
+.k-stat-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  margin-left: 15px;
+  background-color: #f8f9fa;
+  color: #976239;
+  font-size: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .k-stat-card {
+    padding: 15px;
+  }
+
+  .k-stat-value {
+    font-size: 20px;
+  }
+
+  .k-stat-icon {
+    width: 35px;
+    height: 35px;
+    font-size: 16px;
+  }
+}
+
+/* Media query for 1024px screens */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .dashboard-stats .col-lg-3 {
+    width: 50%;
+    margin-bottom: 20px;
+  }
+}
+
+/* charts css */
+#chartdiv {
+  width: 100%;
+  height: 300px;
+}
+
+#barchart {
+  width: 100%;
+  height: 445px;
+}
+
+#SmoothedLineChart {
+  width: 100%;
+  height: 400px;
+}
+
+#PieChart {
+  width: 100%;
+  height: 400px;
+}
+
+.k-bar-chart {
+  width: 100%;
+  height: 300px;
+}
+
+.k-world-chart {
+  width: 100%;
+  background-color: #ffffff;
+  box-shadow: -2px 4px 58px 0px #7777771a;
+}
+/* World Map Card Styles */
+.k-card {
+  background-color: #fff;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border-radius: 4px;
+  height: 100%;
+}
+
+.k-card-header {
+  padding: 16px;
+}
+
+.k-card-body {
+  padding: 20px;
+}
+
+.k-chart-heading h5 {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.k-chart-heading span {
+  font-size: 14px;
+  color: #6c757d;
+}
+
+.k-card-menu-btn {
+  background: none;
+  border: none;
+  color: #0f0f0f;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.k-card-menu-btn:hover {
+  background-color: #f8f9fa;
+}
+
+.k-world-map {
+  height: 300px;
+  width: 100%;
+}
+
+/* Country Statistics Styles */
+.k-country-stat {
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.k-country-flag {
+  margin-right: 15px;
+  width: 40px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.k-country-flag img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.k-country-info h6 {
+  margin-bottom: 5px;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.k-country-data {
+  display: flex;
+  align-items: center;
+}
+
+.k-percentage {
+  font-weight: 600;
+  color: #7b878c;
+  margin-right: 10px;
+  font-size: 12px;
+}
+
+.k-users {
+  color: #7b878c;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Responsive adjustments for country stats */
+@media (max-width: 576px) {
+  .k-country-info h6 {
+    font-size: 14px;
+  }
+
+  .k-users {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .k-country-data {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .k-percentage {
+    margin-bottom: 3px;
+  }
+}
+
+.k-contry-name {
+  font-size: 14px;
+  color: #6c757d;
+  text-wrap: nowrap;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1199px) {
+  #barchart {
+    height: 400px;
+  }
+}
+
+/* Media query for 1024px screens */
+@media (min-width: 768px) and (max-width: 1199px) {
+  #chartdiv {
+    height: 350px;
+  }
+
+  #barchart {
+    height: 350px;
+  }
+
+  .k-world-map {
+    height: 350px;
+  }
+
+  .k-bar-chart {
+    height: 350px;
+  }
+}
+
+@media (max-width: 991px) {
+  #barchart {
+    height: 350px;
+  }
+
+  .k-chart-heading h5 {
+    font-size: 16px;
+  }
+
+  .k-chart-heading span {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 767px) {
+  .k-country-stat {
+    margin-bottom: 15px;
+  }
+
+  .k-world-map {
+    height: 250px;
+  }
+
+  #barchart {
+    height: 300px;
+  }
+
+  .k-country-data {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .k-percentage {
+    margin-bottom: 5px;
+  }
+}
+
+@media (max-width: 576px) {
+  .k-world-map {
+    height: 200px;
+  }
+
+  .k-card-header {
+    padding: 15px;
+  }
+
+  .k-card-body {
+    padding: 15px;
+  }
+
+  #barchart {
+    height: 250px;
+  }
+
+  .k-country-info h6 {
+    font-size: 14px;
+  }
+}
+/* Responsive chart styles */
+.k-area-chart-container {
+  background-color: #fff;
+  border-radius: 4px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  margin-bottom: 20px;
+  height: 100%;
+}
+
+.k-area-chart {
+  width: 100%;
+  height: 100%;
+}
+
+/* Line Chart Styles */
+#SmoothedLineChart {
+  width: 100%;
+  height: 400px;
+}
+
+/* Pie Chart Base Styles */
+#PieChart {
+  width: 100%;
+  height: 400px;
+}
+
+.k-pie-chart {
+  width: 100%;
+  height: 400px;
+}
+
+/* Extra Large Screens */
+@media (max-width: 1399px) {
+  #SmoothedLineChart,
+  #PieChart,
+  .k-pie-chart {
+    height: 380px;
+  }
+}
+
+/* Large Screens */
+@media (max-width: 1199px) {
+  #SmoothedLineChart,
+  #PieChart,
+  .k-pie-chart {
+    height: 350px;
+  }
+}
+
+/* Medium Screens */
+@media (max-width: 991px) {
+  #SmoothedLineChart,
+  #PieChart,
+  .k-pie-chart {
+    height: 300px;
+  }
+
+  .k-card-header {
+    padding: 15px;
+  }
+
+  .k-card-body {
+    padding: 15px;
+  }
+
+  .k-chart-heading h5 {
+    font-size: 16px;
+  }
+}
+
+/* Small Screens */
+@media (max-width: 767px) {
+  #SmoothedLineChart,
+  #PieChart,
+  .k-pie-chart {
+    height: 250px;
+  }
+}
+
+/* Extra Small Screens */
+@media (max-width: 576px) {
+  .k-area-chart-container {
+    padding: 15px;
+  }
+
+  #SmoothedLineChart,
+  #PieChart,
+  .k-pie-chart {
+    height: 200px;
+  }
+
+  .k-chart-heading h5 {
+    font-size: 14px;
+  }
+
+  .k-chart-heading span {
+    font-size: 12px;
+  }
+
+  .k-card-menu-btn {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+/* Very Small Screens */
+@media (max-width: 375px) {
+  #SmoothedLineChart,
+  #PieChart,
+  .k-pie-chart {
+    height: 180px;
+  }
+
+  .k-card-header {
+    padding: 12px;
+  }
+
+  .k-card-body {
+    padding: 12px;
+  }
+}
+
+/* Adoption Table Styles */
+.k-adoption-table {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.k-adoption-table thead th {
+  background-color: #eae0d7;
+  font-weight: 600;
+  color: #0F0F0F;
+  padding: 12px 16px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+.k-adoption-table thead th i {
+  font-size: 12px;
+  color: #0F0F0F80;
+}
+
+.k-adoption-table tbody td {
+  padding: 16px;
+  vertical-align: middle;
+  color: #0F0F0F;
+}
+
+.k-pet-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.k-pet-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.k-status {
+  width: 80px;
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.k-approved {
+  background-color: #E7F4EE;
+  color: #0D894F;
+}
+
+.k-pending {
+  background-color:#F2EBDF;
+  color: #DF8600;
+}
+
+.k-rejected {
+  background-color:#FFE9E9;
+  color: #FF0000;
+}
+
+.k-table-footer {
+  padding: 0 16px;
+}
+
+.k-showing-info {
+  color: #6c757d;
+  font-size: 0.9rem;
+}
+
+.k-pagination .page-link {
+  color: #333;
+  border: none;
+  padding: 6px 12px;
+}
+
+.k-pagination .page-item.active .page-link {
+  background-color: #333;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .k-table-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .k-pagination {
+    margin-top: 10px;
+  }
+
+  .k-adoption-table {
+    min-width: 800px;
+  }
+}
+
+
+/* dropdown css */
+/* User Dropdown Styles */
+.k-user-info {
+  cursor: pointer;
+  position: relative;
+}
+
+.k-user-dropdown {
+  min-width: 200px;
+  padding: 0.5rem 0;
+  margin-top: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border: none;
+  border-radius: 0.5rem;
+}
+
+.k-user-dropdown .dropdown-item {
+  padding: 0.6rem 1rem;
+  font-size: 0.9rem;
+  color: #0F0F0F;
+}
+.k-user-dropdown .dropdown-item:hover {
+  background-color: #f8f9fa;
+}
+
+.k-user-dropdown .dropdown-item i {
+  width: 20px;
+  text-align: center;
+}
+
+.k-user-dropdown .dropdown-divider {
+  margin: 0.3rem 0;
+}
+.fa-chevron-down {
+  font-size: 12px;
+}

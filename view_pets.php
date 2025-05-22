@@ -1,6 +1,11 @@
 <?php 
 include 'connection.php'; 
 include 'config.php'; 
+session_start();
+// print_r($_SESSION);
+if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"] == "") {
+    header("Location:login.php");
+}
 ?>
 
 <!DOCTYPE html>

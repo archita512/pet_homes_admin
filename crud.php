@@ -1,6 +1,97 @@
 <?php
 include 'connection.php';
+session_start();
+if ($_GET['what'] == "admin_login") {
+    $email = $_POST['email'];
+    $pass = $_POST['password'];
+    $query = mysqli_query($cnn, "select count(*) from login  where email='" . $email . "'");
+    $row = mysqli_fetch_array($query);
+    if ($row[0] > 0) {
+        $response['success'] = true;
+        $query_chk = mysqli_query($cnn, "select * from login where email='" . $email . "'");
+        $row_chk = mysqli_fetch_array($query_chk);
+        $check = password_verify($pass, $row_chk['password']);
+        if ($check == true) {
+            $response['success'] = true;
+            $query_status = mysqli_query($cnn, "select * from login where email='" . $email . "'");
+            $row_status = mysqli_fetch_array($query_status);
+            if ($row_status['status'] == "Active") {
+                $response['success'] = true;
+                $response['message'] = "<span  style='font-weight:100;color:black;font-size:15px;'>Login successfully.</span>";
+                $_SESSION['admin'] = $row_status['email'];
 
+            } else {
+                $response['success'] = false;
+                $response['message'] = "<span  style='font-weight:100;color:black;font-size:15px;'>Your account has been block.</span>";
+            }
+        } else {
+            $response['success'] = false;
+            $response['message'] = "<span  style='font-weight:100;color:black;font-size:15px;'>Password not match.</span>";
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span  style='font-weight:100;color:black;font-size:15px;'>Email not found.</span>";
+    }
+    echo json_encode($response);
+}
+
+//  forget password asend mail
+if ($_GET['what'] == "sendEmail") {
+    $mail = $_POST['mail'];
+    // Check if the email exists in the database
+    $query = mysqli_query($cnn, "SELECT count(*) FROM login WHERE email='" . $mail . "'");
+    
+    // Fetch the result
+    $row = mysqli_fetch_array($query);
+    
+    // Check if the email exists
+    if ($row[0] > 0) {
+        // Email exists, proceed to send OTP
+        $num = rand(100000, 999999);
+        $to = $mail;
+        $subject = "Pets Home Admin Password Reset";
+        $message = "Dear " . $mail . ",\n\nYour OTP for resetting password is " . $num . "";
+        $headers = "From: Pets Home Admin ";
+        
+        // Send the email
+        mail($to, $subject, $message, $headers);
+        
+        // Store OTP in session and update in database
+        $_SESSION['otp'] = $num;
+        $_SESSION['email'] = $mail;
+        $query = mysqli_query($cnn, "UPDATE login SET otp = '$num' WHERE email = '$mail'");
+        
+        if ($query) {
+            $response["success"] = true;
+            $response["message"] = "<span style='font-size:14px;' class='text-dark'>OTP sent successfully</span>";
+            $response["otp"] = $num;
+        } else {
+            $response['success'] = false;
+            $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Failed to update OTP in database.</span>";
+        }
+    } else {
+        // Email not found
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Email not found</span>";
+    }
+    
+    echo json_encode($response);
+}
+// forgetpassword new password update
+if ($_GET['what'] == "sendNewPwd") {
+    $pwd = password_hash($_POST['pwd'], PASSWORD_DEFAULT);
+    $email = $_POST['email'];
+    $query = mysqli_query($cnn, "update login set password='" . $pwd . "' where email='" . $email . "'");
+    if ($query > 0) {
+        $response['success'] = true;
+        $response['message'] = "<span  style='font-weight:100;color:black;font-size:15px;' >Password updated successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span  style='font-weight:100;color:black;font-size:15px;' >Some error occured.Please try again</span>";
+
+    }
+    echo json_encode($response);
+}
 if ($_GET['what'] == "add_category") {
     $name = mysqli_real_escape_string($cnn, $_POST['name']);
     
@@ -1211,4 +1302,5 @@ if ($_GET['what'] == "delete_banner") {
     echo json_encode($response);
    
 }
+
 ?>

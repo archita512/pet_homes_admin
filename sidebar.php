@@ -13,7 +13,7 @@
       </div>
       <ul class="k-sidebar-menu">
         <li>
-          <a href="#" class="d-flex align-items-center">
+          <a href="dashbord.php" class="d-flex align-items-center">
             <i class="fas fa-home"></i>
             <span>Dashboard</span>
           </a>
@@ -90,7 +90,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const serviceLink = document.querySelector('.k-sidebar-menu li a[href="service.php"]');
   const offerLink = document.querySelector('.k-sidebar-menu li a[href="offer.php"]');
   const bannerLink = document.querySelector('.k-sidebar-menu li a[href="banner.php"]');
-  
+  const dashbordLink = document.querySelector('.k-sidebar-menu li a[href="dashbord.php"]');
+
   // Check if we're on the subcategory or pets page
   const currentPage = window.location.pathname.split('/').pop();
   if (currentPage === 'subcategory.php') {
@@ -161,6 +162,16 @@ document.addEventListener('DOMContentLoaded', function() {
     // Add active class to pets link
     if (bannerLink) {
       bannerLink.classList.add('active');
+    }
+  }
+  else if(currentPage === 'dashboard.php'){
+    document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+      link.classList.remove('active');
+    });
+    
+    // Add active class to pets link
+    if (dashbordLink) {
+      dashbordLink.classList.add('active');
     }
   }
   
@@ -236,6 +247,17 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   if (bannerLink) {
     bannerLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (dashbordLink) {
+    dashbordLink.addEventListener('click', function(e) {
       // Remove active class from all links
       document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
         link.classList.remove('active');
