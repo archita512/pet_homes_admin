@@ -107,7 +107,96 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
         </div>
       </div>
     </div>
-
+    <div class="modal fade"
+      id="changePasswordModal"
+      tabindex="-1"
+      aria-labelledby="changePasswordModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-bottom">
+            <h5 class="modal-title fw-bold" id="changePasswordModalLabel">
+              Change Password
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body py-3">
+            <form id="frm" method="POST" action="">
+            <input type="hidden" name="id" id="id" value="<?php if(isset($_SESSION['admin'])){ echo $id; } ?> ">
+              <div class="mb-3">
+                <label for="oldPassword" class="form-label">Old Password</label>
+                <div class="position-relative">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="oldPassword"
+                    name="oldPassword"
+                    placeholder="Your Password"
+                  />
+                  <span
+                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                    onclick="togglePassword('oldPassword')"
+                  >
+                    <i class="fas fa-eye-slash"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="newPassword" class="form-label">New Password</label>
+                <div class="position-relative">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="newPassword"
+                    name="newPassword"
+                    placeholder="Your Password"
+                  />
+                  <span
+                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                    onclick="togglePassword('newPassword')"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <div class="position-relative">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Your Password"
+                  />
+                  <span
+                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                    onclick="togglePassword('confirmPassword')">
+                    <i class="fas fa-eye-slash"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center">
+                <button
+                  type="button"
+                  class="k-btn-cancel"
+                  data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button type="submit" class="k-btn-reset" name="btnchnage" id="btnchnage">
+                  Reset Password
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- offcanvas sidebar -->
     <div
       class="offcanvas offcanvas-start"
@@ -205,7 +294,135 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     <script src="js/fileUpload.js"></script>
     <script src="js/catgeory.js"></script>
     
-    <script src="js/chnage_password.js"></script>
+    <!-- <script src="js/chnage_password.js"></script> -->
+    <script>
+      $("#btnchnage").click(function (event) {
+       event.preventDefault(); // Prevent form from submitting normally
+
+      // Check if any of the three fields are empty
+      if($("#oldPassword").val() == "" || $("#newPassword").val() == "" || $("#confirmPassword").val() == "") {
+        var toastHTML = `
+                    <div aria-live="polite" aria-atomic="true" class="position-relative">
+                        <div class="toast-container position-fixed top-0 end-0 p-3">
+                            <div id="otpValidToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header">
+                                    <strong class="me-auto">Error</strong>
+                                    <small class="text-muted">just now</small>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                                 Fields are required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        
+        // Append the toast HTML to the body
+        $('body').append(toastHTML);
+        
+        // Show the toast
+        var toastEl = document.getElementById("otpValidToast");
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    
+            } else {
+                const json =  { "id" : $("#id").val(),"cpwd" : $("#oldPassword").val(),"npwd" : $("#newPassword").val(),"cnpwd" : $("#confirmPassword").val() };
+                console.log(json);
+                $.ajax({
+                    type : "POST",
+                    method: "POST",
+                    url: "crud.php?what=admin_changepwd",
+                    data: json,
+                    dataType: "JSON",
+                    success: function (response) {
+                        console.log(response);
+                        if (response.success) {
+                            // Create the toast HTML
+                            var toastHTML = `
+                                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                                        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                            <div class="toast-header">
+                                                <strong class="me-auto">Notification</strong>
+                                                <small class="text-muted">just now</small>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                            </div>
+                                            <div class="toast-body" style="background-color: #7dcea0; color: white;"> 
+                                                ${response.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    
+                            // Append the toast HTML to the body
+                            $('body').append(toastHTML);
+                    
+                            // Show the toast
+                            var toastEl = document.getElementById("successToast");
+                            var toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                    
+                            // Redirect after 2 seconds
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                        }
+                        else{
+                            var toastHTML = `
+                                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                            <div class="toast-header">
+                                                <strong class="me-auto">Notification</strong>
+                                                <small class="text-muted">just now</small>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                            </div>
+                                            <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                                                ${response.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    
+                            // Append the toast HTML to the body
+                            $('body').append(toastHTML);
+                    
+                            // Show the toast
+                            var toastEl = document.getElementById("errorToast");
+                            var toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                    
+                            // Redirect after 2 seconds
+                            setTimeout(function() {
+                              
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                        }
+                        
+                    }
+                }); 
+            }
+            
+        });
+
+
+        function togglePassword(inputId) {
+              var input = document.getElementById(inputId);
+              if (input.type === "password") {
+                input.type = "text"; // Change to text to show password
+                // Change icon to eye
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.remove('fa-eye-slash');
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye');
+              } else {
+                input.type = "password"; // Change back to password to hide
+                // Change icon to eye-slash
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.remove('fa-eye');
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye-slash');
+              }
+            }
+    </script>
     <script>
       $("#image").on("change", function () {
     var img = this;

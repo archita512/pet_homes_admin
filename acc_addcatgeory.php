@@ -408,19 +408,19 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
 
 
         function togglePassword(inputId) {
-    var input = document.getElementById(inputId);
-    if (input.type === "password") {
-      input.type = "text"; // Change to text to show password
-      // Change icon to eye
-      document.querySelector(`#${inputId} + .k-password-toggle i`).classList.remove('fa-eye-slash');
-      document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye');
-    } else {
-      input.type = "password"; // Change back to password to hide
-      // Change icon to eye-slash
-      document.querySelector(`#${inputId} + .k-password-toggle i`).classList.remove('fa-eye');
-      document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye-slash');
-    }
-  }
+              var input = document.getElementById(inputId);
+              if (input.type === "password") {
+                input.type = "text"; // Change to text to show password
+                // Change icon to eye
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.remove('fa-eye-slash');
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye');
+              } else {
+                input.type = "password"; // Change back to password to hide
+                // Change icon to eye-slash
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.remove('fa-eye');
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye-slash');
+              }
+            }
     </script>
     
     <!-- <script src="js/chnage_password.js"></script> -->
