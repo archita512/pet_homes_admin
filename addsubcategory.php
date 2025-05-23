@@ -225,6 +225,8 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.min.js" integrity="sha512-bPZBFTQxrZnfFHJqMjP9VVXVigWPjrDHWoPVgsdo2hGNUEY9WF9HQjWfvWnFEduF9cwmsbtKoQ9QkiPkTTUHwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/fileUpload.js"></script>
     <script src="js/subcatgeory.js"></script>
+    
+    <script src="js/chnage_password.js"></script>
     <script>
       $("#image").on("change", function () {
     var img = this;

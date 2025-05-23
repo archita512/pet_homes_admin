@@ -2,7 +2,7 @@ $("#btnchnage").click(function (event) {
     event.preventDefault(); // Prevent form from submitting normally
 
       // Check if any of the three fields are empty
-      if($("#cpwd").val() == "" || $("#npwd").val() == "" || $("#cnpwd").val() == "") {
+      if($("#oldPassword").val() == "" || $("#newPassword").val() == "" || $("#confirmPassword").val() == "") {
         var toastHTML = `
                     <div aria-live="polite" aria-atomic="true" class="position-relative">
                         <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -29,7 +29,7 @@ $("#btnchnage").click(function (event) {
         toast.show();
     
     } else {
-        const json =  { "id" : $("#id").val(),"cpwd" : $("#cpwd").val(),"npwd" : $("#npwd").val(),"cnpwd" : $("#cnpwd").val() };
+        const json =  { "id" : $("#id").val(),"cpwd" : $("#oldPassword").val(),"npwd" : $("#newPassword").val(),"cnpwd" : $("#confirmPassword").val() };
         console.log(json);
         $.ajax({
             type : "POST",

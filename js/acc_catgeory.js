@@ -1,4 +1,3 @@
-
 $(document).ready(function() {
     $("#frm").validate({
         rules: {
@@ -25,7 +24,7 @@ $("#btnSubmit").click(function (event) {
 
     if ($("#frm").valid()) {
         const formData = new FormData($("#frm")[0]); // Create FormData object from the form
-        console.log(formData);
+        console.log("FormData contents:", Array.from(formData.entries())); // Log FormData contents
         $.ajax({
             type: "POST",
             url: "crud.php?what=add_acc_category",

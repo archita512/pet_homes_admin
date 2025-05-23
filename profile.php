@@ -258,7 +258,7 @@
     
     <script src="js/forgot_password.js"></script>
 
-      <script src="js/chnage_password.js"></script>
+    <script src="js/chnage_password.js"></script>
     <script>
       function previewImage(input) {
         if (input.files && input.files[0]) {
