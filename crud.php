@@ -776,18 +776,28 @@ if ($_GET['what'] == "add_accessories") {
     $values_json = mysqli_real_escape_string($cnn, json_encode($values));
 
     if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-        $targetDir = "../pet_homes/img/";
+        $targetDir = "../pet_homes/img/"; // Ensure this path is correct and writable
         $fileName = basename($_FILES["image"]["name"]);
         $uniqueName = time() . "_" . $fileName;
         $targetFilePath = $targetDir . $uniqueName;
-    
+
+        // Check if the target directory exists and is writable
+        if (!is_dir($targetDir) || !is_writable($targetDir)) {
+            echo json_encode(["success" => false, "message" => "Target directory does not exist or is not writable."]);
+            exit; // Exit if the directory is not writable
+        }
+
+        // Attempt to move the uploaded file
         if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
             // Only store the file name in DB
             $imageName = $uniqueName;
         } else {
-            echo json_encode(["success" => false, "message" => "Image upload failed."]);
+            echo json_encode(["success" => false, "message" => "Image upload failed. Check permissions or file size."]);
             exit; // Exit if image upload fails
         }
+    } else {
+        echo json_encode(["success" => false, "message" => "No image uploaded or there was an upload error."]);
+        exit; // Exit if no image is uploaded
     }
 
     if (!empty($name)) {
@@ -886,7 +896,6 @@ if($_GET['what'] == "update_status_acceccrios"){
     }
     $stmt->close();
 }
-
 if ($_GET['what'] == "delete_accessories") {
     $input = json_decode(file_get_contents('php://input'), true);
     $id = $input['id'];
@@ -1019,7 +1028,6 @@ if($_GET['what'] == "update_status_service"){
     }
     $stmt->close();
 }
-
 if ($_GET['what'] == "delete_services") {
     $input = json_decode(file_get_contents('php://input'), true);
     $id = $input['id'];
@@ -1037,7 +1045,6 @@ if ($_GET['what'] == "delete_services") {
     echo json_encode($response);
    
 }
-
 if ($_GET['what'] == "add_offer") {
    
     $name = mysqli_real_escape_string($cnn, $_POST['name']);
@@ -1151,8 +1158,7 @@ if($_GET['what'] == "update_status_offer"){
         echo json_encode(['success' => false]);
     }
     $stmt->close();
-}
-
+}   
 if ($_GET['what'] == "delete_offer") {
     $input = json_decode(file_get_contents('php://input'), true);
     $id = $input['id'];
@@ -1284,7 +1290,6 @@ if($_GET['what'] == "update_status_banner"){
     }
     $stmt->close();
 }
-
 if ($_GET['what'] == "delete_banner") {
     $input = json_decode(file_get_contents('php://input'), true);
     $id = $input['id'];
@@ -1366,5 +1371,4 @@ if ($_GET['what'] == "admin_changepwd") {
     
    echo json_encode($response);
 }
-
 ?>

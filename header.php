@@ -1,13 +1,13 @@
 <?php
-// print_r($_ SESSION);
+// print_r($_SESSION);
 if(isset($_SESSION['admin'])){
-  $email =$_SESSION['admin'];
-  $query = mysqli_query($cnn,"SELECT * FROM `login` WHERE status='Active'");
-  $row = mysqli_fetch_array($query);
-  $id = $row['id'];
-  $email = $row['email'];
-  $name = $row['name'];
-  $image = $row['image'];
+  $admin =$_SESSION['admin'];
+  $query_user = mysqli_query($cnn,"SELECT * FROM `login` WHERE email='$admin'");
+  $row_user = mysqli_fetch_array($query_user);
+  $id1 = $row_user['id'];
+  $email1 = $row_user['email'];
+  $name1 = $row_user['name'];
+  $image1 = $row_user['image'];
 
 
 }
@@ -32,9 +32,9 @@ if(isset($_SESSION['admin'])){
               data-bs-toggle="dropdown"
               aria-expanded="false">
 
-              <img src="images/profile-img.png" alt="User Avatar" />
+              <img src="images/<?php echo $image1; ?>" alt="User Avatar" />
               <div>
-                <div class="fw-bold">Wade Warren</div>
+                <div class="fw-bold"><?php echo $name1; ?></div>
                 <div class="small text-muted d-flex align-items-center">
                   <p class="mb-0 me-1">Admin</p>
                   <i class="fa-solid fa-chevron-down"></i>
