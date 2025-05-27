@@ -764,6 +764,7 @@ if ($_GET['what'] == "add_accessories") {
     $name = mysqli_real_escape_string($cnn, $_POST['name']);
     $price = mysqli_real_escape_string($cnn, $_POST['price']);
     $des = mysqli_real_escape_string($cnn, $_POST['des']);
+    $pet_cat = mysqli_real_escape_string($cnn, $_POST['pet_cat']);
     
     // Expecting arrays
     $keys = isset($_POST['key']) ? $_POST['key'] : []; // Ensure it's an array
@@ -802,7 +803,7 @@ if ($_GET['what'] == "add_accessories") {
 
     if (!empty($name)) {
         // Insert category with status, including keys and values
-        $query_insert = mysqli_query($cnn, "INSERT INTO accessories (name, image, status, cat_id, des, price, `key`, `value`) VALUES ('$name', '$imageName', 'Active', '$cat_id', '$des', '$price', '$keys_json', '$values_json')");
+        $query_insert = mysqli_query($cnn, "INSERT INTO accessories (name, image, status, cat_id,pet_cat, des, price, `key`, `value`) VALUES ('$name', '$imageName', 'Active', '$cat_id','$pet_cat', '$des', '$price', '$keys_json', '$values_json')");
         if ($query_insert) {
             $response['success'] = true;
             $response['message'] = "Accessories added successfully.";
@@ -825,6 +826,7 @@ if ($_GET['what'] == "update_accessories") {
     $name = mysqli_real_escape_string($cnn, $_POST['name']);
     $price = mysqli_real_escape_string($cnn, $_POST['price']);
     $des = mysqli_real_escape_string($cnn, $_POST['des']);
+    $pet_cat = mysqli_real_escape_string($cnn, $_POST['pet_cat']);
     
     // Expecting arrays
     $keys = isset($_POST['key']) ? $_POST['key'] : []; // Ensure it's an array
@@ -861,7 +863,7 @@ if ($_GET['what'] == "update_accessories") {
 
     if (!empty($name)) {
         // Update category with status, including keys and values
-        $query_update = mysqli_query($cnn, "UPDATE accessories SET name = '$name', image = '$imageName', cat_id = '$cat_id', des = '$des', price = '$price', `key` = '$keys_json', `value` = '$values_json' WHERE id = '$id'");
+        $query_update = mysqli_query($cnn, "UPDATE accessories SET name = '$name', image = '$imageName', cat_id = '$cat_id',pet_cat = '$pet_cat', des = '$des', price = '$price', `key` = '$keys_json', `value` = '$values_json' WHERE id = '$id'");
         if ($query_update) {
             $response['success'] = true;
             $response['message'] = "Accessories updated successfully.";

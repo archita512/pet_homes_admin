@@ -100,7 +100,25 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
                 <input id="txtUId" name="txtUId" value="<?php if (isset($_GET['id'])) {
                     echo $row['id'];
                 } ?>" hidden />
-
+                <div class="mb-3">
+                <div class="k-form-group">
+                <label class="k-form-label">Category</label>
+                <select name="pet_cat" id="pet_cat" class="k-form-control">
+                        <option value="">Select Category</option>
+                        <?php
+                        // Retrieve the category ID if updating
+                        if (isset($_GET['id'])) {
+                            $pet_cat = $row['pet_cat']; // Use cat_id for comparison
+                        }
+                        $query = mysqli_query($cnn, "select * from category where status='Active'");    
+                        while ($category = mysqli_fetch_array($query)) { // Changed variable name to avoid conflict
+                            $selected = (isset($_GET['id']) && $category['id'] == $pet_cat) ? 'selected' : '';  // Ensure correct comparison
+                            echo "<option value='".$category['id']."' $selected>".$category['name']."</option>";
+                        }
+                        ?>
+                        </select>
+                      </div>
+                    </div>
                 <div class="mb-3">
                 <div class="k-form-group">
                 <label class="k-form-label">Accessories  Category</label>
