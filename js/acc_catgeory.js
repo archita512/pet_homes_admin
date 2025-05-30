@@ -45,7 +45,7 @@ $("#btnSubmit").click(function (event) {
                                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                 </div>
                                <div class="toast-body" style="background-color: #7dcea0; color: white;"> 
-                                    ${response.message}
+                                   done
                                 </div>
                             </div>
                         </div>

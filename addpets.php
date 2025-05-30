@@ -182,7 +182,7 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
                         <input
                           type="text"
                           class="k-form-control"
-                          placeholder="Age"
+                          placeholder="Pet Age (Ex. 2 Month/Year)"
                           name="age"
                           id="age"
                           value="<?php if (isset($_GET['id'])) {
