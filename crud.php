@@ -1373,4 +1373,74 @@ if ($_GET['what'] == "admin_changepwd") {
     
    echo json_encode($response);
 }
+if($_GET['what'] == "update_status_inquiry"){
+    // Get the JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+    $status = $input['status'];
+
+    // Update the status in the database
+    $query = "UPDATE `contact_us` SET status = ? WHERE id = ?";
+    $stmt = $cnn->prepare($query);
+    $stmt->bind_param("si", $status, $id);
+    
+    if($stmt->execute()){
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    $stmt->close();
+}
+if ($_GET['what'] == "delete_inquiry") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM `contact_us` WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+   
+}
+if ($_GET['what'] == "delete_user") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM `user_login` WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+   
+}
+if($_GET['what'] == "update_status_user"){
+    // Get the JSON input
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+    $status = $input['status'];
+
+    // Update the status in the database
+    $query = "UPDATE `user_login` SET status = ? WHERE id = ?";
+    $stmt = $cnn->prepare($query);
+    $stmt->bind_param("si", $status, $id);
+    
+    if($stmt->execute()){
+        echo json_encode(['success' => true]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+    $stmt->close();
+}
 ?>

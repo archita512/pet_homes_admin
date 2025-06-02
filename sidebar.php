@@ -66,8 +66,14 @@
             <span>Banner</span>
           </a>
         </li>
+         <li>
+          <a href="Inquiry.php" class="d-flex align-items-center">
+          <i class="bi bi-patch-question-fill"></i>
+            <span>Inquiry</span>
+          </a>
+        </li>
         <li>
-          <a href="" class="d-flex align-items-center">
+          <a href="user_view.php" class="d-flex align-items-center">
             <i class="fas fa-user"></i>
             <span>User</span>
           </a>
@@ -91,7 +97,10 @@ document.addEventListener('DOMContentLoaded', function() {
   const offerLink = document.querySelector('.k-sidebar-menu li a[href="offer.php"]');
   const bannerLink = document.querySelector('.k-sidebar-menu li a[href="banner.php"]');
   const dashbordLink = document.querySelector('.k-sidebar-menu li a[href="dashbord.php"]');
+  const InquiryLink = document.querySelector('.k-sidebar-menu li a[href="Inquiry.php"]');
+  const userLink = document.querySelector('.k-sidebar-menu li a[href="user_view.php"]');
 
+  
   // Check if we're on the subcategory or pets page
   const currentPage = window.location.pathname.split('/').pop();
   if (currentPage === 'subcategory.php') {
@@ -174,6 +183,26 @@ document.addEventListener('DOMContentLoaded', function() {
       dashbordLink.classList.add('active');
     }
   }
+  else if(currentPage === 'Inquiry.php'){
+    document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+      link.classList.remove('active');
+    });
+    
+    // Add active class to pets link
+    if (InquiryLink) {
+      InquiryLink.classList.add('active');
+    }
+  }else if(currentPage === 'user_view.php'){
+    document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+      link.classList.remove('active');
+    });
+    
+    // Add active class to pets link
+    if (userLink) {
+      userLink.classList.add('active');
+    }
+  }
+  
   
   // Add click event listener to subcategory link
   if (subcategoryLink) {
@@ -200,6 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
       this.classList.add('active');
     });
   }
+ 
   
   if (accCategoryLink) {
     accCategoryLink.addEventListener('click', function(e) {
@@ -267,6 +297,29 @@ document.addEventListener('DOMContentLoaded', function() {
       this.classList.add('active');
     });
   }
+  if (InquiryLink) {
+    InquiryLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (userLink) {
+    userLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+
   // Handle close sidebar button if present
   const closeSidebarBtn = document.getElementById('closeSidebar');
   if (closeSidebarBtn) {
