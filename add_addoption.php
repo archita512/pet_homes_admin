@@ -27,12 +27,40 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     <link rel="stylesheet" href="css/profile.css" />
   </head>
     <style>
+      .box {
+          border: 1px solid #EFAEA5;
+          border-radius: 15px;
+          transition: transform 0.2s ease;
+      }
+      
+
             .k-form-control{
                 width: 100% !important;
             }
+            .card_pet{
+              padding: 21px 26px;
+            }
+            /* Optional: Add some smooth transitions */
+              #selectedPetContainer {
+                  transition: opacity 0.3s ease-in-out;
+              }
+
+              #defaultMessage {
+                  transition: opacity 0.3s ease-in-out;
+              }
+
+              /* Optional: Add hover effect for the pet card */
+              .card:hover {
+                  transform: translateY(-2px);
+                  transition: transform 0.2s ease-in-out;
+                  box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
+              }
     </style>
         <style>
-    
+                    p {
+                    margin-top: 0;
+                    margin-bottom: 0.2rem;
+                }
                 #imagePreviewContainer {
                     display: flex;
                     flex-wrap: wrap; /* Allows wrapping to the next line if necessary */
@@ -49,43 +77,32 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
                 }
 
         </style>
-     <?php
-          if (isset($_GET['id']) && !empty($_GET['id'])) {
-              $id_a=$_GET['id'];
-              $id=encryptor('decrypt', $id_a);
-              $query = mysqli_query($cnn, "select * from pets where id=" . $id . "");
-              $row = mysqli_fetch_array($query);
-              $name = $row['name'];
-              if (is_array($row['image'])) {
-                $image = $row['image']; // Already an array
-            } else {
-                $image = json_decode($row['image'], true); // Decode JSON string to array
+        <?php
+              // First, fetch all pets data and store in JavaScript-accessible format
+          // First, fetch all pets data and store in JavaScript-accessible format
+          $pets_data = [];
+          $query = mysqli_query($cnn, "SELECT * FROM pets WHERE status='Active'");
+          while ($pet = mysqli_fetch_array($query)) {
+              // Decode the JSON array of images and get the first image
+              $images = json_decode($pet['image'], true); // Added 'true' for associative array
+              $first_image = isset($images[0]) ? $images[0] : 'default.jpg'; // Fallback to default image
+              
+              $pets_data[] = [
+                  'id' => $pet['id'],
+                  'name' => $pet['name'],
+                  'description' => $pet['des'],
+                  'age' => $pet['pet_age'],
+                  'image' => $first_image,
+                  'country' => $pet['country'],
+                  'price' => $pet['price'],
+                  'type_listing' => $pet['type_listing'],
+                  'gender' => $pet['pet_gander'],
+                  'weight' => $pet['pet_weight'],
+                  'color' => $pet['pet_color']
+
+                ];
             }
-              $cat_id = $row['cat_id'];
-              $sub_id = $row['sub_id'];
-              $price = $row['price'];
-              $description = $row['des'];
-              $type_listing = $row['type_listing'];
-              $pet_age = $row['pet_age'];
-              $pets_littel = $row['pets_littel'];
-              $pets_available = $row['pets_available'];
-              $adv_location = $row['adv_location'];
-              $health_check = $row['health_check'];
-              $origina_breeder = $row['origina_breeder'];
-              $warm_flat = $row['warm_flat'];
-              $Vaccination = $row['Vaccination'];
-              $pet_viewable = $row['pet_viewable'];
-              $kc_register = $row['kc_register'];
-              $microchipped = $row['microchipped'];
-              $country = $row['country'];
-              $pet_weight = $row['pet_weight'];
-              $pet_color = $row['pet_color'];
-              $pet_gander = $row['pet_gander'];
-
-
-
-          }
-          ?>
+            ?>
     <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -96,377 +113,169 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
        <?php include 'header.php'; ?>
         <div class="k-modal">
           <div class="add-btn">
-            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Category'; } else { echo 'Add Category'; } ?></h2>
+            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Addoption Pet'; } else { echo 'Add Addoption Pet'; } ?></h2>
           </div>
           <form id="frm" action="" method="POST" enctype="multipart/form-data">
-          <div class="card" style="width: 1517px; margin-left: 50px; margin-top: 30px;height: 1053px;">
+          <div class="card" style="width: 1517px; margin-left: 50px; margin-top: 30px;height: auto;">
           <div class="k-modal-body">
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-12">
                 <div>
                 <input id="txtUId" name="txtUId" value="<?php if (isset($_GET['id'])) {
                     echo $row['id'];
                 } ?>" hidden />
 
                 <div class="mb-3">
-                <div class="k-form-group">
-                <label class="k-form-label">Category</label>
-                <select name="cat_id" id="cat_id" class="k-form-control" onchange="fetchSubcategories(this.value)">
-                        <option value="">Select Category</option>
-                        <?php
-                        // Retrieve the category ID if updating
-                        if (isset($_GET['id'])) {
-                            $cat_id = $row['cat_id']; // Use cat_id for comparison
-                        }
-                        $query = mysqli_query($cnn, "select * from category where status='Active'");    
-                        while ($category = mysqli_fetch_array($query)) { // Changed variable name to avoid conflict
-                            $selected = (isset($_GET['id']) && $category['id'] == $cat_id) ? 'selected' : '';  // Ensure correct comparison
-                            echo "<option value='".$category['id']."' $selected>".$category['name']."</option>";
-                        }
-                        ?>
-                        </select>
-                      </div>
-                    </div>
-                <div class="mb-3">
-                <div class="k-form-group">
-                        <label class="k-form-label">Pet Name</label>
-                        <input
-                          type="text"
-                          class="k-form-control"
-                          placeholder="Pet Name"
-                          name="name"
-                          id="name"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $name;
-                        } ?>"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="mb-3">
-                   <div class="k-form-group">
-                        <label class="k-form-label">Country</label>
-                        <input
-                          type="text"
-                          class="k-form-control"
-                          placeholder="Country"
-                          name="country"
-                          id="country"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $country;
-                        } ?>"
-                        />
-                      </div>
-                    </div>
                     <div class="k-form-group">
-                    <label for="images">Pet Images</label>
-                    <input type="file" class="form-control" id="images" name="images[]" multiple>
-                    <small class="form-text text-muted">Select multiple images (jpg, jpeg, png, gif)</small>
+                        <label class="k-form-label">Pets</label>
+                        <select name="pet_id" id="pet_id" class="k-form-control" onchange="showSelectedPet()">
+                            <option value="">Select Pets</option>
+                            <?php
+                            // Retrieve the category ID if updating
+                            if (isset($_GET['id'])) {
+                                $id = $row['id']; // Use cat_id for comparison
+                            }
+                            $query = mysqli_query($cnn, "SELECT * FROM pets WHERE status='Active'");    
+                            while ($category = mysqli_fetch_array($query)) { // Changed variable name to avoid conflict
+                                $selected = (isset($_GET['id']) && $category['id'] == $id) ? 'selected' : '';  // Ensure correct comparison
+                                echo "<option value='".$category['id']."' $selected>".$category['name']."</option>";
+                            }
+                            ?>
+                        </select>
                     </div>
                 </div>
-               
-                    <div class="mb-3">
-                     <div class="k-form-group">
-                        <label class="k-form-label"> Pet Age</label>
-                        <input
-                          type="text"
-                          class="k-form-control"
-                          placeholder="Pet Age (Ex. 2 Month/Year)"
-                          name="age"
-                          id="age"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $pet_age;
-                        } ?>"
-                        />
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                     <div class="k-form-group">
-                        <label class="k-form-label"> Pet Available</label>
-                        <input
-                          type="date"
-                          class="k-form-control"
-                       
-                          name="av_date"
-                          id="av_date"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $pets_available;
-                        } ?>"
-                        />
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="k-form-group">
-                          <label class="k-form-label">Gender</label>
-
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              name="gender"
-                              id="genderMale"
-                              value="Male"
-                              checked
-                              <?php if (isset($_GET['id']) && $pet_gander == 'Male') echo 'checked';  ?>
-                            >
-                            <label class="form-check-label" for="genderMale">Male</label>
-                          </div>
-
-                          <div class="form-check form-check-inline">
-                            <input
-                              class="form-check-input"
-                              type="radio"
-                              name="gender"
-                              id="genderFemale"
-                              value="Female"
-                              <?php if (isset($_GET['id']) && $pet_gander == 'Female') echo 'checked'; ?>
-                            >
-                            <label class="form-check-label" for="genderFemale">Female</label>
-                          </div>
-                        </div>
-                      </div>
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <div class="k-form-group">
-                                    <label class="k-form-label"><b>Health Check</b></label>
-                                    <div>
-                                        <input type="radio" id="h_check1" name="h_check1" value="Yes" <?php if (isset($_GET['id']) && $health_check == 'Yes') echo 'checked'; ?>>
-                                        <label for="h_check1">Yes</label> 
-                                        <input type="radio" id="h_check1_no" name="h_check1" value="No" <?php if (isset($_GET['id']) && $health_check == 'No') echo 'checked'; ?>>
-                                        <label for="h_check1_no">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <div class="k-form-group">
-                                    <label class="k-form-label"><b>Origina Breeder</b></label>
-                                    <div>
-                                        <input type="radio" id="h_check2" name="h_check2" value="Yes" <?php if (isset($_GET['id']) && $origina_breeder == 'Yes') echo 'checked'; ?>>
-                                        <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check2" value="No" <?php if (isset($_GET['id']) && $origina_breeder == 'No') echo 'checked'; ?>>
-                                        <label for="h_check2_no">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="mb-3">
-                                <div class="k-form-group">
-                                    <label class="k-form-label"><b>Warm Flat</b></label>
-                                    <div>
-                                        <input type="radio" id="h_check2" name="h_check3" value="Yes" <?php if (isset($_GET['id']) && $warm_flat == 'Yes') echo 'checked'; ?>>
-                                        <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check3" value="No" <?php if (isset($_GET['id']) && $warm_flat == 'No') echo 'checked'; ?>>
-                                        <label for="h_check2_no">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                       
-                    </div>
-                    <div class="mb-3">
-                     <div class="k-form-group">
-                        <label class="k-form-label">Description</label>
-                        <textarea
-                          type="text"
-                          rows="4"
-                          class="k-form-control"
-                          placeholder="Description"
-                          name="description"
-                          id="description"
-                         
-                        > <?php if (isset($_GET['id'])) {
-                            echo $description;
-                        } ?></textarea>
-                      </div>
-                    </div>
-              </div>
-                <div class="col-sm-6">
-                <div class="mb-3">
-                <div class="k-form-group">
-                <label class="k-form-label">Subcategory</label>
-                        <select name="subcat_id" id="subcat_id" class="k-form-control">
-                        <option value="">Select Subcategory</option>
-                        <?php
-                        // Fetch subcategories based on the selected category
-                        if (isset($_GET['id'])) {
-                            $sub_id = $row['sub_id']; // Get the subcategory ID from the fetched row
-                            $query_subcategories = mysqli_query($cnn, "SELECT * FROM subcategory WHERE cat_id = '$cat_id' AND status='Active'");
-                            while ($subcategory = mysqli_fetch_array($query_subcategories)) {
-                                $selected = ($subcategory['id'] == $sub_id) ? 'selected' : ''; // Check if this subcategory is the selected one
-                                echo "<option value='".$subcategory['id']."' $selected>".$subcategory['name']."</option>";
-                            }
-                        }
-                        ?>
-                        </select>
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                     <div class="k-form-group">
-                        <label class="k-form-label">Price</label>
-                        <input
-                          type="number"
-                          class="k-form-control"
-                          placeholder="Price"
-                          name="price"
-                          id="price"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $price;
-                        } ?>"
-                        />
-                      </div>
-                        </div>
-                       
-                        <div class="mt-4" id="imagePreviewContainer">
-                                 <!-- This will be populated with selected images -->
-                              <?php if (isset($_GET['id'])): ?>
-                                  <?php 
-                                  // Assuming $images is an array of image URLs
-                                  foreach ($image as $img): // Loop through each image
-                                  ?>
-                                      <div class="image-preview">
-                                          <img src="../pet_homes/img/<?php echo trim($img); ?>" class="img-thumbnail">
-                                          <!-- <button type="button" class="btn btn-sm btn-danger position-absolute" 
-                                                  style="top: 5px;right: 29px;padding: 0 5px;width: 23px;" 
-                                                  onclick="removeImage(this, '<?php echo trim($img); ?>')">
-                                              &times;
-                                          </button> -->
-                                      </div>
-                                  <?php endforeach; ?>
-                              <?php endif; ?>
-                          </div>
-                        <div class="mb-3">
-                        <div class="k-form-group">
-                        <label class="k-form-label">Pet little</label>
-                        <input
-                          type="text"
-                          class="k-form-control"
-                          placeholder="Little"
-                          name="little"
-                          id="little"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $pets_littel;
-                        } ?>"
-                        />
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                     <div class="k-form-group">
-                        <label class="k-form-label"> Pet Location</label>
-                        <input
-                          type="text"
-                          class="k-form-control"
-                       
-                          name="pet_loc"
-                          id="pet_loc"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $adv_location;
-                        } ?>"
-                        />
-                      </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <div class="mb-3">
-                                <div class="k-form-group">
-                                    <label class="k-form-label"><b>Vaccination</b></label>
-                                    <div>
-                                        <input type="radio" id="h_check1" name="h_check4" value="Yes" <?php if (isset($_GET['id']) && $Vaccination == 'Yes') echo 'checked'; ?>>
-                                        <label for="h_check1">Yes</label> 
-                                        <input type="radio" id="h_check1_no" name="h_check4" value="No" <?php if (isset($_GET['id']) && $Vaccination == 'No') echo 'checked'; ?>>
-                                        <label for="h_check1_no">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="mb-3">
-                                <div class="k-form-group">
-                                    <label class="k-form-label"><b>Pet Viewable</b></label>
-                                    <div>
-                                        <input type="radio" id="h_check2" name="h_check5" value="Yes" <?php if (isset($_GET['id']) && $pet_viewable == 'Yes') echo 'checked'; ?>>
-                                        <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check5" value="No" <?php if (isset($_GET['id']) && $pet_viewable == 'No') echo 'checked'; ?>>
-                                        <label for="h_check2_no">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="mb-3">
-                                <div class="k-form-group">
-                                    <label class="k-form-label"><b>KC Register</b></label>
-                                    <div>
-                                        <input type="radio" id="h_check2" name="h_check6" value="Yes" <?php if (isset($_GET['id']) && $kc_register == 'Yes') echo 'checked'; ?>>
-                                        <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check6" value="No" <?php if (isset($_GET['id']) && $kc_register == 'No') echo 'checked'; ?>>
-                                        <label for="h_check2_no">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="mb-3">
-                                <div class="k-form-group">
-                                    <label class="k-form-label"><b>Microchipped</b></label>
-                                    <div>
-                                        <input type="radio" id="h_check2" name="h_check7" value="Yes" <?php if (isset($_GET['id']) && $microchipped == 'Yes') echo 'checked'; ?>>
-                                        <label for="h_check2">Yes</label> 
-                                        <input type="radio" id="h_check2_no" name="h_check7" value="No" <?php if (isset($_GET['id']) && $microchipped == 'No') echo 'checked'; ?>>
-                                        <label for="h_check2_no">No</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                        <div class="k-form-group">
-                          <label class="k-form-label"> Pet Weight</label>
-                          <input
-                            type="number"
-                            class="k-form-control"
-                            min="1"
-                            max="100"
-                            name="pet_weight"
-                            id="pet_weight"
-                            value="<?php if (isset($_GET['id'])) {
-                              echo $pet_weight;
-                          } ?>"
-                          />
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                      <div class="k-form-group">
-                        <label class="k-form-label"> Pet Color</label>
-                        <input
-                          type="text"
-                          class="k-form-control"
-                          name="pet_color"
-                          id="pet_color"
-                          value="<?php if (isset($_GET['id'])) {
-                            echo $pet_color;
-                        } ?>"
-                        />
-                      </div>
-                    </div>
-                    </div>
-                    </div>
-            </div>
             
 
-            <div class="k-modal-footer">
-            <button type="button" class="k-btn-cancel" onclick="window.location.href='pets.php'">Cancel</button>
-            <button type="submit"  name="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>"
-            id="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>" class="k-btn-save">Save</button>
+                </div>
+              </div>
+            
+              <div class="row">
+                  <div id="selectedPetContainer" style="display: none;">
+                      <div class="col-md-12">
+                          <div class="card mb-4 shadow-sm box d-flex flex-row align-items-center p-3" style="height: 220px;">
+                              <img id="petImage" src="" class="card-img" alt="" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;">
+                              <div class="ms-4">
+                                  <b><h5 id="petName" class="card-title mb-2"></h5></b>
+                                  
+                                  <div class="row">
+                                  <div class="col-sm-6">
+                                    <p class="card-text">
+                                      <b>Gender:</b> <span id="petgender"></span>
+                                    </p>
+                                    <p class="card-text">
+                                      <b>Age:</b> <span id="petAge"></span>
+                                    </p>
+                                    <p class="card-text">
+                                      <b>Country:</b> <span id="petcountry"></span>
+                                    </p>
+                                    <p class="card-text">
+                                      <b>Price:</b> <span id="petprice"></span>
+                                    </p>
+                                  </div>
+                                    <div class="col-sm-6">
+
+                                    <p  class="card-text">
+                                    <b>Listing:</b><span id="pettype_listing"></span>
+                                    </p>
+                                    <p class="card-text">
+                                      <b>Pets Weight: </b><span id="petweight"></span>
+                                    </p>
+                                    <p id="" class="card-text">
+                                      <b>Pets Color: </b><span id="petcolor"></span>
+                                    </p>
+                                  </div>
+                                  </div>
+                                  
+                                  <p id="petDescription" class="card-text mt-3"></p>
+                                 
+                              </div>
+                          </div>
+                      </div>
+               </div>
+
+            
+            <!-- Default message when no pet is selected -->
+                <div id="defaultMessage" class="col-md-12">
+                    <div class="card mb-4 shadow-sm box d-flex justify-content-center align-items-center p-3" style="height: 220px;">
+                        <p class="text-muted">Please select a pet to view details</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+              <div class="col-sm-6">
+                <div>
+                  <div class="mb-3">
+                    <div class="k-form-group">
+                      <label class="k-form-label">Name</label>
+                      <input type="text" class="form-control" id="pname" name="pname" placeholder="Enter Person name">
+                    </div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="k-form-group">
+                    <label class="k-form-label">Addoption Date</label>
+                    <input type="date" name="a_date" id="a_date" class="form-control">
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="k-form-group">
+                    <label class="k-form-label">Address</label>
+                    <textarea class="form-control" id="add" name="add" cols="3" rows="3" placeholder="Enter Address"></textarea>
+                    </div>
+                  </div>
+                 
+                  
+                </div>
+              </div>
+                
+                <div class="col-sm-6">
+                <div>
+                <div class="mb-3">
+                    <div class="k-form-group">
+                        <label class="k-form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"  placeholder="Enter Email">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <div class="k-form-group">
+                        <label class="k-form-label">Mobile No</label>
+                        <input type="tel" class="form-control" id="mno" name="mno" placeholder="Enter Mobile No.">
+                    </div>
+                </div>
+                
+               <!-- Hidden inputs to hold values for backend -->
+                <input type="hidden" name="totalCost" id="totalCostInput">
+                <input type="hidden" name="billingPrice" id="billingPriceInput">
+
+                <div class="card p-3 shadow-sm" style="max-width: 400px;">
+                  <h5 class="mb-3">Billing Details</h5>
+
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Price:</span>
+                    <strong>$<span id="billingPrice">0</span></strong>
+                  </div>
+
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Discount:</span>
+                    <input type="number" class="form-control" id="discount" name="discount" value="0" style="width: 71px;" min="0" max="50" inputmode="numeric">
+                  </div>
+
+                  <div class="d-flex justify-content-between border-top pt-2">
+                    <span>Total Cost:</span>
+                    <strong>$<span id="totalCost">0</span></strong>
+                  </div>
+                </div>
+                 
+            </form>
+            </div>
           </div>
+          <div class="k-modal-footer">
+              <button type="button" class="k-btn-cancel" onclick="window.location.href='pets.php'">Cancel</button>
+              <button type="submit"  name="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>"
+              id="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>" class="k-btn-save">Save</button>
+               </div>
         </div>
-        </form>
-        </div>
-      </div>
-    </div>
 
     <!-- offcanvas sidebar -->
     <div
@@ -653,7 +462,7 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.js" integrity="sha512-vG793m0UbmHpDP9w5eGmPczh4JJ5HUZKi+WBReYTPzaefQ/eLInVo/MeDYvnE0LsM7NlUbgtf/jGG5c6JmO6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.min.js" integrity="sha512-bPZBFTQxrZnfFHJqMjP9VVXVigWPjrDHWoPVgsdo2hGNUEY9WF9HQjWfvWnFEduF9cwmsbtKoQ9QkiPkTTUHwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/fileUpload.js"></script>
-    <script src="js/pets.js"></script>
+    <script src="js/addopt_pets.js"></script>
     <script>
       $("#btnchnage").click(function (event) {
        event.preventDefault(); // Prevent form from submitting normally
@@ -873,6 +682,104 @@ function removeImage(button, imgSrc) {
                 $('#subcat_id').html('<option value="">Select Subcategory</option>'); // Reset subcategory dropdown
             }
         }
+
+// Convert PHP array to JavaScript
+const petsData = <?php echo json_encode($pets_data); ?>;
+
+function showSelectedPet() {
+    const selectElement = document.getElementById('pet_id');
+    const selectedPetId = selectElement.value;
+    const selectedPetContainer = document.getElementById('selectedPetContainer');
+    const defaultMessage = document.getElementById('defaultMessage');
+    
+    if (selectedPetId === '') {
+        // No pet selected, show default message
+        selectedPetContainer.style.display = 'none';
+        defaultMessage.style.display = 'block';
+        return;
+    }
+    
+    // Find the selected pet data
+    const selectedPet = petsData.find(pet => pet.id == selectedPetId);
+    if (selectedPet) {
+        // Update the pet information with correct image path
+        document.getElementById('petImage').src = '../pet_homes/img/' + selectedPet.image;
+        document.getElementById('petImage').alt = selectedPet.name;
+        document.getElementById('petName').textContent = selectedPet.name;
+        document.getElementById('petDescription').textContent = selectedPet.description;
+        document.getElementById('petAge').textContent = selectedPet.age;
+        document.getElementById('petprice').textContent = '$' + selectedPet.price;
+        document.getElementById('pettype_listing').textContent =  selectedPet.type_listing;
+        document.getElementById('petgender').textContent =  selectedPet.gender;
+        document.getElementById('petcolor').textContent =  selectedPet.color;
+        document.getElementById('petweight').textContent =  selectedPet.weight;
+
+
+        
+
+         // Set billing price too
+         document.getElementById('billingPrice').innerText = selectedPet.price;
+         document.getElementById('totalCost').innerText = selectedPet.price;
+
+         
+        // Debug the country issue
+        const countryElement = document.getElementById('petcountry');
+        console.log('Country element:', countryElement);
+        console.log('Country value:', selectedPet.country);
+
+        if (countryElement && selectedPet.country) {
+            countryElement.textContent = selectedPet.country;
+        } else {
+            console.log('Either country element not found or country value is missing');
+        }
+
+        // Show selected pet container and hide default message
+        selectedPetContainer.style.display = 'block';
+        defaultMessage.style.display = 'none';
+        
+        // Add smooth transition effect
+        selectedPetContainer.style.opacity = '0';
+        setTimeout(() => {
+            selectedPetContainer.style.transition = 'opacity 0.3s ease-in-out';
+            selectedPetContainer.style.opacity = '1';
+        }, 10);
+    }
+}
+
+      // Initialize on page load if there's a pre-selected pet
+      document.addEventListener('DOMContentLoaded', function() {
+          const selectElement = document.getElementById('pet_id');
+          if (selectElement.value !== '') {
+              showSelectedPet();
+          }
+      });
+
+      function updateTotalCost() {
+          const price = parseFloat(document.getElementById('billingPrice').innerText) || 0;
+          const discountPercent = parseFloat(document.getElementById('discount').value) || 0;
+
+          const discountAmount = price * (discountPercent / 100);
+          const total = price - discountAmount;
+
+          // Update display
+          document.getElementById('totalCost').innerText = total.toFixed(2);
+
+          // Update hidden inputs
+          document.getElementById('totalCostInput').value = total.toFixed(2);
+          document.getElementById('billingPriceInput').value = price.toFixed(2);
+      }
+
+      // Call this when setting price
+      function updateBillingPrice(newPrice) {
+          document.getElementById('billingPrice').innerText = newPrice;
+          document.getElementById('billingPriceInput').value = newPrice;
+          document.getElementById('discount').value = 0;
+          updateTotalCost();
+      }
+
+      // Also update cost when user changes discount
+      document.getElementById('discount').addEventListener('input', updateTotalCost);
+
     </script>
   </body>
 </html>

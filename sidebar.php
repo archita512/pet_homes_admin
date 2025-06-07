@@ -79,26 +79,64 @@
           </a>
         </li>
         <li>
+          <a href="addoption.php" class="d-flex align-items-center">
+            <i class="fas fa-history"></i>
+            <span>Adoption</span>
+          </a>
+        </li>
+        <li>
+          <a href="pet_return.php" class="d-flex align-items-center">
+           <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+            <span>Pet Return</span>
+          </a>
+        </li>
+        <li>
+          <a href="aboutus.php" class="d-flex align-items-center">
+           <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+            <span>About Us</span>
+          </a>
+        </li>
+        <li>
+          <a href="terms.php" class="d-flex align-items-center">
+           <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+            <span>Terms & Condtiton</span>
+          </a>
+        </li>
+        <li>
+          <a href="privacy.php" class="d-flex align-items-center">
+           <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+            <span>Privacy Policy</span>
+          </a>
+        </li>
+        <!-- <li>
           <a href="#" class="d-flex align-items-center">
             <i class="fas fa-history"></i>
             <span>Adoption History</span>
           </a>
-        </li>
+        </li> -->
       </ul>
     </div>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Get the subcategory and pets links specifically
-  const subcategoryLink = document.querySelector('.k-sidebar-menu li a[href="subcategory.php"]');
-  const petsLink = document.querySelector('.k-sidebar-menu li a[href="pets.php"]');
-  const accCategoryLink = document.querySelector('.k-sidebar-menu li a[href="acc_category.php"]');
-  const accessoriesLink = document.querySelector('.k-sidebar-menu li a[href="accessories.php"]');
-  const serviceLink = document.querySelector('.k-sidebar-menu li a[href="service.php"]');
-  const offerLink = document.querySelector('.k-sidebar-menu li a[href="offer.php"]');
-  const bannerLink = document.querySelector('.k-sidebar-menu li a[href="banner.php"]');
-  const dashbordLink = document.querySelector('.k-sidebar-menu li a[href="dashbord.php"]');
-  const InquiryLink = document.querySelector('.k-sidebar-menu li a[href="Inquiry.php"]');
-  const userLink = document.querySelector('.k-sidebar-menu li a[href="user_view.php"]');
+  document.addEventListener('DOMContentLoaded', function() {
+    // Get the subcategory and pets links specifically
+    const subcategoryLink = document.querySelector('.k-sidebar-menu li a[href="subcategory.php"]');
+    const petsLink = document.querySelector('.k-sidebar-menu li a[href="pets.php"]');
+    const accCategoryLink = document.querySelector('.k-sidebar-menu li a[href="acc_category.php"]');
+    const accessoriesLink = document.querySelector('.k-sidebar-menu li a[href="accessories.php"]');
+    const serviceLink = document.querySelector('.k-sidebar-menu li a[href="service.php"]');
+    const offerLink = document.querySelector('.k-sidebar-menu li a[href="offer.php"]');
+    const bannerLink = document.querySelector('.k-sidebar-menu li a[href="banner.php"]');
+    const dashbordLink = document.querySelector('.k-sidebar-menu li a[href="dashbord.php"]');
+    const InquiryLink = document.querySelector('.k-sidebar-menu li a[href="Inquiry.php"]');
+    const userLink = document.querySelector('.k-sidebar-menu li a[href="user_view.php"]');
+    const addoptionLink = document.querySelector('.k-sidebar-menu li a[href="addoption.php"]');
+    const returnLink = document.querySelector('.k-sidebar-menu li a[href="pet_return.php"]');
+    const aboutLink = document.querySelector('.k-sidebar-menu li a[href="aboutus.php"]');
+    const termsLink = document.querySelector('.k-sidebar-menu li a[href="terms.php"]');
+    const privacyLink = document.querySelector('.k-sidebar-menu li a[href="privacy.php"]');
+
+
+
 
   
   // Check if we're on the subcategory or pets page
@@ -201,7 +239,59 @@ document.addEventListener('DOMContentLoaded', function() {
     if (userLink) {
       userLink.classList.add('active');
     }
-  }
+  
+    }else if(currentPage === 'addoption.php'){
+        document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+          link.classList.remove('active');
+        });
+        
+        // Add active class to pets link
+        if (addoptionLink) {
+          addoptionLink.classList.add('active');
+        }
+      
+      
+    }else if(currentPage === 'pet_return.php'){
+        document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+          link.classList.remove('active');
+        });
+        
+        // Add active class to pets link
+        if (returnLink) {
+          returnLink.classList.add('active');
+        }
+      }else if(currentPage === 'aboutus.php'){
+        document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+          link.classList.remove('active');
+        });
+        
+        // Add active class to pets link
+        if (aboutLink) {
+          aboutLink.classList.add('active');
+        }
+      }else if(currentPage === 'terms.php'){
+        document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+          link.classList.remove('active');
+        });
+        
+        // Add active class to pets link
+        if (termsLink) {
+          termsLink.classList.add('active');
+        }
+      }else if(currentPage === 'privacy.php'){
+        document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+          link.classList.remove('active');
+        });
+        
+        // Add active class to pets link
+        if (privacyLink) {
+          privacyLink.classList.add('active');
+        }
+      }
+      
+      
+      
+      
   
   
   // Add click event listener to subcategory link
@@ -310,6 +400,61 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   if (userLink) {
     userLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (addoptionLink) {
+    addoptionLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (returnLink) {
+    returnLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (aboutLink) {
+    aboutLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (termsLink) {
+    termsLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (privacyLink) {
+    privacyLink.addEventListener('click', function(e) {
       // Remove active class from all links
       document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
         link.classList.remove('active');

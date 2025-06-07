@@ -55,7 +55,7 @@ body {
   text-decoration: none;
   display: flex;
   align-items: center;
-  padding: 12px 20px;
+  padding: 9px 20px;
   transition: all 0.3s;
   border-radius: 4px;
 }
@@ -312,6 +312,12 @@ body {
 
 .page-item:not(:first-child) .page-link {
   margin-left: 0 !important;
+  color: #976239;
+}
+.page-item:first-child .page-link {
+  border-top-left-radius: .25rem;
+  border-bottom-left-radius: .25rem;
+  color: #976239;
 }
 
 .page-link {

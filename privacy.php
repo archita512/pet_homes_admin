@@ -24,13 +24,6 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     <link rel="stylesheet" href="css/category.css" />
     <link rel="stylesheet" href="css/profile.css" />
   </head>
-  <style>
-    .k-pet-box img {
-     max-width: 58px !important;
-    max-height: 75px !important;    
-    object-fit: contain;
-}
-  </style>
   <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -44,14 +37,14 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
       <div class="k-page-content">
         <div class="k-page-header">
           <div>
-            <h4 class="mb-1">Pets</h4>
+            <h4 class="mb-1">Privacy Policy</h4>
             <nav class="k-breadcrumb small">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
                   <a href="#" class="k-link-text-color text-decoration-none">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active k-link-text-color-active">
-                  Pets
+                  Privacy Policy
                 </li>
               </ol>
             </nav>
@@ -60,9 +53,8 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
            
             <div>
               <a
-              href="addpets.php"
-                class="k-add-btn d-flex align-items-center justify-content-center text-decoration-none"
-              >
+              href="add_privacy.php"
+                class="k-add-btn d-flex align-items-center justify-content-center text-decoration-none">
                 <i class="fas fa-plus me-1 k-icon-plus"></i>
                 <p class="p-0 m-0">Add</p>
               </a>
@@ -77,50 +69,35 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
               <thead>
                 <tr>
                   <th>No</th>
-                  <th style="width: 15%;">Image</th>
-                  <th>Category Name</th>
-                  <th>Subcategory Name</th>
-                  <th>Name</th>
+                 
+                  <th>Terms</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                $query = mysqli_query($cnn,"SELECT c.name AS cat_name,s.name AS sub_name,p.* FROM pets AS p JOIN category AS c ON c.id = p.cat_id JOIN subcategory AS s ON s.id = p.sub_id ORDER BY p.id DESC");
+                $query = mysqli_query($cnn,"SELECT * FROM privacy ORDER BY id DESC");
                 $cnt = 1;
                 while($row = mysqli_fetch_array($query)){
-                    $c_id = encryptor('encrypt',$row['id']);
-                    echo '<tr class="k-tr">
-                       <td>#' . $cnt . '</td>
-                       <td>
-                         <div class="k-pet-box">';
-                   
-                    // Decode the JSON array
-                    $images = json_decode($row['image'], true);
-                    // Display only the first image
-                    if (!empty($images)) {
-                        echo '<img src="../pet_homes/img/' . $images[0] . '" alt="pet image" /> ';
-                    }
-                         echo '</div>
-                       </td>
-                      <td>' . $row['cat_name'] . '</td>
-                       <td>' . $row['sub_name'] . '</td>
-                     <td>' . $row['name'] . '</td>
-                      <td class="status">
+                  $c_id = encryptor('encrypt',$row['id']);
+                  echo '<tr class="k-tr">
+                     <td>#' . $cnt . '</td>
+                    
+                      <td>' . $row['des'] . '</td>
+                     <td class="status">
                           <label class="toggle-switch">
                               <input type="checkbox" value="' . ($row['status'] === 'Active' ? '1' : '0') . '" ' . ($row['status'] === 'Active' ? 'checked' : '') . ' class="status-checkbox" data-id="' . $row['id'] . '">
                               <span class="toggle-slider"></span>
                           </label>
                       </td>
                       <td class="action-buttons">
-                        <a href="view_pets.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
-                              <img src="images/view.png" alt=""  style="width: 24px;height: 25px;"/>
-                          </a>
-                          <a href="addpets.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
+                          <a href="add_privacy.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
                               <img src="images/update.svg" alt="" />
                           </a>
-                         
+                          <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                              <img src="images/delete.svg" alt="" />
+                          </div>
                       </td>
                     </tr>';
                     $cnt++;
@@ -249,6 +226,7 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
         </div>
       </div>
     </div>
+
     <div class="modal fade"
       id="changePasswordModal"
       tabindex="-1"
@@ -339,19 +317,16 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
         </div>
       </div>
     </div>
-
     <!-- JavaScript Libraries - Order is important! -->
-    <!-- jQuery must come first -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
-    <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
+                
+    
     <!-- <script src="js/chnage_password.js"></script> -->
+    <!-- DataTable Initialization -->
     <script>
       $("#btnchnage").click(function (event) {
        event.preventDefault(); // Prevent form from submitting normally
@@ -480,7 +455,6 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
               }
             }
     </script>
-    <!-- DataTable Initialization -->
     <script>
       $(document).ready(function() {
     $('#tbl_cat').DataTable(); // Initialize DataTable
@@ -490,7 +464,7 @@ const deleteCategoryModal = document.getElementById('deleteConfirmModal');
 deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget; // Button that triggered the modal
     const categoryId = button.getAttribute('data-id'); // Extract info from data-* attributes
-    const message = `Are you sure you want to delete Pet`;
+    const message = `Are you sure you want to delete Privacy Policy?`;
 
     console.log(categoryId);
     
@@ -501,7 +475,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     // Add event listener for the delete button
     const deleteButton = deleteCategoryModal.querySelector('.d_deletebtn');
     deleteButton.onclick = function() {
-        fetch(`crud.php?what=delete_pets`, {
+        fetch(`crud.php?what=delete_terms`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -511,10 +485,10 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Category deleted successfully');
+                console.log('About Us deleted successfully');
                 location.reload(); // Reload the page to see the changes
             } else {
-                console.error('Error deleting category');
+                console.error('Error deleting About Us');
             }
         })
         .catch(error => console.error('Error:', error));
@@ -528,7 +502,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 const status = this.checked ? 'Active' : 'Block';
 
                 // AJAX request to update status
-                fetch('crud.php?what=update_status_pets', {
+                fetch('crud.php?what=update_status_terms', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
