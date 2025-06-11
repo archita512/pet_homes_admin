@@ -6,6 +6,17 @@ session_start();
 if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"] == "") {
     header("Location:login.php");
 }
+if(isset($_SESSION['admin'])){
+  $email = $_SESSION['admin'];
+  $query = mysqli_query($cnn,"SELECT * FROM `login` WHERE `email`='$email'");
+  $row = mysqli_fetch_array($query);
+  $id = $row['id'];
+  $name = $row['name'];
+  $mno = $row['mno'];
+  $image = $row['image'];
+  $gender = $row['gender'];
+  
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -37,11 +48,11 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
       <div class="k-page-content">
         <div class="k-page-header">
           <div>
-            <h4 class="mb-1">Privacy Policy</h4>
+            <h4 class="mb-1" style="margin-left: 30px;">Privacy Policy</h4>
             <nav class="k-breadcrumb small">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                  <a href="#" class="k-link-text-color text-decoration-none">Dashboard</a>
+                  <a href="#" class="k-link-text-color text-decoration-none" style="    margin-left: 30px;">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active k-link-text-color-active">
                   Privacy Policy
@@ -62,60 +73,40 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
           </div>
         </div>
 
-        <!-- Table Container -->
-        <div class="k-table-container d-flex flex-column justify-content-between">
-          <div class="table-responsive">
-            <table id="tbl_cat" class="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>No</th>
-                 
-                  <th>Terms</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                $query = mysqli_query($cnn,"SELECT * FROM privacy ORDER BY id DESC");
-                $cnt = 1;
-                while($row = mysqli_fetch_array($query)){
-                  $c_id = encryptor('encrypt',$row['id']);
-                  echo '<tr class="k-tr">
-                     <td>#' . $cnt . '</td>
-                    
-                      <td>' . $row['des'] . '</td>
-                     <td class="status">
-                          <label class="toggle-switch">
-                              <input type="checkbox" value="' . ($row['status'] === 'Active' ? '1' : '0') . '" ' . ($row['status'] === 'Active' ? 'checked' : '') . ' class="status-checkbox" data-id="' . $row['id'] . '">
-                              <span class="toggle-slider"></span>
-                          </label>
-                      </td>
-                      <td class="action-buttons">
-                          <a href="add_privacy.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
-                              <img src="images/update.svg" alt="" />
-                          </a>
-                          <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-                              <img src="images/delete.svg" alt="" />
-                          </div>
-                      </td>
-                    </tr>';
-                    $cnt++;
-                }
-                ?>
-                
-              </tbody>
-            </table>
+        <div class="about-list" style="margin-left: 50px; margin-right: 50px;">
+  <?php
+  $query = mysqli_query($cnn, "SELECT * FROM privacy ORDER BY id DESC");
+  $cnt = 1;
+  while ($row = mysqli_fetch_array($query)) {
+      $c_id = encryptor('encrypt', $row['id']);
+      ?>
+      <div class="about-card border rounded p-3 mb-3 bg-white">
+          <!-- Top Row: Serial + Description + Actions -->
+          <div class="d-flex justify-content-between align-items-start">
+              <div class="fw-semibold"><?php echo htmlspecialchars($row['des']); ?></div>
+              <div class="d-flex align-items-center gap-2">
+                  <label class="toggle-switch mb-0 me-2">
+                      <input type="checkbox"
+                          value="<?php echo ($row['status'] === 'Active' ? '1' : '0'); ?>"
+                          <?php echo ($row['status'] === 'Active' ? 'checked' : ''); ?>
+                          class="status-checkbox"
+                          data-id="<?php echo $row['id']; ?>">
+                      <span class="toggle-slider"></span>
+                  </label>
+                  <a href="add_privacy.php?id=<?php echo $c_id; ?>" class="edit-btn">
+                      <img src="images/update.svg" alt="Edit" width="20">
+                  </a>
+                  <div class="delete-btn" data-id="<?php echo $row['id']; ?>" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                      <img src="images/delete.svg" alt="Delete" width="20">
+                  </div>
+              </div>
           </div>
-
-          <!-- Empty State -->
-          <!-- <div class="k-empty-state">
-            <img src="images/no-data.png" alt="No Data" />
-            <p>No data Available</p>
-          </div> -->
-        </div>
       </div>
-    </div>
+      <?php
+      $cnt++;
+  }
+  ?>
+</div>
 
     <!-- offcanvas sidebar -->
     <div

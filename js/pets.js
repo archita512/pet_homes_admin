@@ -83,17 +83,60 @@ $(document).ready(function() {
     });
 });
 
+
 $("#btnSubmit").click(function (event) {
     event.preventDefault(); // Prevent form from submitting normally
-
+    
     if ($("#frm").valid()) {
         const formData = new FormData($("#frm")[0]); // Create FormData object from the form
+        
+        // Check if image is selected
+        const imageInput = $("#frm input[type='file']"); // Adjust selector based on your image input
+        let imageSelected = false;
+        
+        // Check if any file input has a file selected
+        imageInput.each(function() {
+            if (this.files && this.files.length > 0) {
+                imageSelected = true;
+                return false; // Break out of loop
+            }
+        });
+        
+        // If no image is selected, show error message
+        if (!imageSelected) {
+            // Toast HTML for error
+            const toastHTML = `
+                <div class="toast-container position-fixed top-0 end-0 p-3">
+                    <div class="toast" id="customToast" role="alert" aria-live="assertive" aria-atomic="true">
+                        <div class="toast-header">
+                            <strong class="me-auto">Error</strong>
+                            <small class="text-muted">just now</small>
+                            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                        </div>
+                       <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                            Image is not selected. Please choose an image.
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Append toast to the body
+            $('body').append(toastHTML);
+
+            // Initialize and show the toast
+            const toastEl = document.getElementById("customToast");
+            const toast = new bootstrap.Toast(toastEl, { autohide: true, delay: 2000 });
+            toast.show();
+            
+            return; // Stop form submission
+        }
         
         // Log the form data for debugging
         console.log("Form data being submitted:");
         for (let pair of formData.entries()) {
             console.log(pair[0] + ': ' + pair[1]);
         }
+        
         
         $.ajax({
             type: "POST",

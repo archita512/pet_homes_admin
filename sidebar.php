@@ -1,4 +1,59 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<style>
+/* Submenu hidden by default */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  padding-left: 20px;
+}
+
+/* When active */
+.submenu.show {
+  max-height: 200px; /* Adjust based on expected submenu size */
+  opacity: 1;
+}
+
+.submenu-link {
+  display: block;
+  padding: 5px 0;
+  color: white;
+  text-decoration: none;
+}
+
+.dropdown-arrow {
+  transition: transform 0.3s ease;
+}
+
+/* Rotate arrow when submenu is open */
+.nav-item.open .dropdown-arrow {
+  transform: rotate(180deg);
+}
+
+.nav-link:focus,
+.nav-link:active,
+.submenu-link:focus,
+.submenu-link:active {
+  outline: none;
+  box-shadow: none;
+  background-color: transparent;
+  color: inherit;
+}
+
+.nav-link,
+.submenu-link {
+  color: white; /* or your sidebar text color */
+  text-decoration: none;
+}
+
+.nav-link:hover,
+.submenu-link:hover {
+  color: #f0f0f0; /* light hover effect */
+}
+
+</style>
+
 
 <div class="k-sidebar" id="sidebar">
       <div class="k-logo">
@@ -18,37 +73,40 @@
             <span>Dashboard</span>
           </a>
         </li>
-        <li>
-          <a href="category.php" class="active d-flex align-items-center">
-          <i class="bi bi-grid-fill"></i>
-            <span class="ps-2">Category</span>
-          </a>
-        </li>
-        <li>
-          <a href="subcategory.php" class="d-flex align-items-center">
-            <i class="fas fa-layer-group"></i>
-            <span>Subcategory</span>
-          </a>
-        </li>
-        <li>
-          <a href="pets.php" class="d-flex align-items-center">
-            <i class="fas fa-paw"></i>
-            <span>Pets</span>
-          </a>
-        </li>
-        <li>
-          <a href="acc_category.php" class="d-flex align-items-center">
-          <i class="bi bi-tags-fill"></i>
-            <span>Accessories Catgeory</span>
-          </a>
-        </li>
-        <li>
-          <a href="accessories.php" class="d-flex align-items-center">
-            <i class="fas fa-shopping-basket"></i>
-            <span>Accessories</span>
-          </a>
-        </li>
-        <li>
+        <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+                <i class="fas fa-paw"></i>
+                <span class="ps-2">Pets</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="    margin-left: 37px;">
+              <li><a href="category.php" class="submenu-link">Category</a></li>
+              <li><a href="subcategory.php" class="submenu-link">Subcategory</a></li>
+              <li><a href="pets.php" class="submenu-link">Pets</a></li>
+            </ul>
+          </li>
+
+
+        <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+              <i class="fas fa-shopping-basket"></i>    
+                <span class="ps-2">Accessories</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="margin-left: 10px;">
+              <li><a href="acc_category.php" class="submenu-link">Accessories Catgeory</a></li>
+              <li><a href="accessories.php" class="submenu-link">Accessories</a></li>
+              <!-- <li><a href="pets.php" class="submenu-link">Pets</a></li> -->
+            </ul>
+          </li>
+
+          <li>
           <a href="service.php" class="d-flex align-items-center">
             <i class="fas fa-concierge-bell"></i>
             <span>Services</span>
@@ -72,13 +130,38 @@
             <span>Inquiry</span>
           </a>
         </li>
-        <li>
-          <a href="user_view.php" class="d-flex align-items-center">
-            <i class="fas fa-user"></i>
-            <span>User</span>
-          </a>
-        </li>
-        <li>
+       
+        <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+              <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+                <span class="ps-2">Pet Adoption / Return</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="margin-left: 10px;">
+              <li><a href="addoption.php" class="submenu-link">Pet Adoption</a></li>
+              <li><a href="pet_return.php" class="submenu-link">Pet Return</a></li>
+              <!-- <li><a href="pets.php" class="submenu-link">Pets</a></li> -->
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+              <i class="fa-solid fa-cart-shopping"></i>
+                <span class="ps-2">Accessories Sale</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="margin-left: 10px;">
+              <li><a href="ass_pur.php" class="submenu-link">Accessories Sale</a></li>
+              <li><a href="ass_retu.php" class="submenu-link">Accessories Return</a></li>
+              <!-- <li><a href="pets.php" class="submenu-link">Pets</a></li> -->
+            </ul>
+          </li>
+        <!-- <li>
           <a href="addoption.php" class="d-flex align-items-center">
             <i class="fas fa-history"></i>
             <span>Adoption</span>
@@ -89,25 +172,54 @@
            <i class="fa-solid fa-cat fa-flip-horizontal"></i>
             <span>Pet Return</span>
           </a>
+        </li> -->
+        <li>
+          <a href="service_m.php" class="d-flex align-items-center">
+          <i class="fa-solid fa-house-chimney-medical"></i>
+
+            <span>Services Maintain</span>
+          </a>
         </li>
         <li>
+          <a href="user_view.php" class="d-flex align-items-center">
+          <i class="fa-solid fa-users"></i>
+            <span>Users</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+              <i class="fa-solid fa-circle-info"></i>
+                <span class="ps-2">Others</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="margin-left: 10px;">
+              <li><a href="aboutus.php" class="submenu-link">About Us</a></li>
+              <li><a href="terms.php" class="submenu-link">Terms & Condtiton</a></li>
+              <li><a href="privacy.php" class="submenu-link">Privacy Policy</a></li>
+            </ul>
+          </li>
+        <!-- <li>
           <a href="aboutus.php" class="d-flex align-items-center">
-           <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+           <i class="fa-solid fa-circle-info"></i>
             <span>About Us</span>
           </a>
         </li>
         <li>
           <a href="terms.php" class="d-flex align-items-center">
-           <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+          <i class="fa-solid fa-file-circle-check"></i>
             <span>Terms & Condtiton</span>
           </a>
         </li>
         <li>
           <a href="privacy.php" class="d-flex align-items-center">
-           <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+          <i class='fas fa-shield-alt'></i>
+ 
             <span>Privacy Policy</span>
           </a>
-        </li>
+        </li> -->
         <!-- <li>
           <a href="#" class="d-flex align-items-center">
             <i class="fas fa-history"></i>
@@ -477,3 +589,23 @@
   }
 });
     </script>
+   <script>
+function toggleDropdown(el) {
+  const parent = el.closest(".nav-item");
+  const submenu = parent.querySelector(".submenu");
+  const isOpen = submenu.classList.contains("show");
+
+  // Close all other submenus if needed (optional)
+  document.querySelectorAll('.submenu').forEach(s => {
+    s.classList.remove("show");
+    s.closest('.nav-item')?.classList.remove("open");
+  });
+
+  // Toggle current
+  if (!isOpen) {
+    submenu.classList.add("show");
+    parent.classList.add("open");
+  }
+}
+</script>
+

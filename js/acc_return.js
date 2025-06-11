@@ -24,7 +24,6 @@ $(document).ready(function() {
                 number: true,
                 maxlength : 10
 
-
             }
         
            
@@ -73,7 +72,7 @@ $("#btnSubmit").click(function (event) {
 
         $.ajax({
             type: "POST",
-            url: "crud.php?what=pet_return_add",
+            url: "crud.php?what=acc_return_add",
             data: formData,
             contentType: false, // Prevent jQuery from overriding content type
             processData: false, // Prevent jQuery from processing the data
@@ -108,7 +107,7 @@ $("#btnSubmit").click(function (event) {
                     // Remove toast from DOM after hiding
                     toastEl.addEventListener('hidden.bs.toast', function () {
                         toastEl.remove();
-                        window.location.href = "pet_return.php"; // Redirect
+                        window.location.href = "ass_retu.php"; // Redirect
                     });
                 } else {
                     const toastHTML = `

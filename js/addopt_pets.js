@@ -20,6 +20,10 @@ $(document).ready(function() {
             },
             mno : {
                 required: true,
+                minlength : 10,
+                number: true,
+                maxlength : 10
+
             }
         
            
@@ -43,6 +47,9 @@ $(document).ready(function() {
             },
             mno : {
                 required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
+                minlength: "<span class='text-danger' style='font-size:small;'>Please enter  10 Digit Number </span>",
+                number: "<span class='text-danger' style='font-size:small;'>Please enter a valid number </span>",
+                maxlength: "<span class='text-danger' style='font-size:small;'>Please enter  10 Digit Number</span>",
             },
            
         },

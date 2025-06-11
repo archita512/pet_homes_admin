@@ -7,16 +7,16 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     header("Location:login.php");
 }
 if(isset($_SESSION['admin'])){
-  $email = $_SESSION['admin'];
-  $query = mysqli_query($cnn,"SELECT * FROM `login` WHERE `email`='$email'");
-  $row = mysqli_fetch_array($query);
-  $id = $row['id'];
-  $name = $row['name'];
-  $mno = $row['mno'];
-  $image = $row['image'];
-  $gender = $row['gender'];
-  
-}
+    $email = $_SESSION['admin'];
+    $query = mysqli_query($cnn,"SELECT * FROM `login` WHERE `email`='$email'");
+    $row = mysqli_fetch_array($query);
+    $id = $row['id'];
+    $name = $row['name'];
+    $mno = $row['mno'];
+    $image = $row['image'];
+    $gender = $row['gender'];
+    
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +34,18 @@ if(isset($_SESSION['admin'])){
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/category.css" />
     <link rel="stylesheet" href="css/profile.css" />
-    
   </head>
+  <style>
+    .k-pet-box img {
+    max-width: 92px !important;
+    max-height: 51px !important;
+    object-fit: contain;
+}
+.k-pet-box {
+    width: 35px;
+    background-color: #ebebeb00 !important;
+}
+  </style>
   <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -49,14 +59,14 @@ if(isset($_SESSION['admin'])){
       <div class="k-page-content">
         <div class="k-page-header">
           <div>
-            <h4 class="mb-1">Accessories Category</h4>
+            <h4 class="mb-1">Accessories Return</h4>
             <nav class="k-breadcrumb small">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
                   <a href="#" class="k-link-text-color text-decoration-none">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active k-link-text-color-active">
-                Accessories Category
+                   Accessories Return
                 </li>
               </ol>
             </nav>
@@ -64,7 +74,8 @@ if(isset($_SESSION['admin'])){
           <div class="d-flex align-items-center justify-content-center">
            
             <div>
-              <a href="acc_addcatgeory.php"
+              <a
+              href="add_ass_return.php"
                 class="k-add-btn d-flex align-items-center justify-content-center text-decoration-none">
                 <i class="fas fa-plus me-1 k-icon-plus"></i>
                 <p class="p-0 m-0">Add</p>
@@ -72,7 +83,7 @@ if(isset($_SESSION['admin'])){
             </div>
           </div>
         </div>
-
+        <!-- <td>' . substr($row['message'], 0, 50) . '...</td> -->
         <!-- Table Container -->
         <div class="k-table-container d-flex flex-column justify-content-between">
           <div class="table-responsive">
@@ -80,44 +91,59 @@ if(isset($_SESSION['admin'])){
               <thead>
                 <tr>
                   <th>No</th>
-                  <th style="width: 15%;">Image</th>
-                  <th>Category Name</th>
-                  <th>Status</th>
+                  <th>Image</th>
+                  <th>Addoption Date</th>
+
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone No</th>
+                  <th>Discount</th>
+                  <th>Total Price</th>
+                  <th>Quantity</th>
+                  <th>Address</th>
+                 
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                $query = mysqli_query($cnn,"SELECT * FROM acce_catgeory ORDER BY id DESC");
-                $cnt = 1;
-                while($row = mysqli_fetch_array($query)){
-                  $c_id = encryptor('encrypt',$row['id']);
-                  echo '<tr class="k-tr">
-                     <td>#' . $cnt . '</td>
-                     <td>
-                       <div class="k-pet-box">
-                         <img src="../pet_homes/img/' . $row['image'] . '" alt="dog" />
-                       </div>
-                     </td>
-                     <td>' . $row['name'] . '</td>
-                     <td class="status">
-                          <label class="toggle-switch">
-                              <input type="checkbox" value="' . ($row['status'] === 'Active' ? '1' : '0') . '" ' . ($row['status'] === 'Active' ? 'checked' : '') . ' class="status-checkbox" data-id="' . $row['id'] . '">
-                              <span class="toggle-slider"></span>
-                          </label>
-                      </td>
-                      <td class="action-buttons">
-                          <a href="acc_addcatgeory.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
-                              <img src="images/update.svg" alt="" />
+                  $query = mysqli_query($cnn,"SELECT ad.*,p.image FROM `acc_return` AS ad JOIN accessories AS p ON ad.acc_id = p.id ORDER BY ad.id DESC");
+                  $cnt = 1;
+                  while($row = mysqli_fetch_array($query)){
+                    $c_id = encryptor('encrypt',$row['id']);
+                    // $images = json_decode($row['image']); // Assuming images are stored as a JSON array
+                    // $first_image = $images[0]; // Get the first image from the array
+  
+                    echo '<tr class="k-tr">
+                        <td>#' . $cnt . '</td>
+                        <td><img src="../pet_homes/img/' . $row['image'] .'" style="width: 90px; height: 60px;"></td>
+                       <td>' . date('d M Y', strtotime($row['re_date'])) . '</td>
+                        <td>' . $row['name'] . '</td>
+                         <td>' . $row['email'] . '</td>
+                          <td>' . $row['mno'] . '</td>
+                          <td>$' . $row['discount'] . '</td>
+                          <td>$' . $row['quantity'] . '</td>
+                          <td>$' . $row['total_price'] . '</td>
+                         <td>' . substr($row['address'], 0, 10) . '...</td> 
+                       
+                        <td class="action-buttons">
+                          <a href="#" 
+                                class="edit-btn text-decoration-none" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#accessoryDetailModal"
+                                data-description="' . htmlspecialchars($row['address']) . '">
+                                <img src="images/view.png" alt="" style="width: 24px;height: 25px;" />
                           </a>
-                          <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-                              <img src="images/delete.svg" alt="" />
-                          </div>
-                      </td>
-                    </tr>';
+                          
+                            <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                                <img src="images/delete.svg" alt="" />
+                            </div>
+                        </td>
+                      </tr>'; // Corrected closing of the echo statement
+  
                     $cnt++;
-                }
-                ?>
+                  } // Correctly closing the while loop
+                  ?>
                 
               </tbody>
             </table>
@@ -137,8 +163,7 @@ if(isset($_SESSION['admin'])){
       class="offcanvas offcanvas-start"
       tabindex="-1"
       id="offcanvasExample"
-      aria-labelledby="offcanvasExampleLabel"
-    >
+      aria-labelledby="offcanvasExampleLabel">
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
         <button
@@ -218,7 +243,50 @@ if(isset($_SESSION['admin'])){
         </div>
       </div>
     </div>
-    <div class="modal fade"
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content k-delete-modal">
+          <div class="modal-header k-modal-header">
+            <h5 class="modal-title k-modal-title" id="deleteConfirmModalLabel">Delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center py-4">
+            <div class="k-warning-icon mb-3">
+              <img src="images/delete-conform.png" alt="">
+            </div>
+            <h4 class="mb-3">Are you sure?</h4>
+            <p class="text-muted">Once deleted, you will not able to recover this data.</p>
+          </div>
+          <div class="modal-footer k-modal-footer">
+            <button type="button" class="k-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="k-delete-confirm-btn d_deletebtn">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for displaying accessory details -->
+    <div class="modal fade" id="accessoryDetailModal" tabindex="-1" aria-labelledby="accessoryDetailModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="accessoryDetailModalLabel">Service Description</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p id="des"></p>
+       
+        <!-- Add more fields as necessary -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade"
       id="changePasswordModal"
       tabindex="-1"
       aria-labelledby="changePasswordModalLabel"
@@ -309,28 +377,6 @@ if(isset($_SESSION['admin'])){
       </div>
     </div>
 
-    <!-- Delete Confirmation Modal -->
-    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content k-delete-modal">
-          <div class="modal-header k-modal-header">
-            <h5 class="modal-title k-modal-title" id="deleteConfirmModalLabel">Delete</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body text-center py-4">
-            <div class="k-warning-icon mb-3">
-              <img src="images/delete-conform.png" alt="">
-            </div>
-            <h4 class="mb-3">Are you sure?</h4>
-            <p class="text-muted">Once deleted, you will not able to recover this data.</p>
-          </div>
-          <div class="modal-footer k-modal-footer">
-            <button type="button" class="k-cancel-btn" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="k-delete-confirm-btn d_deletebtn">Delete</button>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- JavaScript Libraries - Order is important! -->
     <!-- jQuery must come first -->
@@ -344,7 +390,6 @@ if(isset($_SESSION['admin'])){
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
     <!-- <script src="js/chnage_password.js"></script> -->
-
     <script>
       $("#btnchnage").click(function (event) {
        event.preventDefault(); // Prevent form from submitting normally
@@ -476,16 +521,25 @@ if(isset($_SESSION['admin'])){
     <!-- DataTable Initialization -->
     <script>
       $(document).ready(function() {
-    $('#tbl_cat').DataTable(); // Initialize DataTable
+      $('#tbl_cat').DataTable(); // Initialize DataTable
+    });
+
+    document.getElementById('accessoryDetailModal').addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget; // Button that triggered the modal
+        const description = button.getAttribute('data-description'); // Get the description from data-* attribute
+
+        // Update the modal's content
+        const modalContent = this.querySelector('#des'); // Select the paragraph for description
+        modalContent.textContent = description; // Set the description text
     });
 
 
-    
+
 const deleteCategoryModal = document.getElementById('deleteConfirmModal');
 deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget; // Button that triggered the modal
     const categoryId = button.getAttribute('data-id'); // Extract info from data-* attributes
-    const message = `Are you sure you want to delete Accessories Category`;
+    const message = `Are you sure you want to delete Accessories Return?`;
 
     console.log(categoryId);
     
@@ -496,7 +550,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     // Add event listener for the delete button
     const deleteButton = deleteCategoryModal.querySelector('.d_deletebtn');
     deleteButton.onclick = function() {
-        fetch(`crud.php?what=delete_category_acc`, {
+        fetch(`crud.php?what=delete_acc_return`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -523,7 +577,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 const status = this.checked ? 'Active' : 'Block';
 
                 // AJAX request to update status
-                fetch('crud.php?what=update_status_acc', {
+                fetch('crud.php?what=update_status_inquiry', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

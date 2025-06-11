@@ -6,6 +6,18 @@ session_start();
 if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"] == "") {
     header("Location:login.php");
 }
+
+if(isset($_SESSION['admin'])){
+  $email = $_SESSION['admin'];
+  $query = mysqli_query($cnn,"SELECT * FROM `login` WHERE `email`='$email'");
+  $row = mysqli_fetch_array($query);
+  $id = $row['id'];
+  $name = $row['name'];
+  $mno = $row['mno'];
+  $image = $row['image'];
+  $gender = $row['gender'];
+  
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,6 +36,7 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     <link rel="stylesheet" href="css/category.css" />
     <link rel="stylesheet" href="css/profile.css" />
   </head>
+ 
   <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -37,11 +50,11 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
       <div class="k-page-content">
         <div class="k-page-header">
           <div>
-            <h4 class="mb-1">About Us</h4>
+            <h4 class="mb-1" style="margin-left: 30px;">About Us</h4>
             <nav class="k-breadcrumb small">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                  <a href="#" class="k-link-text-color text-decoration-none">Dashboard</a>
+                  <a href="#" class="k-link-text-color text-decoration-none" style="    margin-left: 30px;">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active k-link-text-color-active">
                   About Us
@@ -63,60 +76,40 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
           </div>
         </div>
 
-        <!-- Table Container -->
-        <div class="k-table-container d-flex flex-column justify-content-between">
-          <div class="table-responsive">
-            <table id="tbl_cat" class="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th style="width: 15%;">Title</th>
-                  <th>Description</th>
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr> 
-              </thead>
-              <tbody>
-                <?php
-                $query = mysqli_query($cnn,"SELECT * FROM about_us ORDER BY id DESC");
-                $cnt = 1;
-                while($row = mysqli_fetch_array($query)){
-                  $c_id = encryptor('encrypt',$row['id']);
-                  echo '<tr class="k-tr">
-                     <td>#' . $cnt . '</td>
-                     <td>' . $row['name'] . '</td>
-                      <td>' . $row['des'] . '</td>
-                     <td class="status">
-                          <label class="toggle-switch">
-                              <input type="checkbox" value="' . ($row['status'] === 'Active' ? '1' : '0') . '" ' . ($row['status'] === 'Active' ? 'checked' : '') . ' class="status-checkbox" data-id="' . $row['id'] . '">
-                              <span class="toggle-slider"></span>
-                          </label>
-                      </td>
-                      <td class="action-buttons">
-                          <a href="add_aboutus.php?id=' . $c_id . '" class="edit-btn text-decoration-none">
-                              <img src="images/update.svg" alt="" />
-                          </a>
-                          <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-                              <img src="images/delete.svg" alt="" />
-                          </div>
-                      </td>
-                    </tr>';
-                    $cnt++;
-                }
-                ?>
-                
-              </tbody>
-            </table>
-          </div>
+        <div class="about-list" style="margin-left: 50px; margin-right: 50px;">
+                  <?php
+                  $query = mysqli_query($cnn,"SELECT * FROM about_us ORDER BY id DESC");
+                  while($row = mysqli_fetch_array($query)){
+                      $c_id = encryptor('encrypt', $row['id']);
+                      ?>
+                      <div class="about-card border rounded p-3 mb-3 bg-white">
+                          <!-- Top Row: Name (left), Actions (right) -->
+                          <div class="d-flex justify-content-between align-items-center">
+                              <h5 class="mb-0"><?php echo htmlspecialchars($row['name']); ?></h5>
+                              <div class="d-flex align-items-center gap-2">
+                              <label class="toggle-switch">
+                    <input 
+                        type="checkbox" 
+                        value="<?php echo ($row['status'] === 'Active' ? '1' : '0'); ?>" 
+                        <?php echo ($row['status'] === 'Active' ? 'checked' : ''); ?> 
+                        class="status-checkbox" 
+                        data-id="<?php echo $row['id']; ?>">
+                    <span class="toggle-slider"></span>
+                </label>
 
-          <!-- Empty State -->
-          <!-- <div class="k-empty-state">
-            <img src="images/no-data.png" alt="No Data" />
-            <p>No data Available</p>
-          </div> -->
-        </div>
+                  <a href="add_aboutus.php?id=<?php echo $c_id; ?>" class="edit-btn">
+                      <img src="images/update.svg" alt="Edit" width="20">
+                  </a>
+                  <div class="delete-btn" data-id="<?php echo $row['id']; ?>" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                      <img src="images/delete.svg" alt="Delete" width="20">
+                  </div>
+              </div>
+          </div>
+          <!-- Description Line -->
+          <p class="mt-2 mb-0 text-muted"><?php echo htmlspecialchars($row['des']); ?></p>
       </div>
-    </div>
+  <?php } ?>
+</div>
 
     <!-- offcanvas sidebar -->
     <div

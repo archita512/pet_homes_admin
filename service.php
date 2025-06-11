@@ -6,6 +6,17 @@ session_start();
 if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"] == "") {
     header("Location:login.php");
 }
+if(isset($_SESSION['admin'])){
+  $email = $_SESSION['admin'];
+  $query = mysqli_query($cnn,"SELECT * FROM `login` WHERE `email`='$email'");
+  $row = mysqli_fetch_array($query);
+  $id = $row['id'];
+  $name = $row['name'];
+  $mno = $row['mno'];
+  $image = $row['image'];
+  $gender = $row['gender'];
+  
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

@@ -7,16 +7,16 @@ if (!isset($_SESSION["admin"]) && $_SESSION['admin'] == NULL ||$_SESSION["admin"
     header("Location:login.php");
 }
 if(isset($_SESSION['admin'])){
-    $email = $_SESSION['admin'];
-    $query = mysqli_query($cnn,"SELECT * FROM `login` WHERE `email`='$email'");
-    $row = mysqli_fetch_array($query);
-    $id = $row['id'];
-    $name = $row['name'];
-    $mno = $row['mno'];
-    $image = $row['image'];
-    $gender = $row['gender'];
-    
-  }
+  $email = $_SESSION['admin'];
+  $query = mysqli_query($cnn,"SELECT * FROM `login` WHERE `email`='$email'");
+  $row = mysqli_fetch_array($query);
+  $id = $row['id'];
+  $name = $row['name'];
+  $mno = $row['mno'];
+  $image = $row['image'];
+  $gender = $row['gender'];
+  
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,7 +24,7 @@ if(isset($_SESSION['admin'])){
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Pets</title>
+    <title>Accessories</title>
     <link
       href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
       rel="stylesheet"
@@ -92,24 +92,21 @@ if(isset($_SESSION['admin'])){
               // First, fetch all pets data and store in JavaScript-accessible format
           // First, fetch all pets data and store in JavaScript-accessible format
           $pets_data = [];
-          $query = mysqli_query($cnn, "SELECT * FROM pets");
+          $query = mysqli_query($cnn, "SELECT * FROM accessories WHERE status='Active'");
           while ($pet = mysqli_fetch_array($query)) {
               // Decode the JSON array of images and get the first image
-              $images = json_decode($pet['image'], true); // Added 'true' for associative array
-              $first_image = isset($images[0]) ? $images[0] : 'default.jpg'; // Fallback to default image
+             
               
               $pets_data[] = [
                   'id' => $pet['id'],
                   'name' => $pet['name'],
                   'description' => $pet['des'],
-                  'age' => $pet['pet_age'],
-                  'image' => $first_image,
-                  'country' => $pet['country'],
+                //   'age' => $pet['pet_age'],
+                  'image' => $pet['image'],
                   'price' => $pet['price'],
-                  'type_listing' => $pet['type_listing'],
-                  'gender' => $pet['pet_gander'],
-                  'weight' => $pet['pet_weight'],
-                  'color' => $pet['pet_color']
+                  
+
+                 
 
                 ];
             }
@@ -124,7 +121,7 @@ if(isset($_SESSION['admin'])){
        <?php include 'header.php'; ?>
         <div class="k-modal">
           <div class="add-btn">
-            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Pet Return'; } else { echo 'Add Return'; } ?></h2>
+            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Accessories Sale'; } else { echo 'Add Accessories Sale'; } ?></h2>
           </div>
           <form id="frm" action="" method="POST" enctype="multipart/form-data">
           <div class="card" style="width: 1517px; margin-left: 50px; margin-top: 30px;height: auto;">
@@ -140,13 +137,13 @@ if(isset($_SESSION['admin'])){
                     <div class="k-form-group">
                         <label class="k-form-label">Pets</label>
                         <select name="pet_id" id="pet_id" class="k-form-control" onchange="showSelectedPet()">
-                            <option value="">Select Pets</option>
+                            <option value="">Select Accessories</option>
                             <?php
                             // Retrieve the category ID if updating
                             if (isset($_GET['id'])) {
                                 $id = $row['id']; // Use cat_id for comparison
                             }
-                            $query = mysqli_query($cnn, "SELECT * FROM pets");    
+                            $query = mysqli_query($cnn, "SELECT * FROM accessories WHERE status='Active'");    
                             while ($category = mysqli_fetch_array($query)) { // Changed variable name to avoid conflict
                                 $selected = (isset($_GET['id']) && $category['id'] == $id) ? 'selected' : '';  // Ensure correct comparison
                                 echo "<option value='".$category['id']."' $selected>".$category['name']."</option>";
@@ -165,35 +162,35 @@ if(isset($_SESSION['admin'])){
                       <div class="col-md-12">
                           <div class="card mb-4 shadow-sm box d-flex flex-row align-items-center p-3" style="height: 220px;">
                               <img id="petImage" src="" class="card-img" alt="" style="width: 200px; height: 200px; object-fit: cover; border-radius: 10px;">
-                              <div class="ms-4" style="width: 962px;">
+                              <div class="ms-4">
                                   <b><h5 id="petName" class="card-title mb-2"></h5></b>
                                   
                                   <div class="row">
                                   <div class="col-sm-6">
-                                    <p class="card-text">
+                                    <!-- <p class="card-text">
                                       <b>Gender:</b> <span id="petgender"></span>
-                                    </p>
-                                    <p class="card-text">
+                                    </p> -->
+                                    <!-- <p class="card-text">
                                       <b>Age:</b> <span id="petAge"></span>
-                                    </p>
-                                    <p class="card-text">
+                                    </p> -->
+                                    <!-- <p class="card-text">
                                       <b>Country:</b> <span id="petcountry"></span>
-                                    </p>
+                                    </p> -->
                                     <p class="card-text">
                                       <b>Price:</b> <span id="petprice"></span>
                                     </p>
                                   </div>
                                     <div class="col-sm-6">
 
-                                    <p  class="card-text">
+                                    <!-- <p  class="card-text">
                                     <b>Listing:</b><span id="pettype_listing"></span>
-                                    </p>
-                                    <p class="card-text">
+                                    </p> -->
+                                    <!-- <p class="card-text">
                                       <b>Pets Weight: </b><span id="petweight"></span>
-                                    </p>
-                                    <p id="" class="card-text">
+                                    </p> -->
+                                    <!-- <p id="" class="card-text">
                                       <b>Pets Color: </b><span id="petcolor"></span>
-                                    </p>
+                                    </p> -->
                                   </div>
                                   </div>
                                   
@@ -224,7 +221,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                   <div class="mb-3">
                     <div class="k-form-group">
-                    <label class="k-form-label">Return Date</label>
+                    <label class="k-form-label">Addoption Date</label>
                     <input type="date" name="a_date" id="a_date" class="form-control">
                     </div>
                   </div>
@@ -256,212 +253,217 @@ if(isset($_SESSION['admin'])){
                 </div>
                 
                <!-- Hidden inputs to hold values for backend -->
-                <input type="hidden" name="total_cost" id="totalcost">
-                <input type="hidden" name="billprice" id="biilprice">
+                <input type="hidden" name="totalCost" id="totalCostInput">
+                <input type="hidden" name="billingPrice" id="billingPriceInput">
 
                 <div class="card p-3 shadow-sm" style="max-width: 400px;">
                   <h5 class="mb-3">Billing Details</h5>
 
                   <div class="d-flex justify-content-between mb-2">
                     <span>Price:</span>
-                    <strong>$<span id="billprice">0</span></strong>
+                    <strong>$<span id="billingPrice">0</span></strong>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Quantity :</span>
+                    <input type="number" class="form-control" id="que" name="que" value="1" style="width: 71px;" min="1" max="50" inputmode="numeric">
                   </div>
 
                   <div class="d-flex justify-content-between mb-2">
                     <span>Discount:</span>
-                    <input type="text" class="form-control" id="discount" name="discount" value="0" style="width: 71px;" min="0" max="50" inputmode="numeric" readonly>
+                    <input type="number" class="form-control" id="discount" name="discount" value="0" style="width: 71px;" min="0" max="50" inputmode="numeric">
                   </div>
 
                   <div class="d-flex justify-content-between border-top pt-2">
                     <span>Total Cost:</span>
-                    <strong>$<span id="total_cost">0</span></strong>
+                    <strong>$<span id="totalCost">0</span></strong>
                   </div>
                 </div>
                  
-                </form>
+            </form>
             </div>
           </div>
-             <div class="k-modal-footer">
-                <button type="button" class="k-btn-cancel" onclick="window.location.href='pets.php'">Cancel</button>
-                <button type="submit"  name="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>"
-                id="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>" class="k-btn-save">Save</button>
-                </div>
-            </div>
+          <div class="k-modal-footer">
+              <button type="button" class="k-btn-cancel" onclick="window.location.href='pets.php'">Cancel</button>
+              <button type="submit"  name="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>"
+              id="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>" class="k-btn-save">Save</button>
+               </div>
+        </div>
 
-            <!-- offcanvas sidebar -->
-            <div
-                class="offcanvas offcanvas-start"
-                tabindex="-1"
-                id="offcanvasExample"
-                aria-labelledby="offcanvasExampleLabel">
-             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+    <!-- offcanvas sidebar -->
+    <div
+      class="offcanvas offcanvas-start"
+      tabindex="-1"
+      id="offcanvasExample"
+      aria-labelledby="offcanvasExampleLabel"
+    >
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="offcanvas"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="offcanvas-body">
+        <div class="k-sidebar" id="sidebar">
+          <!-- Sidebar content remains the same -->
+          <div class="k-logo">
+            <div>
+              <p class="p-0 m-0 text-start text-lg-center">LOGO</p>
+            </div>
+            <div>
+              <button
+                class="k-close-sidebar"
+                id="closeSidebar"
+                data-bs-dismiss="offcanvas">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <ul class="k-sidebar-menu">
+            <li>
+              <a href="#">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="active d-flex align-items-center">
+                <img src="images/s2.svg" alt="" class="text-dark" />
+                <span class="ps-2">Category</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-layer-group"></i>
+                <span>Subcategory</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-paw"></i>
+                <span>Pets</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-shopping-basket"></i>
+                <span>Accessories</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-concierge-bell"></i>
+                <span>Services</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-user"></i>
+                <span>User</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-history"></i>
+                <span>Adoption History</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade"
+      id="changePasswordModal"
+      tabindex="-1"
+      aria-labelledby="changePasswordModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header border-bottom">
+            <h5 class="modal-title fw-bold" id="changePasswordModalLabel">
+              Change Password
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body py-3">
+            <form id="frm" method="POST" action="">
+            <input type="hidden" name="id" id="id" value="<?php if(isset($_SESSION['admin'])){ echo $id; } ?> ">
+              <div class="mb-3">
+                <label for="oldPassword" class="form-label">Old Password</label>
+                <div class="position-relative">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="oldPassword"
+                    name="oldPassword"
+                    placeholder="Your Password"
+                  />
+                  <span
+                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                    onclick="togglePassword('oldPassword')"
+                  >
+                    <i class="fas fa-eye-slash"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="newPassword" class="form-label">New Password</label>
+                <div class="position-relative">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="newPassword"
+                    name="newPassword"
+                    placeholder="Your Password"
+                  />
+                  <span
+                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                    onclick="togglePassword('newPassword')"
+                  >
+                    <i class="fas fa-eye"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                <div class="position-relative">
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Your Password"
+                  />
+                  <span
+                    class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                    onclick="togglePassword('confirmPassword')">
+                    <i class="fas fa-eye-slash"></i>
+                  </span>
+                </div>
+              </div>
+              <div class="d-flex justify-content-center">
                 <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="offcanvas"
-                aria-label="Close"
-                ></button>
-            </div>
-            <div class="offcanvas-body">
-                <div class="k-sidebar" id="sidebar">
-                <!-- Sidebar content remains the same -->
-                <div class="k-logo">
-                    <div>
-                    <p class="p-0 m-0 text-start text-lg-center">LOGO</p>
-                    </div>
-                    <div>
-                    <button
-                        class="k-close-sidebar"
-                        id="closeSidebar"
-                        data-bs-dismiss="offcanvas">
-                        <i class="fas fa-times"></i>
-                    </button>
-                    </div>
-                </div>
-                <ul class="k-sidebar-menu">
-                    <li>
-                    <a href="#">
-                        <i class="fas fa-home"></i>
-                        <span>Dashboard</span>
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" class="active d-flex align-items-center">
-                        <img src="images/s2.svg" alt="" class="text-dark" />
-                        <span class="ps-2">Category</span>
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" class="d-flex align-items-center">
-                        <i class="fas fa-layer-group"></i>
-                        <span>Subcategory</span>
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" class="d-flex align-items-center">
-                        <i class="fas fa-paw"></i>
-                        <span>Pets</span>
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" class="d-flex align-items-center">
-                        <i class="fas fa-shopping-basket"></i>
-                        <span>Accessories</span>
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" class="d-flex align-items-center">
-                        <i class="fas fa-concierge-bell"></i>
-                        <span>Services</span>
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" class="d-flex align-items-center">
-                        <i class="fas fa-user"></i>
-                        <span>User</span>
-                    </a>
-                    </li>
-                    <li>
-                    <a href="#" class="d-flex align-items-center">
-                        <i class="fas fa-history"></i>
-                        <span>Adoption History</span>
-                    </a>
-                    </li>
-                </ul>
-                </div>
-            </div>
-            </div>
-            <div class="modal fade"
-            id="changePasswordModal"
-            tabindex="-1"
-            aria-labelledby="changePasswordModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                <div class="modal-header border-bottom">
-                    <h5 class="modal-title fw-bold" id="changePasswordModalLabel">
-                    Change Password
-                    </h5>
-                    <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                    ></button>
-                </div>
-                <div class="modal-body py-3">
-                    <form id="frm" method="POST" action="">
-                    <input type="hidden" name="id" id="id" value="<?php if(isset($_SESSION['admin'])){ echo $id; } ?> ">
-                    <div class="mb-3">
-                        <label for="oldPassword" class="form-label">Old Password</label>
-                        <div class="position-relative">
-                        <input
-                            type="password"
-                            class="form-control"
-                            id="oldPassword"
-                            name="oldPassword"
-                            placeholder="Your Password"
-                        />
-                        <span
-                            class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
-                            onclick="togglePassword('oldPassword')"
-                        >
-                            <i class="fas fa-eye-slash"></i>
-                        </span>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="newPassword" class="form-label">New Password</label>
-                        <div class="position-relative">
-                        <input
-                            type="password"
-                            class="form-control"
-                            id="newPassword"
-                            name="newPassword"
-                            placeholder="Your Password"
-                        />
-                        <span
-                            class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
-                            onclick="togglePassword('newPassword')"
-                        >
-                            <i class="fas fa-eye"></i>
-                        </span>
-                        </div>
-                    </div>
-                    <div class="mb-4">
-                        <label for="confirmPassword" class="form-label">Confirm Password</label>
-                        <div class="position-relative">
-                        <input
-                            type="password"
-                            class="form-control"
-                            id="confirmPassword"
-                            name="confirmPassword"
-                            placeholder="Your Password"
-                        />
-                        <span
-                            class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
-                            onclick="togglePassword('confirmPassword')">
-                            <i class="fas fa-eye-slash"></i>
-                        </span>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <button
-                        type="button"
-                        class="k-btn-cancel"
-                        data-bs-dismiss="modal">
-                        Cancel
-                        </button>
-                        <button type="submit" class="k-btn-reset" name="btnchnage" id="btnchnage">
-                        Reset Password
-                        </button>
-                    </div>
-                    </form>
-                </div>
-                </div>
-            </div>
-            </div>
+                  type="button"
+                  class="k-btn-cancel"
+                  data-bs-dismiss="modal">
+                  Cancel
+                </button>
+                <button type="submit" class="k-btn-reset" name="btnchnage" id="btnchnage">
+                  Reset Password
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
             
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -472,7 +474,7 @@ if(isset($_SESSION['admin'])){
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.js" integrity="sha512-vG793m0UbmHpDP9w5eGmPczh4JJ5HUZKi+WBReYTPzaefQ/eLInVo/MeDYvnE0LsM7NlUbgtf/jGG5c6JmO6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.min.js" integrity="sha512-bPZBFTQxrZnfFHJqMjP9VVXVigWPjrDHWoPVgsdo2hGNUEY9WF9HQjWfvWnFEduF9cwmsbtKoQ9QkiPkTTUHwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/fileUpload.js"></script>
-    <script src="js/pets_return.js"></script>
+    <script src="js/ass_sale.js"></script>
     <script>
       $("#btnchnage").click(function (event) {
        event.preventDefault(); // Prevent form from submitting normally
@@ -717,17 +719,19 @@ function showSelectedPet() {
         document.getElementById('petImage').alt = selectedPet.name;
         document.getElementById('petName').textContent = selectedPet.name;
         document.getElementById('petDescription').textContent = selectedPet.description;
-        document.getElementById('petAge').textContent = selectedPet.age;
+        // document.getElementById('petAge').textContent = selectedPet.age;
         document.getElementById('petprice').textContent = '$' + selectedPet.price;
-        document.getElementById('pettype_listing').textContent =  selectedPet.type_listing;
-        document.getElementById('petgender').textContent =  selectedPet.gender;
-        document.getElementById('petcolor').textContent =  selectedPet.color;
-        document.getElementById('petweight').textContent =  selectedPet.weight;
+        // document.getElementById('pettype_listing').textContent =  selectedPet.type_listing;
+        // document.getElementById('petgender').textContent =  selectedPet.gender;
+        // document.getElementById('petcolor').textContent =  selectedPet.color;
+        // document.getElementById('petweight').textContent =  selectedPet.weight;
 
 
         
 
-        
+         // Set billing price too
+         document.getElementById('billingPrice').innerText = selectedPet.price;
+         document.getElementById('totalCost').innerText = selectedPet.price;
 
          
         // Debug the country issue
@@ -754,85 +758,43 @@ function showSelectedPet() {
     }
 }
 
-      
+      // Initialize on page load if there's a pre-selected pet
+      document.addEventListener('DOMContentLoaded', function() {
+          const selectElement = document.getElementById('pet_id');
+          if (selectElement.value !== '') {
+              showSelectedPet();
+          }
+      });
 
-      
-      
+      function updateTotalCost() {
+    const price = parseFloat(document.getElementById('billingPrice').innerText) || 0;
+    const quantity = parseInt(document.getElementById('que').value) || 0;
+    const discountPercent = parseFloat(document.getElementById('discount').value) || 0;
 
+    const totalPrice = price * quantity;
+    const discountAmount = totalPrice * (discountPercent / 100);
+    const finalCost = totalPrice - discountAmount;
 
-      $(document).ready(function() {
-        $('#mno').on('blur', function() {
-            const mobile = $(this).val().trim();
+    // Update display
+    document.getElementById('totalCost').innerText = finalCost.toFixed(2);
 
-            if (mobile !== '') {
-            $.ajax({
-                url: 'crud.php?what=fetch_mobile',
-                method: 'POST',
-                data: { mobile_no: mobile },
-                success: function(response) {
-                const data = JSON.parse(response);
-                
-                if (data.success) {
-                    $('#billprice').text(data.billing_price);
-                    $('#biilprice').val(data.billing_price);
+    // Update hidden inputs
+    document.getElementById('totalCostInput').value = finalCost.toFixed(2);
+    document.getElementById('billingPriceInput').value = price.toFixed(2);
+}
 
-                    $('#discount').val(data.discount);
-                    $('#total_cost').text(data.billing_price);
-                    $('#total_cost').val(data.billing_price);
+      // Call this when setting price
+      function updateBillingPrice(newPrice) {
+          document.getElementById('billingPrice').innerText = newPrice;
+          document.getElementById('billingPriceInput').value = newPrice;
+          document.getElementById('discount').value = 0;
+          updateTotalCost();
+      }
 
-                    
-                    
-                } else {
-                    var toastHTML = `
-                                <div aria-live="polite" aria-atomic="true" class="position-relative">
-                                    <div class="toast-container position-fixed top-0 end-0 p-3">
-                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                            <div class="toast-header">
-                                                <strong class="me-auto">Notification</strong>
-                                                <small class="text-muted">just now</small>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                            <div class="toast-body" style="background-color: #ec7063; color: white;"> 
-                                              This Number can not sale this Pet       
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                    
-                            // Append the toast HTML to the body
-                            $('body').append(toastHTML);
-                    
-                            // Show the toast
-                            var toastEl = document.getElementById("errorToast");
-                            var toast = new bootstrap.Toast(toastEl);
-                            toast.show();
-                    
-                            // Redirect after 2 seconds
-                            setTimeout(function() {
-                              
-                            }, 2000); // 2000 milliseconds = 2 seconds
-                                    $('#billprice').text('0');
-                                    $('#biilprice').val('');
-                                    $('#discount').val('0');
-                                    $('#total_cost').text('0');
-                                    $('#totalcost').val('');
-                }
-                }
-            });
-            }
-        });
+      // Also update cost when user changes discount
+      document.getElementById('discount').addEventListener('input', updateTotalCost);
+      document.getElementById('que').addEventListener('input', updateTotalCost);
 
-        // Update total on manual discount change
-        $('#discount').on('input', function () {
-            const price = parseFloat($('#billprice').text());
-            const discount = parseInt($(this).val()) || 0;
-
-            const total = price - (price * discount / 100);
-            $('#total_cost').text(total.toFixed(2));
-            $('#totalcost').val(total.toFixed(2));
-        });
-        });
 
     </script>
   </body>

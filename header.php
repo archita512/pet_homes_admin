@@ -12,7 +12,8 @@ if(isset($_SESSION['admin'])){
 
 }
 ?>
- <div class="k-content">
+ <div class="k-content" style="idth: 1630px;
+    margin-left: -24px;">
       <!-- Header -->
       <div class="k-header-container">
         <div class="k-header d-flex justify-content-between align-center-center">

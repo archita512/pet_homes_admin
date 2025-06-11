@@ -66,8 +66,8 @@ if(isset($_SESSION['admin'])){
                   transition: transform 0.2s ease-in-out;
                   box-shadow: 0 4px 8px rgba(0,0,0,0.15) !important;
               }
-    </style>
-        <style>
+            </style>
+                 <style>
                     p {
                     margin-top: 0;
                     margin-bottom: 0.2rem;
@@ -90,27 +90,22 @@ if(isset($_SESSION['admin'])){
         </style>
         <?php
               // First, fetch all pets data and store in JavaScript-accessible format
-          // First, fetch all pets data and store in JavaScript-accessible format
+            // First, fetch all pets data and store in JavaScript-accessible format
           $pets_data = [];
-          $query = mysqli_query($cnn, "SELECT * FROM pets");
+          $query = mysqli_query($cnn, "SELECT * FROM accessories");
           while ($pet = mysqli_fetch_array($query)) {
               // Decode the JSON array of images and get the first image
-              $images = json_decode($pet['image'], true); // Added 'true' for associative array
-              $first_image = isset($images[0]) ? $images[0] : 'default.jpg'; // Fallback to default image
+              $images = $pet['image']; // Added 'true' for associative array
+              $first_image = isset($images) ? $images : 'default.jpg'; // Fallback to default image
               
               $pets_data[] = [
                   'id' => $pet['id'],
                   'name' => $pet['name'],
                   'description' => $pet['des'],
-                  'age' => $pet['pet_age'],
                   'image' => $first_image,
-                  'country' => $pet['country'],
                   'price' => $pet['price'],
-                  'type_listing' => $pet['type_listing'],
-                  'gender' => $pet['pet_gander'],
-                  'weight' => $pet['pet_weight'],
-                  'color' => $pet['pet_color']
 
+                  
                 ];
             }
             ?>
@@ -124,7 +119,7 @@ if(isset($_SESSION['admin'])){
        <?php include 'header.php'; ?>
         <div class="k-modal">
           <div class="add-btn">
-            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Pet Return'; } else { echo 'Add Return'; } ?></h2>
+            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Accessories Return'; } else { echo 'Add Accessories Return'; } ?></h2>
           </div>
           <form id="frm" action="" method="POST" enctype="multipart/form-data">
           <div class="card" style="width: 1517px; margin-left: 50px; margin-top: 30px;height: auto;">
@@ -146,7 +141,7 @@ if(isset($_SESSION['admin'])){
                             if (isset($_GET['id'])) {
                                 $id = $row['id']; // Use cat_id for comparison
                             }
-                            $query = mysqli_query($cnn, "SELECT * FROM pets");    
+                            $query = mysqli_query($cnn, "SELECT * FROM accessories");    
                             while ($category = mysqli_fetch_array($query)) { // Changed variable name to avoid conflict
                                 $selected = (isset($_GET['id']) && $category['id'] == $id) ? 'selected' : '';  // Ensure correct comparison
                                 echo "<option value='".$category['id']."' $selected>".$category['name']."</option>";
@@ -170,7 +165,7 @@ if(isset($_SESSION['admin'])){
                                   
                                   <div class="row">
                                   <div class="col-sm-6">
-                                    <p class="card-text">
+                                    <!-- <p class="card-text">
                                       <b>Gender:</b> <span id="petgender"></span>
                                     </p>
                                     <p class="card-text">
@@ -178,14 +173,14 @@ if(isset($_SESSION['admin'])){
                                     </p>
                                     <p class="card-text">
                                       <b>Country:</b> <span id="petcountry"></span>
-                                    </p>
+                                    </p> -->
                                     <p class="card-text">
                                       <b>Price:</b> <span id="petprice"></span>
                                     </p>
                                   </div>
                                     <div class="col-sm-6">
 
-                                    <p  class="card-text">
+                                    <!-- <p  class="card-text">
                                     <b>Listing:</b><span id="pettype_listing"></span>
                                     </p>
                                     <p class="card-text">
@@ -193,7 +188,7 @@ if(isset($_SESSION['admin'])){
                                     </p>
                                     <p id="" class="card-text">
                                       <b>Pets Color: </b><span id="petcolor"></span>
-                                    </p>
+                                    </p> -->
                                   </div>
                                   </div>
                                   
@@ -255,26 +250,31 @@ if(isset($_SESSION['admin'])){
                     </div>
                 </div>
                 
+               
                <!-- Hidden inputs to hold values for backend -->
-                <input type="hidden" name="total_cost" id="totalcost">
-                <input type="hidden" name="billprice" id="biilprice">
+               <input type="hidden" name="totalCost" id="totalCostInput">
+                <input type="hidden" name="billingPrice" id="billingPriceInput">
 
                 <div class="card p-3 shadow-sm" style="max-width: 400px;">
                   <h5 class="mb-3">Billing Details</h5>
 
                   <div class="d-flex justify-content-between mb-2">
                     <span>Price:</span>
-                    <strong>$<span id="billprice">0</span></strong>
+                    <strong>$<span id="billingPrice">0</span></strong>
+                  </div>
+                  <div class="d-flex justify-content-between mb-2">
+                    <span>Quantity :</span>
+                    <input type="number" class="form-control" id="que" name="que" value="1" style="width: 71px;" min="1" max="50" inputmode="numeric">
                   </div>
 
                   <div class="d-flex justify-content-between mb-2">
                     <span>Discount:</span>
-                    <input type="text" class="form-control" id="discount" name="discount" value="0" style="width: 71px;" min="0" max="50" inputmode="numeric" readonly>
+                    <input type="number" class="form-control" id="discount" name="discount" value="0" style="width: 71px;" min="0" max="50" inputmode="numeric">
                   </div>
 
                   <div class="d-flex justify-content-between border-top pt-2">
                     <span>Total Cost:</span>
-                    <strong>$<span id="total_cost">0</span></strong>
+                    <strong>$<span id="totalCost">0</span></strong>
                   </div>
                 </div>
                  
@@ -392,7 +392,7 @@ if(isset($_SESSION['admin'])){
                 </div>
                 <div class="modal-body py-3">
                     <form id="frm" method="POST" action="">
-                    <input type="hidden" name="id" id="id" value="<?php if(isset($_SESSION['admin'])){ echo $id; } ?> ">
+                    <input type="text" name="id" id="id" value="<?php if(isset($_SESSION['admin'])){ echo $id; } ?> ">
                     <div class="mb-3">
                         <label for="oldPassword" class="form-label">Old Password</label>
                         <div class="position-relative">
@@ -472,7 +472,7 @@ if(isset($_SESSION['admin'])){
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.js" integrity="sha512-vG793m0UbmHpDP9w5eGmPczh4JJ5HUZKi+WBReYTPzaefQ/eLInVo/MeDYvnE0LsM7NlUbgtf/jGG5c6JmO6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.min.js" integrity="sha512-bPZBFTQxrZnfFHJqMjP9VVXVigWPjrDHWoPVgsdo2hGNUEY9WF9HQjWfvWnFEduF9cwmsbtKoQ9QkiPkTTUHwA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/fileUpload.js"></script>
-    <script src="js/pets_return.js"></script>
+    <script src="js/acc_return.js"></script>
     <script>
       $("#btnchnage").click(function (event) {
        event.preventDefault(); // Prevent form from submitting normally
@@ -717,16 +717,16 @@ function showSelectedPet() {
         document.getElementById('petImage').alt = selectedPet.name;
         document.getElementById('petName').textContent = selectedPet.name;
         document.getElementById('petDescription').textContent = selectedPet.description;
-        document.getElementById('petAge').textContent = selectedPet.age;
+        // document.getElementById('petAge').textContent = selectedPet.age;
         document.getElementById('petprice').textContent = '$' + selectedPet.price;
-        document.getElementById('pettype_listing').textContent =  selectedPet.type_listing;
-        document.getElementById('petgender').textContent =  selectedPet.gender;
-        document.getElementById('petcolor').textContent =  selectedPet.color;
-        document.getElementById('petweight').textContent =  selectedPet.weight;
+        // document.getElementById('pettype_listing').textContent =  selectedPet.type_listing;
+        // document.getElementById('petgender').textContent =  selectedPet.gender;
+        // document.getElementById('petcolor').textContent =  selectedPet.color;
+        // document.getElementById('petweight').textContent =  selectedPet.weight;
 
 
         
-
+        // document.getElementById('billingPrice').innerText = selectedPet.price;
         
 
          
@@ -766,19 +766,20 @@ function showSelectedPet() {
 
             if (mobile !== '') {
             $.ajax({
-                url: 'crud.php?what=fetch_mobile',
+                url: 'crud.php?what=fetch_mobile_acc',
                 method: 'POST',
                 data: { mobile_no: mobile },
                 success: function(response) {
                 const data = JSON.parse(response);
                 
                 if (data.success) {
-                    $('#billprice').text(data.billing_price);
-                    $('#biilprice').val(data.billing_price);
+                    $('#billingPrice').text(data.price);
+                    $('#biilprice').val(data.price);
 
                     $('#discount').val(data.discount);
-                    $('#total_cost').text(data.billing_price);
-                    $('#total_cost').val(data.billing_price);
+                    $('#que').val(data.quantity);
+                    $('#totalCost').text(data.billing_price);
+                    $('#totalCost').val(data.billing_price);
 
                     
                     
@@ -793,7 +794,7 @@ function showSelectedPet() {
                                                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                             </div>
                                             <div class="toast-body" style="background-color: #ec7063; color: white;"> 
-                                              This Number can not sale this Pet       
+                                              This Number can not sale this Accessories      
                                             </div>
                                         </div>
                                     </div>
@@ -812,11 +813,11 @@ function showSelectedPet() {
                             setTimeout(function() {
                               
                             }, 2000); // 2000 milliseconds = 2 seconds
-                                    $('#billprice').text('0');
-                                    $('#biilprice').val('');
-                                    $('#discount').val('0');
-                                    $('#total_cost').text('0');
-                                    $('#totalcost').val('');
+                    $('#billingPrice').text('0');
+                    $('#biilprice').val('');
+                    $('#discount').val('0');
+                    $('#totalCost').text('0');
+                    $('#totalcost').val('');
                 }
                 }
             });
@@ -825,14 +826,51 @@ function showSelectedPet() {
 
         // Update total on manual discount change
         $('#discount').on('input', function () {
-            const price = parseFloat($('#billprice').text());
+            const price = parseFloat($('#billingPrice').text());
             const discount = parseInt($(this).val()) || 0;
 
             const total = price - (price * discount / 100);
-            $('#total_cost').text(total.toFixed(2));
+            $('#totalCost').text(total.toFixed(2));
             $('#totalcost').val(total.toFixed(2));
         });
         });
+
+         // Initialize on page load if there's a pre-selected pet
+      document.addEventListener('DOMContentLoaded', function() {
+          const selectElement = document.getElementById('pet_id');
+          if (selectElement.value !== '') {
+              showSelectedPet();
+          }
+      });
+
+      function updateTotalCost() {
+    const price = parseFloat(document.getElementById('billingPrice').innerText) || 0;
+    const quantity = parseInt(document.getElementById('que').value) || 0;
+    const discountPercent = parseFloat(document.getElementById('discount').value) || 0;
+
+    const totalPrice = price * quantity;
+    const discountAmount = totalPrice * (discountPercent / 100);
+    const finalCost = totalPrice - discountAmount;
+
+    // Update display
+    document.getElementById('totalCost').innerText = finalCost.toFixed(2);
+
+    // Update hidden inputs
+    document.getElementById('totalCostInput').value = finalCost.toFixed(2);
+    document.getElementById('billingPriceInput').value = price.toFixed(2);
+}
+
+      // Call this when setting price
+      function updateBillingPrice(newPrice) {
+          document.getElementById('billingPrice').innerText = newPrice;
+          document.getElementById('billingPriceInput').value = newPrice;
+          document.getElementById('discount').value = 0;
+          updateTotalCost();
+      }
+
+      // Also update cost when user changes discount
+      document.getElementById('discount').addEventListener('input', updateTotalCost);
+      document.getElementById('que').addEventListener('input', updateTotalCost);
 
     </script>
   </body>

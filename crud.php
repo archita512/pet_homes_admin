@@ -580,8 +580,8 @@ if ($_GET['what'] == 'update_pet') {
                     country = '$country',
                     pet_gander = '$gender',
                     pet_weight = '$pet_weight',
-                    pet_color = '$pet_color',
-                    status = 'Active' 
+                    pet_color = '$pet_color'
+                   
                 WHERE id = '$id'";
         
         if(mysqli_query($cnn, $sql)) {
@@ -1527,15 +1527,17 @@ if ($_GET['what'] == "pet_return_add") {
     $pet_id = mysqli_real_escape_string($cnn, $_POST['pet_id']);
     $discount = mysqli_real_escape_string($cnn, $_POST['discount']);
     $totalCost = mysqli_real_escape_string($cnn, $_POST['billprice']);
-
+    
     $response = [];
 
-    if (!empty($name) && !empty($email) && !empty($mno) && !empty($a_date) && !empty($pet_id)  && !empty($totalCost)) {
+    if (!empty($name) && !empty($email) && !empty($mno) && !empty($a_date) && !empty($pet_id) && !empty($totalCost)) {
 
         // Insert category with status
-        $query_insert = mysqli_query($cnn, "INSERT INTO pet_return (name,mno, email,re_date,address,discount,total_price,pet_id,status) VALUES ('$name','$mno','$email','$a_date','$add','$discount','$totalCost','$pet_id', 'Return')");
+        $query_insert = mysqli_query($cnn, "INSERT INTO pet_return (name,mno,email,re_date,address,discount,total_price,pet_id,status) VALUES ('$name','$mno','$email','$a_date','$add','$discount','$totalCost','$pet_id', 'Return')");
         if ($query_insert) {
             $query = mysqli_query($cnn,"UPDATE pets SET status = 'Active' WHERE id = '$pet_id'");
+            $pet_delete = mysqli_query($cnn, "DELETE FROM addopt_pet WHERE pet_id = '$pet_id' AND mno = '$mno'");
+
             $response['success'] = true;
             $response['message'] = "Pet Return successfully.";
         } else {
@@ -1818,5 +1820,200 @@ if ($_GET['what'] == "update_privacy") {
     ob_clean();
     header('Content-Type: application/json');
     echo json_encode($response);
+}
+if ($_GET['what'] == "add_acc_sale") {
+    $name = mysqli_real_escape_string($cnn, $_POST['pname']);
+    $email = mysqli_real_escape_string($cnn, $_POST['email']);
+    $mno = mysqli_real_escape_string($cnn, $_POST['mno']);
+    $a_date = mysqli_real_escape_string($cnn, $_POST['a_date']);
+    $add = mysqli_real_escape_string($cnn, $_POST['add']);
+    $pet_id = mysqli_real_escape_string($cnn, $_POST['pet_id']);
+    $discount = mysqli_real_escape_string($cnn, $_POST['discount']);
+    $totalCost = mysqli_real_escape_string($cnn, $_POST['totalCost']);
+    $quantity = mysqli_real_escape_string($cnn, $_POST['que']);
+
+    $response = [];
+
+    if (!empty($name) && !empty($email) && !empty($mno) && !empty($a_date) && !empty($pet_id)  && !empty($totalCost)) {
+
+        // Insert category with status
+        $query_insert = mysqli_query($cnn, "INSERT INTO acc_sale (name,mno, email,date,address,discount,total_price,acc_id,status,quantity) VALUES ('$name','$mno','$email','$a_date','$add','$discount','$totalCost','$pet_id', 'Pending','$quantity')");
+        if ($query_insert) {
+            $response['success'] = true;
+            $response['message'] = "Accessories Sale Added successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to add category. SQL Error: " . mysqli_error($cnn);
+        }
+        
+    } else {
+        $response['success'] = false;
+        $response['message'] = "All Field is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if ($_GET['what'] == "delete_acc_sale") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM `acc_sale` WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+}
+if($_GET['what'] == "fetch_mobile_acc"){
+    $mobile = $_POST['mobile_no'];
+
+    $stmt = $cnn->prepare("SELECT ac.total_price, ac.discount,ac.quantity,a.price FROM acc_sale AS ac JOIN accessories AS a ON ac.acc_id = a.id WHERE ac.mno = ?");
+    $stmt->bind_param("s", $mobile);
+    $stmt->execute();
+    $stmt->store_result();
+
+    if ($stmt->num_rows > 0) {
+        $stmt->bind_result($total_price, $discount,$quantity,$price);
+        $stmt->fetch();
+
+        echo json_encode([
+            'success' => true,
+            'billing_price' => $total_price,
+            'discount' => $discount,
+            'quantity' => $quantity,
+            'price' => $price
+        ]);
+    } else {
+        echo json_encode(['success' => false]);
+    }
+
+    $stmt->close();
+    
+}
+
+if ($_GET['what'] == "acc_return_add") {
+    $name = mysqli_real_escape_string($cnn, $_POST['pname']);
+    $email = mysqli_real_escape_string($cnn, $_POST['email']);
+    $mno = mysqli_real_escape_string($cnn, $_POST['mno']);
+    $a_date = mysqli_real_escape_string($cnn, $_POST['a_date']);
+    $add = mysqli_real_escape_string($cnn, $_POST['add']);
+    $pet_id = mysqli_real_escape_string($cnn, $_POST['pet_id']);
+    $discount = mysqli_real_escape_string($cnn, $_POST['discount']);
+    $totalCost = mysqli_real_escape_string($cnn, $_POST['totalCost']);
+    $quantity = mysqli_real_escape_string($cnn, $_POST['que']);
+    
+    $response = [];
+
+    if (!empty($name) && !empty($email) && !empty($mno) && !empty($a_date) && !empty($pet_id) && !empty($totalCost)) {
+
+        // Insert category with status
+       // Insert return record
+    $query_insert = mysqli_query($cnn, "INSERT INTO acc_return (name,mno,email,re_date,address,discount,total_price,acc_id,status,quantity) VALUES ('$name', '$mno', '$email', '$a_date', '$add', '$discount', '$totalCost', '$pet_id', 'Return', '$quantity')");
+
+    if ($query_insert) {
+        // Fetch original sale quantity
+        $sale_result = mysqli_query($cnn, "SELECT quantity,total_price FROM acc_sale WHERE acc_id = '$pet_id' AND mno = '$mno'");
+        
+        if ($sale_result && mysqli_num_rows($sale_result) > 0) {
+            $sale_data = mysqli_fetch_assoc($sale_result);
+            $sale_quantity = $sale_data['quantity'];
+            $sale_total = $sale_data['total_price'];
+
+
+            // Calculate remaining quantity
+            $remaining_quantity = $sale_quantity - $quantity;
+            $totalprice = $sale_total - $totalCost;
+
+            if ($remaining_quantity <= 0) {
+                // Full return - delete from acc_sale
+                mysqli_query($cnn, "DELETE FROM acc_sale WHERE acc_id = '$pet_id' AND mno = '$mno'");
+            } else {
+                // Partial return - update sale quantity
+                mysqli_query($cnn, "UPDATE acc_sale SET quantity = '$remaining_quantity',total_price = $totalprice  WHERE acc_id = '$pet_id' AND mno = '$mno'");
+            }
+
+            // // Optionally update pet status
+            // mysqli_query($cnn, "UPDATE pets SET status = 'Active' WHERE id = '$pet_id'");
+
+            // Delete the return record (optional, if not needed after processing)
+            // mysqli_query($cnn, "DELETE FROM acc_return WHERE pet_id = '$pet_id' AND mno = '$mno'");
+
+            $response['success'] = true;
+            $response['message'] = "Pet Return processed successfully.";
+        } else {
+            $response['success'] = false;
+            $response['message'] = "Sale record not found.";
+        }
+        } else {
+            $response['success'] = false;
+            $response['message'] = "Failed to insert return record. SQL Error: " . mysqli_error($cnn);
+        }
+
+        
+    } else {
+        $response['success'] = false;
+        $response['message'] = "All Field is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if ($_GET['what'] == "delete_acc_return") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM `acc_return` WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+}
+
+if ($_GET['what'] == "add_service_m") {
+    $name = mysqli_real_escape_string($cnn, $_POST['pname']);
+    $email = mysqli_real_escape_string($cnn, $_POST['email']);
+    $mno = mysqli_real_escape_string($cnn, $_POST['mno']);
+    $a_date = mysqli_real_escape_string($cnn, $_POST['a_date']);
+    $add = mysqli_real_escape_string($cnn, $_POST['add']);
+    $pet_id = mysqli_real_escape_string($cnn, $_POST['pet_id']);
+    $discount = mysqli_real_escape_string($cnn, $_POST['discount']);
+    $totalCost = mysqli_real_escape_string($cnn, $_POST['totalCost']);
+    // $quantity = mysqli_real_escape_string($cnn, $_POST['que']);
+
+    $response = [];
+
+    if (!empty($name) && !empty($email) && !empty($mno) && !empty($a_date) && !empty($pet_id)  && !empty($totalCost)) {
+
+        // Insert category with status
+        $query_insert = mysqli_query($cnn, "INSERT INTO  service_maintain (name,mno, email,date,address,discount,total_price,s_id,status) VALUES ('$name','$mno','$email','$a_date','$add','$discount','$totalCost','$pet_id', 'Pending')");
+        if ($query_insert) {
+            $response['success'] = true;
+            $response['message'] = "Service Added successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to add category. SQL Error: " . mysqli_error($cnn);
+        }
+        
+    } else {
+        $response['success'] = false;
+        $response['message'] = "All Field is required.";
+    }
+        ob_clean();
+        header('Content-Type: application/json');
+        echo json_encode($response);
 }
 ?>
