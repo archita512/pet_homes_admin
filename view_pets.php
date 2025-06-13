@@ -15,6 +15,7 @@ if(isset($_SESSION['admin'])){
   $mno = $row['mno'];
   $image = $row['image'];
   $gender = $row['gender'];
+  // aaaa
   
 }
 ?>
