@@ -1328,6 +1328,7 @@ if($_GET['what'] == "update_profile"){
     $contact = $_POST['contact'];
     $gender = $_POST['gender'];
     $email = $_SESSION['admin']; // Assuming the email is stored in session
+    $location = $_POST['address'];
 
     // Handle file upload
     if (isset($_FILES['profileImageInput']) && $_FILES['profileImageInput']['error'] == UPLOAD_ERR_OK) {
@@ -1338,14 +1339,14 @@ if($_GET['what'] == "update_profile"){
         // Move the uploaded file to the /images directory
         if (move_uploaded_file($imageTmpPath, $imagePath)) {
             // Update query with image name
-            $query = "UPDATE `login` SET `name`='$name', `mno`='$contact', `gender`='$gender', `image`='$imageName' WHERE `email`='$email'";
+            $query = "UPDATE `login` SET `name`='$name', `mno`='$contact', `gender`='$gender', `image`='$imageName', `location`='$location' WHERE `email`='$email'";
         } else {
             echo json_encode(['status' => 'error', 'message' => 'Failed to move uploaded file.']);
             exit;
         }
     } else {
         // If no image is uploaded, just update other fields
-        $query = "UPDATE `login` SET `name`='$name', `mno`='$contact', `gender`='$gender' WHERE `email`='$email'";
+        $query = "UPDATE `login` SET `name`='$name', `mno`='$contact', `gender`='$gender', `location`='$location' WHERE `email`='$email'";
     }
 
     if (mysqli_query($cnn, $query)) {

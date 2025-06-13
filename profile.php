@@ -10,6 +10,8 @@
     $mno = $row['mno'];
     $image = $row['image'];
     $gender = $row['gender'];
+    $location = $row['location'];
+
     
   }
  
@@ -137,6 +139,8 @@
                   value="<?php echo $mno; ?>"
                 />
               </div>
+              
+
               <div class="col-md-6 form-group">
                 <label for="gender">Gender</label>
                 <select class="form-select" id="gender" name="gender">
@@ -146,6 +150,11 @@
                 </select>
               </div>
             </div>
+            <div class="row mt-3">
+              <div class="col-md-6 form-group">
+                <label for="address">Address</label>
+                <textarea class="form-control" id="address" name="address"><?php if(isset($location)){ echo $location; } ?></textarea>
+              </div>
 
             <div class="k-profile-actions">
             <button type="button" class="btn-cancel" onclick="window.location.href='dashbord.php';">Cancel</button>

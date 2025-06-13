@@ -32,6 +32,7 @@ if(isset($_SESSION['admin'])){
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
     />
+    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
     <!-- custom css -->
     <link rel="stylesheet" href="css/category.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
@@ -60,7 +61,13 @@ if(isset($_SESSION['admin'])){
               <div class="k-stat-card">
                 <div class="k-stat-content">
                   <div class="k-stat-title">Total Pets</div>
-                  <div class="k-stat-value">1484</div>
+                  <div class="k-stat-value"><?php 
+                      $query = mysqli_query($cnn,"SELECT count(*) as total_pets FROM `pets`");
+                      $row = mysqli_fetch_array($query);
+                      $total_pets = $row['total_pets'];
+                      echo $total_pets;
+                  ?>
+                  </div>
                 </div>
                 <div class="k-stat-icon">
                   <i class="fas fa-cat"></i>
@@ -72,8 +79,96 @@ if(isset($_SESSION['admin'])){
             <div class="col-12 col-sm-6 col-lg-3">
               <div class="k-stat-card">
                 <div class="k-stat-content">
-                  <div class="k-stat-title">Pets Available for Adoption</div>
-                  <div class="k-stat-value">1457</div>
+                  <div class="k-stat-title">Total Accessories</div>
+                  <div class="k-stat-value"><?php 
+                      $query = mysqli_query($cnn,"SELECT count(*) as total_accessories FROM `accessories`");
+                      $row = mysqli_fetch_array($query);
+                      $total_accessories = $row['total_accessories'];
+                      echo $total_accessories;
+                  ?>
+                  </div>
+                </div>
+                <div class="k-stat-icon">
+                <i class="fas fa-shopping-basket"></i>    
+                </div>
+              </div>
+            </div>
+
+            <!-- Pending Adoption Requests Card -->
+            <div class="col-12 col-sm-6 col-lg-3">
+              <div class="k-stat-card">
+                <div class="k-stat-content">
+                  <div class="k-stat-title">Total Services</div>
+                  <div class="k-stat-value"><?php 
+                      $query = mysqli_query($cnn,"SELECT count(*) as total_services FROM `service`");
+                      $row = mysqli_fetch_array($query);
+                      $total_services = $row['total_services'];
+                      echo $total_services;
+                  ?>
+                  </div>
+                </div>
+                <div class="k-stat-icon">
+                  <i class="fas fa-concierge-bell"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Successful Adoptions Card -->
+            <div class="col-12 col-sm-6 col-lg-3">
+              <div class="k-stat-card">
+                <div class="k-stat-content">
+                  <div class="k-stat-title">Total Users</div>
+                  <div class="k-stat-value"><?php 
+                      $query = mysqli_query($cnn,"SELECT count(*) as total_users FROM `login`");
+                      $row = mysqli_fetch_array($query);
+                      $total_users = $row['total_users'];
+                      echo $total_users;
+                  ?>
+                  </div>
+                </div>
+                <div class="k-stat-icon">
+                  <i class="fas fa-users"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+        </div>
+        <div class="container-fluid py-4">
+        
+          <div class="row g-4 dashboard-stats" style="margin-top: -49px;">
+            <!-- Total Pets Card -->
+            <div class="col-12 col-sm-6 col-lg-3">
+              <div class="k-stat-card">
+                <div class="k-stat-content">
+                  <div class="k-stat-title">Adopted Pets</div>
+                  <div class="k-stat-value"><?php
+                      $query = mysqli_query($cnn,"SELECT count(*) as total_adopted_pets FROM `addopt_pet`");
+                      $row = mysqli_fetch_array($query);
+                      $total_adopted_pets = $row['total_adopted_pets'];
+                      echo $total_adopted_pets;
+                  ?>
+                  </div>
+                </div>
+                <div class="k-stat-icon">
+                  <i class="fas fa-cat"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pets Available for Adoption Card -->
+            <div class="col-12 col-sm-6 col-lg-3">
+              <div class="k-stat-card">
+                <div class="k-stat-content">
+                  <div class="k-stat-title">Accessories Sales</div>
+                  <div class="k-stat-value"><?php
+                      $query = mysqli_query($cnn,"SELECT count(*) as total_sales FROM `acc_sale`");
+                      $row = mysqli_fetch_array($query);
+                      $total_sales = $row['total_sales'];
+                      echo $total_sales;
+                  ?>
+                  </div>
                 </div>
                 <div class="k-stat-icon">
                   <i class="fas fa-paw"></i>
@@ -85,8 +180,14 @@ if(isset($_SESSION['admin'])){
             <div class="col-12 col-sm-6 col-lg-3">
               <div class="k-stat-card">
                 <div class="k-stat-content">
-                  <div class="k-stat-title">Pending Adoption Requests</div>
-                  <div class="k-stat-value">142</div>
+                  <div class="k-stat-title">Services Maintain</div>
+                  <div class="k-stat-value"><?php
+                      $query = mysqli_query($cnn,"SELECT count(*) as total_sales FROM `service_maintain`");
+                      $row = mysqli_fetch_array($query);
+                      $total_sales = $row['total_sales'];
+                      echo $total_sales;
+                  ?>
+                  </div>
                 </div>
                 <div class="k-stat-icon">
                   <i class="fas fa-hourglass-half"></i>
@@ -98,8 +199,14 @@ if(isset($_SESSION['admin'])){
             <div class="col-12 col-sm-6 col-lg-3">
               <div class="k-stat-card">
                 <div class="k-stat-content">
-                  <div class="k-stat-title">Successful Adoptions</div>
-                  <div class="k-stat-value">1248</div>
+                  <div class="k-stat-title">Pets Return</div>
+                  <div class="k-stat-value"><?php
+                      $query = mysqli_query($cnn,"SELECT count(*) as total_sales FROM `pet_return`");
+                      $row = mysqli_fetch_array($query);
+                      $total_sales = $row['total_sales'];
+                      echo $total_sales;
+                  ?>
+                  </div>
                 </div>
                 <div class="k-stat-icon">
                   <i class="fas fa-check-circle"></i>
@@ -107,6 +214,8 @@ if(isset($_SESSION['admin'])){
               </div>
             </div>
           </div>
+
+          
         </div>
         <!-- chart section -->
         <div class="k-charts-container container-fluid py-4">
@@ -258,132 +367,66 @@ if(isset($_SESSION['admin'])){
               </div>
               <div class="k-card-body">
                 <div class="table-responsive">
-                  <table class="table k-adoption-table">
-                    <thead>
-                      <tr>
-                        <th scope="col" class="rounded-start-2">
-                          Request ID <i class="fas fa-sort ms-1"></i>
-                        </th>
-                        <th scope="col">
-                          Date <i class="fas fa-sort ms-1"></i>
-                        </th>
-                        <th scope="col">
-                          Pet Name <i class="fas fa-sort ms-1"></i>
-                        </th>
-                        <th scope="col">
-                          Adopter Name <i class="fas fa-sort ms-1"></i>
-                        </th>
-                        <th scope="col">
-                          Location <i class="fas fa-sort ms-1"></i>
-                        </th>
-                        <th scope="col" class="rounded-end-2">
-                          Status <i class="fas fa-sort ms-1"></i>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>#REQ1234</td>
-                        <td>05 Feb 2025</td>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="k-pet-img me-2">
-                              <img src="images/t1.jpg" alt="Thor" />
+                <table id="tbl_cat" class="table table-striped table-hover">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Image</th>
+                  <th>Addoption Date</th>
+
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Phone No</th>
+                  <th>Discount</th>
+                  <th>Total Price</th>
+                  <th>Address</th>
+                 
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                  $query = mysqli_query($cnn,"SELECT ad.*,p.image FROM `addopt_pet` AS ad JOIN pets AS p ON ad.pet_id = p.id ORDER BY ad.id DESC");
+                  $cnt = 1;
+                  while($row = mysqli_fetch_array($query)){
+                    $c_id = encryptor('encrypt',$row['id']);
+                    $images = json_decode($row['image']); // Assuming images are stored as a JSON array
+                    $first_image = $images[0]; // Get the first image from the array
+  
+                    echo '<tr class="k-tr">
+                        <td>#' . $cnt . '</td>
+                        <td><img src="../pet_homes/img/' . $first_image .'" style="width: 90px; height: 60px;"></td>
+                       <td>' . date('d M Y', strtotime($row['ad_date'])) . '</td>
+                        <td>' . $row['name'] . '</td>
+                         <td>' . $row['email'] . '</td>
+                          <td>' . $row['mno'] . '</td>
+                          <td>$' . $row['discount'] . '</td>
+                          <td>$' . $row['total_price'] . '</td>
+                         <td>' . substr($row['address'], 0, 10) . '...</td> 
+                       
+                        <td class="action-buttons">
+                          <a href="#" 
+                                class="edit-btn text-decoration-none" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#accessoryDetailModal"
+                                data-description="' . htmlspecialchars($row['address']) . '">
+                                <img src="images/view.png" alt="" style="width: 24px;height: 25px;" />
+                          </a>
+                          
+                            <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                                <img src="images/delete.svg" alt="" />
                             </div>
-                            Thor
-                          </div>
                         </td>
-                        <td>Floyd Miles</td>
-                        <td>New York, NY</td>
-                        <td>
-                          <span class="k-status k-approved">Approved</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>#REQ1234</td>
-                        <td>12 Jan 2025</td>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="k-pet-img me-2">
-                              <img src="images/t2.png" alt="Mochi" />
-                            </div>
-                            Mochi
-                          </div>
-                        </td>
-                        <td>Ronald Richards</td>
-                        <td>Los Angeles, CA</td>
-                        <td><span class="k-status k-pending">Pending</span></td>
-                      </tr>
-                      <tr>
-                        <td>#REQ1234</td>
-                        <td>12 Jan 2025</td>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="k-pet-img me-2">
-                              <img src="images/t3.png" alt="Chirpy" />
-                            </div>
-                            Chirpy
-                          </div>
-                        </td>
-                        <td>Theresa Webb</td>
-                        <td>Houston, TX</td>
-                        <td>
-                          <span class="k-status k-rejected">Rejected</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>#REQ1234</td>
-                        <td>12 Jan 2025</td>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="k-pet-img me-2">
-                              <img src="images/t4.png" alt="Luna" />
-                            </div>
-                            Luna
-                          </div>
-                        </td>
-                        <td>Ralph Edwards</td>
-                        <td>Miami, FL</td>
-                        <td>
-                          <span class="k-status k-rejected">Rejected</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>#REQ1234</td>
-                        <td>12 Jan 2025</td>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="k-pet-img me-2">
-                              <img src="images/t5.png" alt="Binky" />
-                            </div>
-                            Binky
-                          </div>
-                        </td>
-                        <td>Bessie Cooper</td>
-                        <td>Chicago, IL</td>
-                        <td>
-                          <span class="k-status k-approved">Approved</span>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>#REQ1234</td>
-                        <td>12 Jan 2025</td>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="k-pet-img me-2">
-                              <img src="images/t6.png" alt="Slinky" />
-                            </div>
-                            Slinky
-                          </div>
-                        </td>
-                        <td>Wade Warren</td>
-                        <td>New York, NY</td>
-                        <td><span class="k-status k-pending">Pending</span></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                      </tr>'; // Corrected closing of the echo statement
+  
+                    $cnt++;
+                  } // Correctly closing the while loop
+                  ?>
+                
+              </tbody>
+            </table>
                 </div>
-                <div class="k-pagination pt-3">
+                <!-- <div class="k-pagination pt-3">
                   <div>Showing 0 of 0</div>
                   <div>
                     <nav>
@@ -404,7 +447,7 @@ if(isset($_SESSION['admin'])){
                       </ul>
                     </nav>
                   </div>
-                </div>
+                </div> -->
               </div>
             </div>
           </div>
@@ -634,7 +677,7 @@ if(isset($_SESSION['admin'])){
       </div>
     </div>
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script> -->
     <script src="https://cdn.amcharts.com/lib/5/index.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/map.js"></script>
@@ -648,30 +691,156 @@ if(isset($_SESSION['admin'])){
     <script src="js/SmoothedLineChart.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+      integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <!-- Bootstrap JS Bundle -->
+    
+    <!-- jQuery Validate -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <!-- Bootstrap JS -->
     <script src="js/Piechart.js"></script>
     
     <script src="js/chnage_password.js"></script>
 
     <script>
-      function togglePassword(inputId) {
-        const passwordInput = document.getElementById(inputId);
-        const icon = passwordInput.nextElementSibling.querySelector("i");
+          $(document).ready(function() {
+            $('#tbl_cat').DataTable(); // Initialize DataTable
+        });
 
-        if (passwordInput.type === "password") {
-          passwordInput.type = "text";
-          icon.classList.remove("fa-eye-slash");
-          icon.classList.add("fa-eye");
-        } else {
-          passwordInput.type = "password";
-          icon.classList.remove("fa-eye");
-          icon.classList.add("fa-eye-slash");
-        }
-      }
+       $("#btnchnage").click(function (event) {
+       event.preventDefault(); // Prevent form from submitting normally
+
+      // Check if any of the three fields are empty
+      if($("#oldPassword").val() == "" || $("#newPassword").val() == "" || $("#confirmPassword").val() == "") {
+        var toastHTML = `
+                    <div aria-live="polite" aria-atomic="true" class="position-relative">
+                        <div class="toast-container position-fixed top-0 end-0 p-3">
+                            <div id="otpValidToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="toast-header">
+                                    <strong class="me-auto">Error</strong>
+                                    <small class="text-muted">just now</small>
+                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                                <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                                 Fields are required.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+        
+        // Append the toast HTML to the body
+        $('body').append(toastHTML);
+        
+        // Show the toast
+        var toastEl = document.getElementById("otpValidToast");
+        var toast = new bootstrap.Toast(toastEl);
+        toast.show();
+    
+            } else {
+                const json =  { "id" : $("#id").val(),"cpwd" : $("#oldPassword").val(),"npwd" : $("#newPassword").val(),"cnpwd" : $("#confirmPassword").val() };
+                console.log(json);
+                $.ajax({
+                    type : "POST",
+                    method: "POST",
+                    url: "crud.php?what=admin_changepwd",
+                    data: json,
+                    dataType: "JSON",
+                    success: function (response) {
+                        console.log(response);
+                        if (response.success) {
+                            // Create the toast HTML
+                            var toastHTML = `
+                                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                                        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                            <div class="toast-header">
+                                                <strong class="me-auto">Notification</strong>
+                                                <small class="text-muted">just now</small>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                            </div>
+                                            <div class="toast-body" style="background-color: #7dcea0; color: white;"> 
+                                                ${response.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    
+                            // Append the toast HTML to the body
+                            $('body').append(toastHTML);
+                    
+                            // Show the toast
+                            var toastEl = document.getElementById("successToast");
+                            var toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                    
+                            // Redirect after 2 seconds
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                        }
+                        else{
+                            var toastHTML = `
+                                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                            <div class="toast-header">
+                                                <strong class="me-auto">Notification</strong>
+                                                <small class="text-muted">just now</small>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                            </div>
+                                            <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                                                ${response.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    
+                            // Append the toast HTML to the body
+                            $('body').append(toastHTML);
+                    
+                            // Show the toast
+                            var toastEl = document.getElementById("errorToast");
+                            var toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                    
+                            // Redirect after 2 seconds
+                            setTimeout(function() {
+                              
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                        }
+                        
+                    }
+                }); 
+            }
+            
+        });
+
+
+        function togglePassword(inputId) {
+              var input = document.getElementById(inputId);
+              if (input.type === "password") {
+                input.type = "text"; // Change to text to show password
+                // Change icon to eye
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.remove('fa-eye-slash');
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye');
+              } else {
+                input.type = "password"; // Change back to password to hide
+                // Change icon to eye-slash
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.remove('fa-eye');
+                document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye-slash');
+              }
+            }
     </script>
   </body>
 </html>
