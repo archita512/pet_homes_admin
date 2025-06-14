@@ -199,6 +199,7 @@
               <li><a href="aboutus.php" class="submenu-link">About Us</a></li>
               <li><a href="terms.php" class="submenu-link">Terms & Condtiton</a></li>
               <li><a href="privacy.php" class="submenu-link">Privacy Policy</a></li>
+              <li><a href="faq.php" class="submenu-link">FAQ Message</a></li>
             </ul>
           </li>
         <!-- <li>

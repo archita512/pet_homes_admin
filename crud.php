@@ -2017,4 +2017,74 @@ if ($_GET['what'] == "add_service_m") {
         header('Content-Type: application/json');
         echo json_encode($response);
 }
+if ($_GET['what'] == "add_faq") {
+    $question = mysqli_real_escape_string($cnn, $_POST['question']);
+    $ans = mysqli_real_escape_string($cnn, $_POST['ans']);
+    
+    $response = [];
+
+   
+    if (!empty($question) && !empty($ans)) {
+      
+            // Insert category with status
+            $query_insert = mysqli_query($cnn, "INSERT INTO que_ans (question,ans) VALUES ('$question','$ans')");
+            if ($query_insert) {
+                $response['success'] = true;
+                $response['message'] = "FAQ added successfully.";
+            } else {
+                // Capture SQL error
+                $response['success'] = false;
+                $response['message'] = "Failed to add FAQ. SQL Error: " . mysqli_error($cnn);
+            }
+        
+    } else {
+        $response['success'] = false;
+        $response['message'] = "All Field is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+
+if ($_GET['what'] == "update_faq") {
+    $id_faq = mysqli_real_escape_string($cnn, $_POST['id_faq']);
+    $question = mysqli_real_escape_string($cnn, $_POST['question']);
+    $ans = mysqli_real_escape_string($cnn, $_POST['ans']);
+    
+    $response = [];
+    if (!empty($question) && !empty($ans)) {
+        // Insert category with status
+        $query_insert = mysqli_query($cnn, "UPDATE que_ans SET question = '$question', ans = '$ans' WHERE id = '$id_faq'");
+        if ($query_insert) {
+            $response['success'] = true;
+            $response['message'] = "FAQ Update successfully.";
+        } else {
+            // Capture SQL error
+            $response['success'] = false;
+            $response['message'] = "Failed to add FAQ . SQL Error: " . mysqli_error($cnn);
+        }
+    } else {
+        $response['success'] = false;
+        $response['message'] = "All Field is required.";
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if ($_GET['what'] == "delete_faq") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM `que_ans` WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+}
 ?>

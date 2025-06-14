@@ -109,7 +109,7 @@ if(isset($_SESSION['admin'])){
             </div>
 
             <div class="k-modal-footer">
-            <button type="button" class="k-btn-cancel" onclick="window.location.href='category.php'">Cancel</button>
+            <button type="button" class="k-btn-cancel" onclick="window.location.href='acc_category.php'">Cancel</button>
             <button type="submit"  name="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>"
             id="<?php echo isset($_GET['id']) ? 'btnUpdate' : 'btnSubmit'; ?>" class="k-btn-save">Save</button>
           </div>

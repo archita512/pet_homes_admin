@@ -35,17 +35,6 @@ if(isset($_SESSION['admin'])){
     <link rel="stylesheet" href="css/category.css" />
     <link rel="stylesheet" href="css/profile.css" />
   </head>
-  <style>
-    .k-pet-box img {
-    max-width: 92px !important;
-    max-height: 51px !important;
-    object-fit: contain;
-}
-.k-pet-box {
-    width: 35px;
-    background-color: #ebebeb00 !important;
-}
-  </style>
   <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -59,89 +48,66 @@ if(isset($_SESSION['admin'])){
       <div class="k-page-content">
         <div class="k-page-header">
           <div>
-            <h4 class="mb-1">Users</h4>
+            <h4 class="mb-1" style="margin-left: 30px;">FAQ Message</h4>
             <nav class="k-breadcrumb small">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
-                  <a href="#" class="k-link-text-color text-decoration-none">Dashboard</a>
+                  <a href="#" class="k-link-text-color text-decoration-none" style="    margin-left: 30px;">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active k-link-text-color-active">
-                  Users
+                  FAQ Message
                 </li>
               </ol>
             </nav>
           </div>
           <div class="d-flex align-items-center justify-content-center">
            
+            <div>
+              <a
+              href="add_faq.php"
+                class="k-add-btn d-flex align-items-center justify-content-center text-decoration-none">
+                <i class="fas fa-plus me-1 k-icon-plus"></i>
+                <p class="p-0 m-0">Add</p>
+              </a>
+            </div>
           </div>
         </div>
-        <!-- <td>' . substr($row['message'], 0, 50) . '...</td> -->
-        <!-- Table Container -->
-        <div class="k-table-container d-flex flex-column justify-content-between">
-          <div class="table-responsive">
-            <table id="tbl_cat" class="table table-striped table-hover">
-              <thead>
-                <tr>
-                  <th>No</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Phone No</th>
-                 
-                  <th>Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-                  $query = mysqli_query($cnn,"SELECT * FROM `user_login` ORDER BY id DESC");
-                  $cnt = 1;
-                  while($row = mysqli_fetch_array($query)){
-                    $c_id = encryptor('encrypt',$row['id']);
-  
-                    echo '<tr class="k-tr">
-                        <td>#' . $cnt . '</td>
-                        <td>' . $row['name'] . '</td>
-                         <td>' . $row['email'] . '</td>
-                          <td>' . $row['phone'] . '</td>
-                       
-                        <td class="status">
-                          <label class="toggle-switch">
-                              <input type="checkbox" value="' . ($row['status'] === 'Active' ? '1' : '0') . '" ' . ($row['status'] === 'Active' ? 'checked' : '') . ' class="status-checkbox" data-id="' . $row['id'] . '">
-                              <span class="toggle-slider"></span>
-                          </label>
-                        </td>
-                        <td class="action-buttons">
-                         
-                          
-                            <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-                                <img src="images/delete.svg" alt="" />
-                            </div>
-                        </td>
-                      </tr>'; // Corrected closing of the echo statement
-  
-                    $cnt++;
-                  } // Correctly closing the while loop
-                  ?>
-                
-              </tbody>
-            </table>
-          </div>
 
-          <!-- Empty State -->
-          <!-- <div class="k-empty-state">
-            <img src="images/no-data.png" alt="No Data" />
-            <p>No data Available</p>
-          </div> -->
+        <div class="about-list" style="margin-left: 50px; margin-right: 50px;">
+        <?php
+        $query = mysqli_query($cnn, "SELECT * FROM que_ans ORDER BY id DESC");
+        $cnt = 1;
+        while($row = mysqli_fetch_array($query)){
+          $c_id = encryptor('encrypt', $row['id']);
+          ?>
+          <div class="about-card border rounded p-3 mb-3 bg-white">
+              <!-- Top Row: Name (left), Actions (right) -->
+              <div class="d-flex justify-content-between align-items-center">
+                  <h5 class="mb-0"><?php echo htmlspecialchars($row['question']); ?></h5>
+                  <div class="d-flex align-items-center gap-2">
+                 
+
+            <a href="add_faq.php?id=<?php echo $c_id; ?>" class="edit-btn">
+                <img src="images/update.svg" alt="Edit" width="20">
+            </a>
+            <div class="delete-btn" data-id="<?php echo $row['id']; ?>" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
+                <img src="images/delete.svg" alt="Delete" width="20">
+            </div>
         </div>
       </div>
-    </div>
+      <!-- Description Line -->
+      <p class="mt-2 mb-0 text-muted"><?php echo htmlspecialchars($row['ans']); ?></p>
+      </div>
+      <?php } ?>
+      </div>
 
     <!-- offcanvas sidebar -->
     <div
       class="offcanvas offcanvas-start"
       tabindex="-1"
       id="offcanvasExample"
-      aria-labelledby="offcanvasExampleLabel">
+      aria-labelledby="offcanvasExampleLabel"
+    >
       <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5>
         <button
@@ -245,26 +211,7 @@ if(isset($_SESSION['admin'])){
       </div>
     </div>
 
-    <!-- Modal for displaying accessory details -->
-    <div class="modal fade" id="accessoryDetailModal" tabindex="-1" aria-labelledby="accessoryDetailModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="accessoryDetailModalLabel">Service Description</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <p id="des"></p>
-       
-        <!-- Add more fields as necessary -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="modal fade"
+    <div class="modal fade"
       id="changePasswordModal"
       tabindex="-1"
       aria-labelledby="changePasswordModalLabel"
@@ -354,20 +301,16 @@ if(isset($_SESSION['admin'])){
         </div>
       </div>
     </div>
-
-
     <!-- JavaScript Libraries - Order is important! -->
-    <!-- jQuery must come first -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
-    <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     
+                
+    
     <!-- <script src="js/chnage_password.js"></script> -->
+    <!-- DataTable Initialization -->
     <script>
       $("#btnchnage").click(function (event) {
        event.preventDefault(); // Prevent form from submitting normally
@@ -496,28 +439,16 @@ if(isset($_SESSION['admin'])){
               }
             }
     </script>
-    <!-- DataTable Initialization -->
     <script>
       $(document).ready(function() {
     $('#tbl_cat').DataTable(); // Initialize DataTable
 });
 
-document.getElementById('accessoryDetailModal').addEventListener('show.bs.modal', function (event) {
-    const button = event.relatedTarget; // Button that triggered the modal
-    const description = button.getAttribute('data-description'); // Get the description from data-* attribute
-
-    // Update the modal's content
-    const modalContent = this.querySelector('#des'); // Select the paragraph for description
-    modalContent.textContent = description; // Set the description text
-});
-
-
-
 const deleteCategoryModal = document.getElementById('deleteConfirmModal');
 deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget; // Button that triggered the modal
     const categoryId = button.getAttribute('data-id'); // Extract info from data-* attributes
-    const message = `Are you sure you want to delete User Image?`;
+    const message = `Are you sure you want to delete FAQ?`;
 
     console.log(categoryId);
     
@@ -528,7 +459,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     // Add event listener for the delete button
     const deleteButton = deleteCategoryModal.querySelector('.d_deletebtn');
     deleteButton.onclick = function() {
-        fetch(`crud.php?what=delete_user`, {
+        fetch(`crud.php?what=delete_faq`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -538,10 +469,10 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Category deleted successfully');
+                console.log('FAQ deleted successfully');
                 location.reload(); // Reload the page to see the changes
             } else {
-                console.error('Error deleting category');
+                console.error('Error deleting FAQ');
             }
         })
         .catch(error => console.error('Error:', error));
@@ -555,7 +486,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 const status = this.checked ? 'Active' : 'Block';
 
                 // AJAX request to update status
-                fetch('crud.php?what=update_status_user', {
+                fetch('crud.php?what=update_status_terms', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
