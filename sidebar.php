@@ -102,7 +102,7 @@
             <ul class="submenu" style="margin-left: 10px;">
               <li><a href="acc_category.php" class="submenu-link">Accessories Catgeory</a></li>
               <li><a href="accessories.php" class="submenu-link">Accessories</a></li>
-              <!-- <li><a href="pets.php" class="submenu-link">Pets</a></li> -->
+              
             </ul>
           </li>
 
@@ -143,7 +143,7 @@
             <ul class="submenu" style="margin-left: 10px;">
               <li><a href="addoption.php" class="submenu-link">Pet Adoption</a></li>
               <li><a href="pet_return.php" class="submenu-link">Pet Return</a></li>
-              <!-- <li><a href="pets.php" class="submenu-link">Pets</a></li> -->
+              
             </ul>
           </li>
           <li class="nav-item">
@@ -158,21 +158,10 @@
             <ul class="submenu" style="margin-left: 10px;">
               <li><a href="ass_pur.php" class="submenu-link">Accessories Sale</a></li>
               <li><a href="ass_retu.php" class="submenu-link">Accessories Return</a></li>
-              <!-- <li><a href="pets.php" class="submenu-link">Pets</a></li> -->
+              
             </ul>
           </li>
-        <!-- <li>
-          <a href="addoption.php" class="d-flex align-items-center">
-            <i class="fas fa-history"></i>
-            <span>Adoption</span>
-          </a>
-        </li>
-        <li>
-          <a href="pet_return.php" class="d-flex align-items-center">
-           <i class="fa-solid fa-cat fa-flip-horizontal"></i>
-            <span>Pet Return</span>
-          </a>
-        </li> -->
+       
         <li>
           <a href="service_m.php" class="d-flex align-items-center">
           <i class="fa-solid fa-house-chimney-medical"></i>
@@ -202,31 +191,7 @@
               <li><a href="faq.php" class="submenu-link">FAQ Message</a></li>
             </ul>
           </li>
-        <!-- <li>
-          <a href="aboutus.php" class="d-flex align-items-center">
-           <i class="fa-solid fa-circle-info"></i>
-            <span>About Us</span>
-          </a>
-        </li>
-        <li>
-          <a href="terms.php" class="d-flex align-items-center">
-          <i class="fa-solid fa-file-circle-check"></i>
-            <span>Terms & Condtiton</span>
-          </a>
-        </li>
-        <li>
-          <a href="privacy.php" class="d-flex align-items-center">
-          <i class='fas fa-shield-alt'></i>
- 
-            <span>Privacy Policy</span>
-          </a>
-        </li> -->
-        <!-- <li>
-          <a href="#" class="d-flex align-items-center">
-            <i class="fas fa-history"></i>
-            <span>Adoption History</span>
-          </a>
-        </li> -->
+       
       </ul>
     </div>
     <script>

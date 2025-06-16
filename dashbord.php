@@ -32,7 +32,14 @@ if(isset($_SESSION['admin'])){
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
       rel="stylesheet"
     />
-    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- ✅ Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- ✅ DataTables Bootstrap 5 CSS -->
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <!-- <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet"> -->
+    <!-- <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet"> -->
     <!-- custom css -->
     <link rel="stylesheet" href="css/category.css" />
     <link rel="stylesheet" href="css/dashboard.css" />
@@ -43,6 +50,7 @@ if(isset($_SESSION['admin'])){
   background-color: #fff;
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+  height: auto;
 }
 
 .k-card-header h5 {
@@ -58,6 +66,27 @@ if(isset($_SESSION['admin'])){
     box-sizing: border-box;
     height: 307px !important;
     width: 364px !important;
+}
+.ds_dash-line{
+    border: 0.75px solid #dfdbdb;
+}
+.ds_noti-inner{
+    padding: 0px 15px;
+}
+/* Hide scrollbar for WebKit browsers (Chrome, Safari) */
+.ds_noti-inner::-webkit-scrollbar {
+    width: 0; /* Hide scrollbar width */
+    background: transparent; /* Optional: Set background to transparent */
+}
+
+/* Hide scrollbar for Firefox */
+.ds_noti-inner {
+    scrollbar-width: none; /* Hide scrollbar */
+}
+
+/* Optional: Add padding to the inner div to prevent content from being cut off */
+.ds_noti-inner {
+    padding-right: 10px; /* Add padding to the right */
 }
   </style>
   <body>
@@ -286,8 +315,8 @@ if(isset($_SESSION['admin'])){
               <div class="k-world-chart k-card">
                 <div class="k-card-header d-flex justify-content-between">
                   <div class="k-chart-heading">
-                    <h5 class="mb-1">Adopter Demographics</h5>
-                    <span class="text-muted">Map of adoption locations</span>
+                    <h5 class="mb-1">Inquiry</h5>
+                    <span class="text-muted">User Inquiry</span>
                   </div>
                   <div class="k-card-actions">
                     <button class="k-card-menu-btn">
@@ -295,63 +324,34 @@ if(isset($_SESSION['admin'])){
                     </button>
                   </div>
                 </div>
-                <div class="k-card-body">
-                  <div id="chartdiv" class="k-world-map"></div>
-                  <div class="k-country-stats mt-4">
-                    <div class="row g-4">
-                      <div class="col-6 col-md-4">
-                        <div class="k-country-stat">
-                          <div class="k-country-flag">
-                            <img src="images/US.png" alt="US Flag" />
-                          </div>
-                          <div class="k-country-info">
-                            <h6 class="text-nowrap text-truncate">
-                              United State (USA)
-                            </h6>
-                            <div class="k-country-data">
-                              <span class="k-percentage">54%</span>
-                              <span class="k-users text-nowrap"
-                                >5,761,687 Users</span
-                              >
-                            </div>
-                          </div>
-                        </div>
+              
+
+                      <div class="ds_noti-inner ms-3" style="max-height: 474px; overflow-y: auto;margin-top: 13px;"> <!-- Added styles for scrolling -->
+                      <?php  
+                          date_default_timezone_set('Asia/Kolkata');
+
+                          $query = mysqli_query($cnn,"SELECT * FROM contact_us ORDER BY id DESC");
+                          while($row = mysqli_fetch_assoc($query)){
+                              $date = $row['created_at'];
+                              // Removed timestamp calculations
+                              
+                              echo '<div>
+                                  <div class="d-flex justify-content-between mt-3">
+                                      <div>
+                                          <span class="ms-2" style="font-weight: 600;">
+                                              ' . $row['name'] . '
+                                          </span>
+                                      </div>';
+                                      // Display the created_at date directly
+                                      echo '<p class="ds_noti-color me-3"> ' . date('d M Y', strtotime($date)) . '</p>'; // Show only the date
+                                      echo '</div>
+                                      <p class="ds_noti-color ds_line-height" style="margin-left: 15px;">'. substr($row['message'], 0, 80) .'</p>
+                                  </div>';
+                          }
+                          ?>
                       </div>
-                      <div class="col-6 col-md-4">
-                        <div class="k-country-stat">
-                          <div class="k-country-flag">
-                            <img src="images/china.png" alt="China Flag" />
-                          </div>
-                          <div class="k-country-info">
-                            <h6 class="text-nowrap text-truncate">China</h6>
-                            <div class="k-country-data">
-                              <span class="k-percentage">31%</span>
-                              <span class="k-users text-nowrap"
-                                >698,723 Users</span
-                              >
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-12 col-md-4">
-                        <div class="k-country-stat">
-                          <div class="k-country-flag">
-                            <img src="images/russia.png" alt="Russia Flag" />
-                          </div>
-                          <div class="k-country-info">
-                            <h6 class="text-nowrap text-truncate">Russia</h6>
-                            <div class="k-country-data">
-                              <span class="k-percentage">19%</span>
-                              <span class="k-users text-nowrap"
-                                >68,412 Users</span
-                              >
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                
+             
               </div>
             </div>
             <div class="col-12 col-xl-8 mb-4">
@@ -370,7 +370,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-card-body">
-                <canvas id="accessoriesChart" style="display: block; box-sizing: border-box; height: 374px; width: 993px;margin-top: -50px;"></canvas>
+                <canvas id="accessoriesChart" style="display: block; box-sizing: border-box; height: 490px; width: 993px;margin-top: -50px;"></canvas>
                 </div>
               </div>
             </div>
@@ -388,7 +388,7 @@ if(isset($_SESSION['admin'])){
                   <h5 class="mb-0">Adoption Requests</h5>
                 </div>
               </div>
-              <div class="k-card-body">
+              <div class="k-card-body" style="padding: 22px 35px;">
                 <div class="table-responsive">
                 <table id="tbl_cat" class="table table-striped table-hover">
               <thead>
@@ -404,7 +404,7 @@ if(isset($_SESSION['admin'])){
                   <th>Total Price</th>
                   <th>Address</th>
                  
-                  <th>Action</th>
+                  
                 </tr>
               </thead>
               <tbody>
@@ -427,19 +427,7 @@ if(isset($_SESSION['admin'])){
                           <td>$' . $row['total_price'] . '</td>
                          <td>' . substr($row['address'], 0, 10) . '...</td> 
                        
-                        <td class="action-buttons">
-                          <a href="#" 
-                                class="edit-btn text-decoration-none" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#accessoryDetailModal"
-                                data-description="' . htmlspecialchars($row['address']) . '">
-                                <img src="images/view.png" alt="" style="width: 24px;height: 25px;" />
-                          </a>
-                          
-                            <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-                                <img src="images/delete.svg" alt="" />
-                            </div>
-                        </td>
+                       
                       </tr>'; // Corrected closing of the echo statement
   
                     $cnt++;
@@ -449,28 +437,7 @@ if(isset($_SESSION['admin'])){
               </tbody>
             </table>
                 </div>
-                <!-- <div class="k-pagination pt-3">
-                  <div>Showing 0 of 0</div>
-                  <div>
-                    <nav>
-                      <ul class="pagination p-0 m-0">
-                        <li class="page-item k-prev">
-                          <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                          </a>
-                        </li>
-                        <li class="page-item">
-                          <a class="page-link text-black" href="#">1/10</a>
-                        </li>
-                        <li class="page-item k-next">
-                          <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                </div> -->
+              
               </div>
             </div>
           </div>
@@ -565,13 +532,11 @@ if(isset($_SESSION['admin'])){
     </div>
 
     <!-- Change Password Modal -->
-    <div
-      class="modal fade"
+    <div class="modal fade"
       id="changePasswordModal"
       tabindex="-1"
       aria-labelledby="changePasswordModalLabel"
-      aria-hidden="true"
-    >
+      aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-header border-bottom">
@@ -586,7 +551,8 @@ if(isset($_SESSION['admin'])){
             ></button>
           </div>
           <div class="modal-body py-3">
-            <form id="changePasswordForm">
+            <form id="passwordForm" method="POST" action="">
+            <input type="hidden" name="id" id="id" value="<?php if(isset($_SESSION['admin'])){ echo $id; } ?> ">
               <div class="mb-3">
                 <label for="oldPassword" class="form-label">Old Password</label>
                 <div class="position-relative">
@@ -594,6 +560,7 @@ if(isset($_SESSION['admin'])){
                     type="password"
                     class="form-control"
                     id="oldPassword"
+                    name="oldPassword"
                     placeholder="Your Password"
                   />
                   <span
@@ -611,31 +578,30 @@ if(isset($_SESSION['admin'])){
                     type="password"
                     class="form-control"
                     id="newPassword"
+                    name="newPassword"
                     placeholder="Your Password"
                   />
                   <span
                     class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
                     onclick="togglePassword('newPassword')"
                   >
-                    <i class="fas fa-eye"></i>
+                    <i class="fas fa-eye-slash"></i>
                   </span>
                 </div>
               </div>
               <div class="mb-4">
-                <label for="confirmPassword" class="form-label"
-                  >Confirm Password</label
-                >
+                <label for="confirmPassword" class="form-label">Confirm Password</label>
                 <div class="position-relative">
                   <input
                     type="password"
                     class="form-control"
                     id="confirmPassword"
+                    name="confirmPassword"
                     placeholder="Your Password"
                   />
                   <span
                     class="k-password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
-                    onclick="togglePassword('confirmPassword')"
-                  >
+                    onclick="togglePassword('confirmPassword')">
                     <i class="fas fa-eye-slash"></i>
                   </span>
                 </div>
@@ -644,11 +610,10 @@ if(isset($_SESSION['admin'])){
                 <button
                   type="button"
                   class="k-btn-cancel"
-                  data-bs-dismiss="modal"
-                >
+                  data-bs-dismiss="modal">
                   Cancel
                 </button>
-                <button type="submit" class="k-btn-reset">
+                <button type="submit" class="k-btn-reset" name="btnchnage" id="btnchnage">
                   Reset Password
                 </button>
               </div>
@@ -714,27 +679,52 @@ if(isset($_SESSION['admin'])){
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
 
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+
+  <!-- ✅ Bootstrap 5 Bundle JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- ✅ DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/css/bootstrap-toaster.min.css" integrity="sha512-613efYxCWhUklTCFNFaiPW4q6XXoogGNsn5WZoa0bwOBlVM02TJ/JH7o7SgWBnJIQgz1MMnmhNEcAVGb/JDefw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/css/bootstrap-toaster.css" integrity="sha512-DkcySkzTXJAPu18869uNSKlHOcm9UKvy4phZvC3b60guZveNCHI79sTM3wGJRNaqWSm9/7s07ztsgjonhJhI3g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-toaster/5.0.0/js/bootstrap-toaster.js" integrity="sha512-vG793m0UbmHpDP9w5eGmPczh4JJ5HUZKi+WBReYTPzaefQ/eLInVo/MeDYvnE0LsM7NlUbgtf/jGG5c6JmO6Pg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- <script src="js/SmoothedLineChart.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
+
     
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> -->
+
     <!-- DataTables JS -->
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-    
+    <!-- <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script> -->
+
+<!--     
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
       integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-      crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+      crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
     
     <!-- Bootstrap JS Bundle -->
     
     <!-- jQuery Validate -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <!-- Bootstrap JS -->
     <!-- <script src="js/Piechart.js"></script> -->
-    
+    <script>
+$(document).ready(function () {
+  $('#tbl_cat').DataTable({
+    pageLength: 5, // default to 5 rows per page
+    lengthMenu: [ [5, 10, 25, 50, 100], [5, 10, 25, 50, 100] ] // custom dropdown values
+  });
+});
+
+  </script>
     <script src="js/chnage_password.js"></script>
     <?php
             $query = "
@@ -996,122 +986,116 @@ document.addEventListener('DOMContentLoaded', function () {
         </script>
 
     <script>
-          $(document).ready(function() {
-            $('#tbl_cat').DataTable(); // Initialize DataTable
-        });
+  //     $("#btnchnage").click(function (event) {
+    event.preventDefault(); // Prevent form from submitting normally
 
-       $("#btnchnage").click(function (event) {
-       event.preventDefault(); // Prevent form from submitting normally
+// Check if any of the three fields are empty
+if($("#oldPassword").val() == "" || $("#newPassword").val() == "" || $("#confirmPassword").val() == "") {
+  var toastHTML = `
+              <div aria-live="polite" aria-atomic="true" class="position-relative">
+                  <div class="toast-container position-fixed top-0 end-0 p-3">
+                      <div id="otpValidToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                          <div class="toast-header">
+                              <strong class="me-auto">Error</strong>
+                              <small class="text-muted">just now</small>
+                              <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                          </div>
+                          <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                           Fields are required.
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          `;
+  
+  // Append the toast HTML to the body
+  $('body').append(toastHTML);
+  
+  // Show the toast
+  var toastEl = document.getElementById("otpValidToast");
+  var toast = new bootstrap.Toast(toastEl);
+  toast.show();
 
-      // Check if any of the three fields are empty
-      if($("#oldPassword").val() == "" || $("#newPassword").val() == "" || $("#confirmPassword").val() == "") {
-        var toastHTML = `
-                    <div aria-live="polite" aria-atomic="true" class="position-relative">
-                        <div class="toast-container position-fixed top-0 end-0 p-3">
-                            <div id="otpValidToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                <div class="toast-header">
-                                    <strong class="me-auto">Error</strong>
-                                    <small class="text-muted">just now</small>
-                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                </div>
-                                <div class="toast-body" style="background-color: #ec7063; color: white;"> 
-                                 Fields are required.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-        
-        // Append the toast HTML to the body
-        $('body').append(toastHTML);
-        
-        // Show the toast
-        var toastEl = document.getElementById("otpValidToast");
-        var toast = new bootstrap.Toast(toastEl);
-        toast.show();
-    
-            } else {
-                const json =  { "id" : $("#id").val(),"cpwd" : $("#oldPassword").val(),"npwd" : $("#newPassword").val(),"cnpwd" : $("#confirmPassword").val() };
-                console.log(json);
-                $.ajax({
-                    type : "POST",
-                    method: "POST",
-                    url: "crud.php?what=admin_changepwd",
-                    data: json,
-                    dataType: "JSON",
-                    success: function (response) {
-                        console.log(response);
-                        if (response.success) {
-                            // Create the toast HTML
-                            var toastHTML = `
-                                <div aria-live="polite" aria-atomic="true" class="position-relative">
-                                    <div class="toast-container position-fixed top-0 end-0 p-3">
-                                        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                            <div class="toast-header">
-                                                <strong class="me-auto">Notification</strong>
-                                                <small class="text-muted">just now</small>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                            <div class="toast-body" style="background-color: #7dcea0; color: white;"> 
-                                                ${response.message}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                    
-                            // Append the toast HTML to the body
-                            $('body').append(toastHTML);
-                    
-                            // Show the toast
-                            var toastEl = document.getElementById("successToast");
-                            var toast = new bootstrap.Toast(toastEl);
-                            toast.show();
-                    
-                            // Redirect after 2 seconds
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000); // 2000 milliseconds = 2 seconds
-                        }
-                        else{
-                            var toastHTML = `
-                                <div aria-live="polite" aria-atomic="true" class="position-relative">
-                                    <div class="toast-container position-fixed top-0 end-0 p-3">
-                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                            <div class="toast-header">
-                                                <strong class="me-auto">Notification</strong>
-                                                <small class="text-muted">just now</small>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                            <div class="toast-body" style="background-color: #ec7063; color: white;"> 
-                                                ${response.message}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                    
-                            // Append the toast HTML to the body
-                            $('body').append(toastHTML);
-                    
-                            // Show the toast
-                            var toastEl = document.getElementById("errorToast");
-                            var toast = new bootstrap.Toast(toastEl);
-                            toast.show();
-                    
-                            // Redirect after 2 seconds
-                            setTimeout(function() {
-                              
-                            }, 2000); // 2000 milliseconds = 2 seconds
-                        }
+      } else {
+          const json =  { "id" : $("#id").val(),"cpwd" : $("#oldPassword").val(),"npwd" : $("#newPassword").val(),"cnpwd" : $("#confirmPassword").val() };
+          console.log(json);
+          $.ajax({
+              type : "POST",
+              method: "POST",
+              url: "crud.php?what=admin_changepwd",
+              data: json,
+              dataType: "JSON",
+              success: function (response) {
+                  console.log(response);
+                  if (response.success) {
+                      // Create the toast HTML
+                      var toastHTML = `
+                          <div aria-live="polite" aria-atomic="true" class="position-relative">
+                              <div class="toast-container position-fixed top-0 end-0 p-3">
+                                  <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                      <div class="toast-header">
+                                          <strong class="me-auto">Notification</strong>
+                                          <small class="text-muted">just now</small>
+                                          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                      </div>
+                                      <div class="toast-body" style="background-color: #7dcea0; color: white;"> 
+                                          ${response.message}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      `;
+              
+                      // Append the toast HTML to the body
+                      $('body').append(toastHTML);
+              
+                      // Show the toast
+                      var toastEl = document.getElementById("successToast");
+                      var toast = new bootstrap.Toast(toastEl);
+                      toast.show();
+              
+                      // Redirect after 2 seconds
+                      setTimeout(function() {
+                          location.reload();
+                      }, 2000); // 2000 milliseconds = 2 seconds
+                  }
+                  else{
+                      var toastHTML = `
+                          <div aria-live="polite" aria-atomic="true" class="position-relative">
+                              <div class="toast-container position-fixed top-0 end-0 p-3">
+                                  <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                      <div class="toast-header">
+                                          <strong class="me-auto">Notification</strong>
+                                          <small class="text-muted">just now</small>
+                                          <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                      </div>
+                                      <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                                          ${response.message}
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      `;
+              
+                      // Append the toast HTML to the body
+                      $('body').append(toastHTML);
+              
+                      // Show the toast
+                      var toastEl = document.getElementById("errorToast");
+                      var toast = new bootstrap.Toast(toastEl);
+                      toast.show();
+              
+                      // Redirect after 2 seconds
+                      setTimeout(function() {
                         
-                    }
-                }); 
-            }
-            
-        });
-
-
+                      }, 2000); // 2000 milliseconds = 2 seconds
+                  }
+                  
+              }
+          }); 
+      }
+      
+  
         function togglePassword(inputId) {
               var input = document.getElementById(inputId);
               if (input.type === "password") {
