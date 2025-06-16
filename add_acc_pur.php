@@ -719,21 +719,11 @@ function showSelectedPet() {
         document.getElementById('petImage').alt = selectedPet.name;
         document.getElementById('petName').textContent = selectedPet.name;
         document.getElementById('petDescription').textContent = selectedPet.description;
-        // document.getElementById('petAge').textContent = selectedPet.age;
         document.getElementById('petprice').textContent = '$' + selectedPet.price;
-        // document.getElementById('pettype_listing').textContent =  selectedPet.type_listing;
-        // document.getElementById('petgender').textContent =  selectedPet.gender;
-        // document.getElementById('petcolor').textContent =  selectedPet.color;
-        // document.getElementById('petweight').textContent =  selectedPet.weight;
 
-
+        // Set billing price and reset values properly
+        updateBillingPrice(selectedPet.price);
         
-
-         // Set billing price too
-         document.getElementById('billingPrice').innerText = selectedPet.price;
-         document.getElementById('totalCost').innerText = selectedPet.price;
-
-         
         // Debug the country issue
         const countryElement = document.getElementById('petcountry');
         console.log('Country element:', countryElement);
@@ -758,43 +748,62 @@ function showSelectedPet() {
     }
 }
 
-      // Initialize on page load if there's a pre-selected pet
-      document.addEventListener('DOMContentLoaded', function() {
-          const selectElement = document.getElementById('pet_id');
-          if (selectElement.value !== '') {
-              showSelectedPet();
-          }
-      });
+// Initialize on page load if there's a pre-selected pet
+document.addEventListener('DOMContentLoaded', function() {
+    const selectElement = document.getElementById('pet_id');
+    if (selectElement.value !== '') {
+        showSelectedPet();
+    }
+    
+    // Add event listeners for quantity and discount changes
+    const discountInput = document.getElementById('discount');
+    const quantityInput = document.getElementById('que');
+    
+    if (discountInput) {
+        discountInput.addEventListener('input', updateTotalCost);
+    }
+    
+    if (quantityInput) {
+        quantityInput.addEventListener('input', updateTotalCost);
+    }
+});
 
-      function updateTotalCost() {
+function updateTotalCost() {
     const price = parseFloat(document.getElementById('billingPrice').innerText) || 0;
-    const quantity = parseInt(document.getElementById('que').value) || 0;
+    const quantity = parseInt(document.getElementById('que').value) || 1;
     const discountPercent = parseFloat(document.getElementById('discount').value) || 0;
 
+    // Calculate total price (price × quantity)
     const totalPrice = price * quantity;
+    
+    // Calculate discount amount
     const discountAmount = totalPrice * (discountPercent / 100);
+    
+    // Calculate final cost after discount
     const finalCost = totalPrice - discountAmount;
 
-    // Update display
+    // Update display with proper formatting
     document.getElementById('totalCost').innerText = finalCost.toFixed(2);
 
-    // Update hidden inputs
+    // Update hidden inputs for backend
     document.getElementById('totalCostInput').value = finalCost.toFixed(2);
     document.getElementById('billingPriceInput').value = price.toFixed(2);
 }
 
-      // Call this when setting price
-      function updateBillingPrice(newPrice) {
-          document.getElementById('billingPrice').innerText = newPrice;
-          document.getElementById('billingPriceInput').value = newPrice;
-          document.getElementById('discount').value = 0;
-          updateTotalCost();
-      }
-
-      // Also update cost when user changes discount
-      document.getElementById('discount').addEventListener('input', updateTotalCost);
-      document.getElementById('que').addEventListener('input', updateTotalCost);
-
+// Function to set billing price and reset everything properly
+function updateBillingPrice(newPrice) {
+    const price = parseFloat(newPrice) || 0;
+    
+    // Update billing price display (unit price)
+    document.getElementById('billingPrice').innerText = price.toFixed(2);
+    
+    // Reset quantity to 1 and discount to 0
+    document.getElementById('que').value = 1;
+    document.getElementById('discount').value = 0;
+    
+    // Calculate and update total cost
+    updateTotalCost();
+}
 
     </script>
   </body>

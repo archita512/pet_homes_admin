@@ -38,6 +38,28 @@ if(isset($_SESSION['admin'])){
     <link rel="stylesheet" href="css/dashboard.css" />
     <link rel="stylesheet" href="css/profile.css" />
   </head>
+  <style>
+    .k-card {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+}
+
+.k-card-header h5 {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.k-card-body {
+  padding: 0 10px;
+}
+.k-pie-chart{
+  display: block;
+    box-sizing: border-box;
+    height: 307px !important;
+    width: 364px !important;
+}
+  </style>
   <body>
     <!-- Sidebar -->
     <?php include 'sidebar.php'; ?>
@@ -220,24 +242,24 @@ if(isset($_SESSION['admin'])){
         <!-- chart section -->
         <div class="k-charts-container container-fluid py-4">
           <div class="row">
-            <div class="col-12 col-xl-8 mb-4">
-              <div class="k-card">
-                <div class="k-card-header d-flex justify-content-between">
-                  <div class="k-chart-heading">
-                    <h5 class="mb-1">Monthly Adoption Rate</h5>
-                    <span class="text-muted">2024</span>
-                  </div>
-                  <div class="k-card-actions">
-                    <button class="k-card-menu-btn">
-                      <i class="fas fa-ellipsis-v"></i>
-                    </button>
-                  </div>
+          <div class="col-12 col-xl-8 mb-4">
+            <div class="k-card shadow-sm rounded p-3" style="background-color: #fff;">
+              <div class="k-card-header d-flex justify-content-between align-items-center mb-3">
+                <div class="k-chart-heading">
+                  <h5 class="mb-0">Monthly Adoption Rate</h5>
+                  <small class="text-muted">2025</small>
                 </div>
-                <div class="k-card-body">
-                  <div id="SmoothedLineChart"></div>
+                <div class="k-card-actions">
+                  <button class="btn btn-sm btn-light">
+                    <i class="fas fa-ellipsis-v"></i>
+                  </button>
                 </div>
               </div>
+              <div class="k-card-body">
+                <canvas id="adoptionChart" style="display: block; box-sizing: border-box; height: 374px; width: 993px;margin-top: -50px;"></canvas>
+              </div>
             </div>
+          </div>
             <div class="col-12 col-xl-4 mb-4">
               <div class="k-card">
                 <div class="k-card-header d-flex justify-content-between">
@@ -251,9 +273,10 @@ if(isset($_SESSION['admin'])){
                     </button>
                   </div>
                 </div>
-                <div class="k-card-body">
-                  <div id="PieChart" class="k-pie-chart"></div>
-                </div>
+                <div style="display: flex; justify-content: center; align-items: center;" >
+                    <canvas id="topPetsChart" class="k-pie-chart" style="margin:auto;"></canvas>
+                  </div>
+
               </div>
             </div>
           </div>
@@ -335,9 +358,9 @@ if(isset($_SESSION['admin'])){
               <div class="k-card">
                 <div class="k-card-header d-flex justify-content-between">
                   <div class="k-chart-heading">
-                    <h5 class="mb-1">Adoption Statistics by Country</h5>
+                    <h5 class="mb-1">Accessories Sales</h5>
                     <span class="text-muted"
-                      >Number of adoptions per country</span
+                      >Number of sales per month</span
                     >
                   </div>
                   <div class="k-card-actions">
@@ -347,7 +370,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-card-body">
-                  <div id="barchart" class="k-bar-chart"></div>
+                <canvas id="accessoriesChart" style="display: block; box-sizing: border-box; height: 374px; width: 993px;margin-top: -50px;"></canvas>
                 </div>
               </div>
             </div>
@@ -687,8 +710,12 @@ if(isset($_SESSION['admin'])){
     <script src="https://cdn.amcharts.com/lib/5/geodata/worldLow.js"></script>
     <script src="https://cdn.amcharts.com/lib/5/percent.js"></script>
     <script src="js/worldchart.js"></script>
-    <script src="js/barchart.js"></script>
-    <script src="js/SmoothedLineChart.js"></script>
+    <!-- <script src="js/barchart.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+
+
+    <!-- <script src="js/SmoothedLineChart.js"></script> -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -706,9 +733,267 @@ if(isset($_SESSION['admin'])){
     <!-- jQuery Validate -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <!-- Bootstrap JS -->
-    <script src="js/Piechart.js"></script>
+    <!-- <script src="js/Piechart.js"></script> -->
     
     <script src="js/chnage_password.js"></script>
+    <?php
+            $query = "
+                SELECT DATE_FORMAT(ad_date, '%b') AS month, COUNT(*) AS count
+                FROM addopt_pet
+                GROUP BY MONTH(ad_date)
+                ORDER BY MONTH(ad_date)
+            ";
+
+            $result = mysqli_query($cnn, $query);
+
+            $monthCounts = [];
+            while ($row = mysqli_fetch_assoc($result)) {
+                $monthCounts[$row['month']] = $row['count'];
+            }
+
+            // Prepare full month list
+            $allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            $labels = [];
+            $data = [];
+
+            foreach ($allMonths as $month) {
+                $labels[] = $month;
+                $data[] = isset($monthCounts[$month]) ? $monthCounts[$month] : 0;
+            }
+            ?>
+             <?php
+            $query_accessories = "
+                SELECT DATE_FORMAT(date, '%b') AS month, COUNT(*) AS count
+                FROM acc_sale
+                GROUP BY MONTH(date)
+                ORDER BY MONTH(date)
+            ";
+
+            $result_accessories = mysqli_query($cnn, $query_accessories);
+
+            $monthCounts_accessories = [];
+            while ($row = mysqli_fetch_assoc($result_accessories)) {
+                $monthCounts_accessories[$row['month']] = $row['count'];
+            }
+
+            // Prepare full month list
+            $allMonths = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            $labels_accessories = [];
+            $data_accessories = [];
+
+            foreach ($allMonths as $month) {
+                $labels_accessories[] = $month;
+                $data_accessories[] = isset($monthCounts_accessories[$month]) ? $monthCounts_accessories[$month] : 0;
+            }
+            ?>
+            <?php
+                $query_top_pets = "SELECT p.name,c.name AS category_name, COUNT(*) as total
+                      FROM addopt_pet
+                      JOIN pets AS p ON addopt_pet.pet_id = p.id
+                      JOIN category AS c ON p.cat_id = c.id
+                      GROUP BY p.cat_id
+                      ORDER BY total DESC
+                      LIMIT 5";
+
+                $result_top_pets = mysqli_query($cnn, $query_top_pets);
+
+                      $labels_top_pets = [];
+                      $data_top_pets = [];
+
+                      while ($row = mysqli_fetch_assoc($result_top_pets)) {
+                          $labels_top_pets[] = $row['category_name'];
+                          $data_top_pets[] = $row['total'];
+                      }
+
+                      $total_count = array_sum($data_top_pets); // 👈 For center total
+                        ?>    
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Adoption Line Chart
+    const ctx1 = document.getElementById('adoptionChart').getContext('2d');
+    const adoptionlabel = <?php echo json_encode($labels); ?>;
+    const adoptiondata = <?php echo json_encode($data); ?>;
+    const adoptionChart = new Chart(ctx1, {
+        type: 'line',
+        data: {
+            labels: adoptionlabel,
+            datasets: [{
+                label: 'Adoptions per Month',
+                data: adoptiondata,
+                backgroundColor: '#eadfd7',
+                borderColor: '#976239',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            layout: {
+                padding: {
+                    left: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#976239'
+                    }
+                },
+                title: {
+                    display: true,
+                    color: '#976239',
+                    font: { size: 16 }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: <?php echo max($data); ?> + 100,
+                    ticks: {
+                        stepSize: 10,
+                        color: '#333'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#333'
+                    }
+                }
+            }
+        }
+    });
+
+    
+    // Top Pets Doughnut Chart
+    const ctx2 = document.getElementById('topPetsChart').getContext('2d');
+    const labels = <?php echo json_encode($labels_top_pets); ?>;
+    const data = <?php echo json_encode($data_top_pets); ?>;
+    const total = <?php echo $total_count; ?>;
+
+    new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: data,
+                backgroundColor: ['#5B9A8B', '#2A4365', '#B83280', '#4A5568', '#ECC94B'],
+                borderWidth: 0,
+                // position: 'right'
+            }]
+        },
+        options: {
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: { usePointStyle: true }
+                },
+                datalabels: {
+                    color: '#fff',
+                    formatter: (value, ctx) => ctx.chart.data.labels[ctx.dataIndex],
+                    font: { weight: 'bold' },
+                    
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            return context.label + ": " + context.raw;
+                        }
+                    }
+                }
+            },
+            cutout: '70%'
+        },
+        plugins: [
+            ChartDataLabels,
+            {
+              id: 'centerText',
+              beforeDraw(chart) {
+                const { width, height, ctx } = chart;
+                ctx.save();
+
+                const fontSize = Math.min(height / 4, 40); // Auto-adjust font size
+                ctx.font = `${fontSize}px sans-serif`;
+                ctx.fillStyle = "#333";
+                ctx.textBaseline = "middle";
+                ctx.textAlign = "center";
+                // ctx.position = 'center';
+
+                const text = total.toString();
+                const centerX = width / 2;
+                const centerY = height / 2;
+
+                ctx.fillText(text, centerX, centerY);
+                ctx.restore();
+              }
+            }
+                    ]
+                });
+
+                 // Accessories Line Chart
+    const ctx3 = document.getElementById('accessoriesChart').getContext('2d');
+    const labels_accessories = <?php echo json_encode($labels_accessories); ?>;
+    const data_accessories = <?php echo json_encode($data_accessories); ?>;
+    const accessoriesChart = new Chart(ctx3, {
+        type: 'bar',
+        data: {
+            labels: labels_accessories,
+            datasets: [{
+                label: 'Accessories per Month',
+                data: data_accessories,
+                backgroundColor: '#eadfd7',
+                borderColor: '#976239',
+                borderWidth: 2,
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointHoverRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            layout: {
+                padding: {
+                    left: 0
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#976239'
+                    }
+                },
+                title: {
+                    display: true,
+                    color: '#976239',
+                    font: { size: 16 }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: <?php echo max($data); ?> + 100,
+                    ticks: {
+                        stepSize: 10,
+                        color: '#333'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#333'
+                    }
+                }
+            }
+        }
+    });
+            });
+
+            
+        </script>
 
     <script>
           $(document).ready(function() {
@@ -841,6 +1126,8 @@ if(isset($_SESSION['admin'])){
                 document.querySelector(`#${inputId} + .k-password-toggle i`).classList.add('fa-eye-slash');
               }
             }
+    
+           
     </script>
   </body>
 </html>
