@@ -103,7 +103,7 @@ if(isset($_SESSION['admin'])){
                   <th>Discount</th>
                   <th>Quantity</th>
                   <th>Total Price</th>
-                 
+                  <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -125,10 +125,24 @@ if(isset($_SESSION['admin'])){
                           <td>' . $row['mno'] . '</td>
                           <td>$' . $row['discount'] . '</td>
                            <td>' . $row['quantity'] . '</td>
-                          <td>$' . $row['total_price'] . '</td>
+                          <td>$' . $row['total_price'] . '</td>';
                       
-                       
-                        <td class="action-buttons">
+                       ?>
+                         <?php
+                          if ($row['status'] == 'Pending') {
+                            echo '<td>
+                                    <button class="btn btn-warning btn-sm" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '">
+                                      Pending
+                                    </button>
+                                  </td>';
+                          } else {
+                            echo '<td>
+                                    <button class="btn btn-success btn-sm" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '">
+                                      Paid
+                                    </button>
+                                  </td>';
+                          }
+                        echo '<td class="action-buttons">
                           <a href="#" 
                                 class="edit-btn text-decoration-none" 
                                 data-bs-toggle="modal" 
@@ -192,133 +206,56 @@ if(isset($_SESSION['admin'])){
               </button>
             </div>
           </div>
-        <ul class="k-sidebar-menu">
-        <li>
-          <a href="dashbord.php" class="d-flex align-items-center">
-            <i class="fas fa-home"></i>
-            <span>Dashboard</span>
-          </a>
-        </li>
-        <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
-              <div>
+          <ul class="k-sidebar-menu">
+            <li>
+              <a href="#">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="active d-flex align-items-center">
+                <img src="images/s2.svg" alt="" class="text-dark" />
+                <span class="ps-2">Category</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-layer-group"></i>
+                <span>Subcategory</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
                 <i class="fas fa-paw"></i>
-                <span class="ps-2">Pets</span>
-              </div>
-              <i class="fas fa-chevron-down dropdown-arrow"></i>
-            </a>
-
-            <ul class="submenu" style="    margin-left: 37px;">
-              <li><a href="category.php" class="submenu-link">Category</a></li>
-              <li><a href="subcategory.php" class="submenu-link">Subcategory</a></li>
-              <li><a href="pets.php" class="submenu-link">Pets</a></li>
-            </ul>
-          </li>
-
-
-        <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
-              <div>
-              <i class="fas fa-shopping-basket"></i>    
-                <span class="ps-2">Accessories</span>
-              </div>
-              <i class="fas fa-chevron-down dropdown-arrow"></i>
-            </a>
-
-            <ul class="submenu" style="margin-left: 10px;">
-              <li><a href="acc_category.php" class="submenu-link">Accessories Catgeory</a></li>
-              <li><a href="accessories.php" class="submenu-link">Accessories</a></li>
-              
-            </ul>
-          </li>
-
-          <li>
-          <a href="service.php" class="d-flex align-items-center">
-            <i class="fas fa-concierge-bell"></i>
-            <span>Services</span>
-          </a>
-        </li>
-        <li>
-          <a href="offer.php" class="d-flex align-items-center">
-          <i class="bi bi-bookmark-star-fill"></i>
-            <span>Offers</span>
-          </a>
-        </li>
-        <li>
-          <a href="banner.php" class="d-flex align-items-center">
-          <i class="fa-solid fa-image"></i>
-            <span>Banner</span>
-          </a>
-        </li>
-         <li>
-          <a href="Inquiry.php" class="d-flex align-items-center">
-          <i class="bi bi-patch-question-fill"></i>
-            <span>Inquiry</span>
-          </a>
-        </li>
-       
-        <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
-              <div>
-              <i class="fa-solid fa-cat fa-flip-horizontal"></i>
-                <span class="ps-2">Pet Adoption / Return</span>
-              </div>
-              <i class="fas fa-chevron-down dropdown-arrow"></i>
-            </a>
-
-            <ul class="submenu" style="margin-left: 10px;">
-              <li><a href="addoption.php" class="submenu-link">Pet Adoption</a></li>
-              <li><a href="pet_return.php" class="submenu-link">Pet Return</a></li>
-              
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
-              <div>
-              <i class="fa-solid fa-cart-shopping"></i>
-                <span class="ps-2">Accessories Sale</span>
-              </div>
-              <i class="fas fa-chevron-down dropdown-arrow"></i>
-            </a>
-
-            <ul class="submenu" style="margin-left: 10px;">
-              <li><a href="ass_pur.php" class="submenu-link">Accessories Sale</a></li>
-              <li><a href="ass_retu.php" class="submenu-link">Accessories Return</a></li>
-              
-            </ul>
-          </li>
-       
-        <li>
-          <a href="service_m.php" class="d-flex align-items-center">
-          <i class="fa-solid fa-house-chimney-medical"></i>
-
-            <span>Services Maintain</span>
-          </a>
-        </li>
-        <li>
-          <a href="user_view.php" class="d-flex align-items-center">
-          <i class="fa-solid fa-users"></i>
-            <span>Users</span>
-          </a>
-        </li>
-        <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
-              <div>
-              <i class="fa-solid fa-circle-info"></i>
-                <span class="ps-2">Others</span>
-              </div>
-              <i class="fas fa-chevron-down dropdown-arrow"></i>
-            </a>
-
-            <ul class="submenu" style="margin-left: 10px;">
-              <li><a href="aboutus.php" class="submenu-link">About Us</a></li>
-              <li><a href="terms.php" class="submenu-link">Terms & Condtiton</a></li>
-              <li><a href="privacy.php" class="submenu-link">Privacy Policy</a></li>
-              <li><a href="faq.php" class="submenu-link">FAQ Message</a></li>
-            </ul>
-          </li>
-       
-      </ul>
+                <span>Pets</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-shopping-basket"></i>
+                <span>Accessories</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-concierge-bell"></i>
+                <span>Services</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-user"></i>
+                <span>User</span>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="d-flex align-items-center">
+                <i class="fas fa-history"></i>
+                <span>Adoption History</span>
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -456,6 +393,29 @@ if(isset($_SESSION['admin'])){
       </div>
     </div>
 
+    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paymentModalLabel">Choose Payment Method</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="paymentForm">
+        <input type="hidden" name="record_id" id="recordId">
+        <select class="form-select" id="paymentMethod" required>  
+            <option value="">Select payment method</option>
+            <option value="Cash">Cash</option>
+            <option value="Online">Online</option>
+          </select>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="submitPayment" class="btn btn-primary" style = "background-color: #976239;border: none;">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
 
     <!-- JavaScript Libraries - Order is important! -->
     <!-- jQuery must come first -->
@@ -674,7 +634,136 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 .catch(error => console.error('Error:', error));
             });
         });
+        $(document).ready(function () {
+            // When a pending button is clicked
+            $(document).on('click', '.btn-warning', function () {
+              const recordId = $(this).data('id');
+              $('#recordId').val(recordId);
+              $('#paymentModal').modal('show');
+            });
 
+            // When the Submit button in the modal is clicked
+            $('#submitPayment').on('click', function () {
+              const id = $('#recordId').val();
+              const method = $('#paymentMethod').val();
+
+              if (method === "") {
+                var toastHTML = `
+                                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                            <div class="toast-header">
+                                                <strong class="me-auto">Notification</strong>
+                                                <small class="text-muted">just now</small>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                            </div>
+                                            <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                                               Please select a payment method.
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    
+                            // Append the toast HTML to the body
+                            $('body').append(toastHTML);
+                    
+                            // Show the toast
+                            var toastEl = document.getElementById("errorToast");
+                            var toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                    
+                            // Redirect after 2 seconds
+                            setTimeout(function() {
+                              
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                            return;
+                          }
+
+                        // Optional: Send AJAX request to update the record in database
+                        $.ajax({
+                    url: 'crud.php?what=payment_acc',
+                    method: 'POST',
+                    data: {
+                      id: id,
+                      status: method
+                    },
+                    success: function (response) {
+                      console.log("Response:", response);
+                      if (response.success) {
+                            // Create the toast HTML
+                            var toastHTML = `
+                                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                                        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                            <div class="toast-header">
+                                                <strong class="me-auto">Notification</strong>
+                                                <small class="text-muted">just now</small>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                            </div>
+                                            <div class="toast-body" style="background-color: #7dcea0; color: white;"> 
+                                                ${response.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    
+                            // Append the toast HTML to the body
+                            $('body').append(toastHTML);
+                    
+                            // Show the toast
+                            var toastEl = document.getElementById("successToast");
+                            var toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                    
+                            // Redirect after 2 seconds
+                            setTimeout(function() {
+                                location.reload();
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                        }
+                        else{
+                            var toastHTML = `
+                                <div aria-live="polite" aria-atomic="true" class="position-relative">
+                                    <div class="toast-container position-fixed top-0 end-0 p-3">
+                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                            <div class="toast-header">
+                                                <strong class="me-auto">Notification</strong>
+                                                <small class="text-muted">just now</small>
+                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                                            </div>
+                                            <div class="toast-body" style="background-color: #ec7063; color: white;"> 
+                                                ${response.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `;
+                    
+                            // Append the toast HTML to the body
+                            $('body').append(toastHTML);
+                    
+                            // Show the toast
+                            var toastEl = document.getElementById("errorToast");
+                            var toast = new bootstrap.Toast(toastEl);
+                            toast.show();
+                    
+                            // Redirect after 2 seconds
+                            setTimeout(function() {
+                              
+                            }, 2000); // 2000 milliseconds = 2 seconds
+                        }
+                          },
+                          error: function (xhr, status, error) {
+                            console.error("AJAX Error:", xhr.responseText);
+                            alert("AJAX request failed.");
+                          }
+                        });
+
+                  $('#paymentModal').modal('hide');
+                });
+              });
+   
    
     </script>
     

@@ -195,6 +195,7 @@
       </ul>
     </div>
     <script>
+      
   document.addEventListener('DOMContentLoaded', function() {
     // Get the subcategory and pets links specifically
     const subcategoryLink = document.querySelector('.k-sidebar-menu li a[href="subcategory.php"]');
@@ -212,6 +213,8 @@
     const aboutLink = document.querySelector('.k-sidebar-menu li a[href="aboutus.php"]');
     const termsLink = document.querySelector('.k-sidebar-menu li a[href="terms.php"]');
     const privacyLink = document.querySelector('.k-sidebar-menu li a[href="privacy.php"]');
+    const service_mLink = document.querySelector('.k-sidebar-menu li a[href="service_m.php"]');
+
 
 
 
@@ -364,6 +367,16 @@
         // Add active class to pets link
         if (privacyLink) {
           privacyLink.classList.add('active');
+        }
+      
+    }else if(currentPage === 'service_m.php'){
+        document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+          link.classList.remove('active');
+        });
+        
+        // Add active class to pets link
+        if (service_mLink) {
+          service_mLink.classList.add('active');
         }
       }
       
@@ -533,6 +546,17 @@
   }
   if (privacyLink) {
     privacyLink.addEventListener('click', function(e) {
+      // Remove active class from all links
+      document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
+        link.classList.remove('active');
+      });
+      
+      // Add active class to only the accessories category link
+      this.classList.add('active');
+    });
+  }
+  if (service_mLink) {
+    service_mLink.addEventListener('click', function(e) {
       // Remove active class from all links
       document.querySelectorAll('.k-sidebar-menu li a').forEach(function(link) {
         link.classList.remove('active');

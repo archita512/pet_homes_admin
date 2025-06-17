@@ -783,6 +783,8 @@ function showSelectedPet() {
         // No pet selected, show default message
         selectedPetContainer.style.display = 'none';
         defaultMessage.style.display = 'block';
+        // Reset billing
+        updateBillingPrice(0);
         return;
     }
     
@@ -794,19 +796,8 @@ function showSelectedPet() {
         document.getElementById('petImage').alt = selectedPet.name;
         document.getElementById('petName').textContent = selectedPet.name;
         document.getElementById('petDescription').textContent = selectedPet.description;
-        // document.getElementById('petAge').textContent = selectedPet.age;
         document.getElementById('petprice').textContent = '$' + selectedPet.price;
-        // document.getElementById('pettype_listing').textContent =  selectedPet.type_listing;
-        // document.getElementById('petgender').textContent =  selectedPet.gender;
-        // document.getElementById('petcolor').textContent =  selectedPet.color;
-        // document.getElementById('petweight').textContent =  selectedPet.weight;
 
-
-        
-        // document.getElementById('billingPrice').innerText = selectedPet.price;
-        
-
-         
         // Debug the country issue
         const countryElement = document.getElementById('petcountry');
         console.log('Country element:', countryElement);
@@ -828,6 +819,9 @@ function showSelectedPet() {
             selectedPetContainer.style.transition = 'opacity 0.3s ease-in-out';
             selectedPetContainer.style.opacity = '1';
         }, 10);
+
+        // Update billing with selected pet price
+        updateBillingPrice(selectedPet.price);
     }
 }
 
@@ -937,17 +931,36 @@ function showSelectedPet() {
     document.getElementById('billingPriceInput').value = price.toFixed(2);
 }
 
-      // Call this when setting price
-      function updateBillingPrice(newPrice) {
-          document.getElementById('billingPrice').innerText = newPrice;
-          document.getElementById('billingPriceInput').value = newPrice;
-          document.getElementById('discount').value = 0;
-          updateTotalCost();
-      }
+// Call this when setting price
+function updateBillingPrice(newPrice) {
+    document.getElementById('billingPrice').innerText = newPrice;
+    document.getElementById('billingPriceInput').value = newPrice;
+    document.getElementById('discount').value = 0;
+    updateTotalCost();
+}
 
-      // Also update cost when user changes discount
-      document.getElementById('discount').addEventListener('input', updateTotalCost);
-      document.getElementById('que').addEventListener('input', updateTotalCost);
+// Add event listeners when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners to quantity and discount fields
+    const quantityInput = document.getElementById('que');
+    const discountInput = document.getElementById('discount');
+    
+    if (quantityInput) {
+        quantityInput.addEventListener('input', updateTotalCost);
+        quantityInput.addEventListener('change', updateTotalCost);
+    }
+    
+    if (discountInput) {
+        discountInput.addEventListener('input', updateTotalCost);
+        discountInput.addEventListener('change', updateTotalCost);
+    }
+    
+    // Also add event listener to pet selection
+    const petSelectElement = document.getElementById('pet_id');
+    if (petSelectElement) {
+        petSelectElement.addEventListener('change', showSelectedPet);
+    }
+});
 
     </script>
   </body>

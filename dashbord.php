@@ -17,6 +17,14 @@ if(isset($_SESSION['admin'])){
   $gender = $row['gender'];
   
 }
+// admin panel monthly addopted chart done,
+// admin panel most selling pet chart show done,
+// admin panel accerssories sale chart show done,
+// admin panel dashbord inquiry show done,
+// admin panel dashbord pet adopt list show and datatable not show to solve it ,
+// admin panel pet sale addopt and return payment sattus update done,
+// admin panel Accessories sale and return payment sattus update done,
+//  admin panel service maintain  payment sattus update done,
 ?>
 <!DOCTYPE html>
 <html lang="en">

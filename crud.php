@@ -2087,4 +2087,126 @@ if ($_GET['what'] == "delete_faq") {
 
     echo json_encode($response);
 }
+
+if($_GET['what'] == "update_payment"){
+    $id = mysqli_real_escape_string($cnn, $_POST['id']);
+    $status = mysqli_real_escape_string($cnn, $_POST['status']);
+
+    if (!isset($_POST['id']) || !isset($_POST['status'])) {
+        echo json_encode(['success' => false, 'message' => 'Missing data']);
+        exit;
+    }
+    $response = [];
+
+    $queryStr = "UPDATE addopt_pet SET status = 'Paid', payment_method = '$status' WHERE id = '$id'";
+    $query = mysqli_query($cnn, $queryStr);
+
+    if($query){
+        $response['success'] = true;
+        $response['message'] = "Status updated successfully.";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Failed to update status. SQL Error: " . mysqli_error($cnn);
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if($_GET['what'] == "update_payment_return"){
+    $id = mysqli_real_escape_string($cnn, $_POST['id']);
+    $status = mysqli_real_escape_string($cnn, $_POST['status']);
+
+    if (!isset($_POST['id']) || !isset($_POST['status'])) {
+        echo json_encode(['success' => false, 'message' => 'Missing data']);
+        exit;
+    }
+    $response = [];
+
+    $queryStr = "UPDATE pet_return SET status = 'Paid', payment_method = '$status' WHERE id = '$id'";
+    $query = mysqli_query($cnn, $queryStr);
+
+    if($query){
+        $response['success'] = true;
+        $response['message'] = "Status updated successfully.";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Failed to update status. SQL Error: " . mysqli_error($cnn);
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if($_GET['what'] == "payment_acc"){
+    $id = mysqli_real_escape_string($cnn, $_POST['id']);
+    $status = mysqli_real_escape_string($cnn, $_POST['status']);
+
+    if (!isset($_POST['id']) || !isset($_POST['status'])) {
+        echo json_encode(['success' => false, 'message' => 'Missing data']);
+        exit;
+    }
+    $response = [];
+
+    $queryStr = "UPDATE acc_sale SET status = 'Paid', payment_method = '$status' WHERE id = '$id'";
+    $query = mysqli_query($cnn, $queryStr);
+
+    if($query){
+        $response['success'] = true;
+        $response['message'] = "Status updated successfully.";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Failed to update status. SQL Error: " . mysqli_error($cnn);
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if($_GET['what'] == "payment_acc_return"){
+    $id = mysqli_real_escape_string($cnn, $_POST['id']);
+    $status = mysqli_real_escape_string($cnn, $_POST['status']);
+
+    if (!isset($_POST['id']) || !isset($_POST['status'])) {
+        echo json_encode(['success' => false, 'message' => 'Missing data']);
+        exit;
+    }
+    $response = [];
+
+    $queryStr = "UPDATE acc_return SET status = 'Paid', payment_method = '$status' WHERE id = '$id'";
+    $query = mysqli_query($cnn, $queryStr);
+
+    if($query){
+        $response['success'] = true;
+        $response['message'] = "Status updated successfully.";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Failed to update status. SQL Error: " . mysqli_error($cnn);
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}
+if($_GET['what'] == "payment_service"){
+    $id = mysqli_real_escape_string($cnn, $_POST['id']);
+    $status = mysqli_real_escape_string($cnn, $_POST['status']);
+
+    if (!isset($_POST['id']) || !isset($_POST['status'])) {
+        echo json_encode(['success' => false, 'message' => 'Missing data']);
+        exit;
+    }
+    $response = [];
+
+    $queryStr = "UPDATE service_maintain SET status = 'Paid', payment_method = '$status' WHERE id = '$id'";
+    $query = mysqli_query($cnn, $queryStr);
+
+    if($query){
+        $response['success'] = true;
+        $response['message'] = "Status updated successfully.";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "Failed to update status. SQL Error: " . mysqli_error($cnn);
+    }
+    ob_clean();
+    header('Content-Type: application/json');
+    echo json_encode($response);
+}  
+    
 ?>
