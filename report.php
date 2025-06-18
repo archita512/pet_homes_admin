@@ -36,17 +36,15 @@ if(isset($_SESSION['admin'])){
     <link rel="stylesheet" href="css/profile.css" />
   </head>
   <style>
- 
-
     .k-pet-box img {
     max-width: 92px !important;
     max-height: 51px !important;
     object-fit: contain;
 }
-    .k-pet-box {
-        width: 35px;
-        background-color: #ebebeb00 !important;
-    }
+.k-pet-box {
+    width: 35px;
+    background-color: #ebebeb00 !important;
+}
   </style>
   <body>
     <!-- Sidebar -->
@@ -61,29 +59,20 @@ if(isset($_SESSION['admin'])){
       <div class="k-page-content">
         <div class="k-page-header">
           <div>
-            <h4 class="mb-1">Accessories Sale</h4>
+            <h4 class="mb-1">Report</h4>
             <nav class="k-breadcrumb small">
               <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item">
                   <a href="#" class="k-link-text-color text-decoration-none">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item active k-link-text-color-active">
-                   Accessories Sale
+                  Report
                 </li>
               </ol>
             </nav>
           </div>
           <div class="d-flex align-items-center justify-content-center">
            
-            <div>
-              <a
-              href="add_acc_pur.php"
-                class="k-add-btn d-flex align-items-center justify-content-center text-decoration-none"
-              >
-                <i class="fas fa-plus me-1 k-icon-plus"></i>
-                <p class="p-0 m-0">Add</p>
-              </a>
-            </div>
           </div>
         </div>
         <!-- <td>' . substr($row['message'], 0, 50) . '...</td> -->
@@ -94,63 +83,29 @@ if(isset($_SESSION['admin'])){
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Image</th>
-                  <th>Addoption Date</th>
-
                   <th>Name</th>
                   <th>Email</th>
                   <th>Phone No</th>
-                  <th>Discount</th>
-                  <th>Quantity</th>
-                  <th>Total Price</th>
-                  <th>Status</th>
+                 
+                  <!-- <th>Status</th> -->
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                  $query = mysqli_query($cnn,"SELECT ad.*,p.image FROM `acc_sale` AS ad JOIN accessories AS p ON ad.acc_id = p.id ORDER BY ad.id DESC");
+                  $query = mysqli_query($cnn,"SELECT r.*,u.name AS user_name FROM `report` r LEFT JOIN `user_login` u ON r.u_id = u.id ORDER BY r.id DESC");
                   $cnt = 1;
                   while($row = mysqli_fetch_array($query)){
                     $c_id = encryptor('encrypt',$row['id']);
-                    // $images = json_decode($row['image']); // Assuming images are stored as a JSON array
-                    // $first_image = $images[0]; // Get the first image from the array
   
                     echo '<tr class="k-tr">
                         <td>#' . $cnt . '</td>
-                        <td><img src="../pet_homes/img/' . $row['image'] .'" style="width: 90px; height: 60px;"></td>
-                       <td>' . date('d M Y', strtotime($row['date'])) . '</td>
-                        <td>' . $row['name'] . '</td>
-                         <td>' . $row['email'] . '</td>
-                          <td>' . $row['mno'] . '</td>
-                          <td>$' . $row['discount'] . '</td>
-                           <td>' . $row['quantity'] . '</td>
-                          <td>$' . $row['total_price'] . '</td>';
-                      
-                       ?>
-                         <?php
-                          if ($row['status'] == 'Pending') {
-                            echo '<td>
-                                    <button class="btn btn-warning btn-sm" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '">
-                                      Pending
-                                    </button>
-                                  </td>';
-                          } else {
-                            echo '<td>
-                                    <button class="btn btn-success btn-sm" data-id="' . $row['id'] . '" data-status="' . $row['status'] . '">
-                                      Paid
-                                    </button>
-                                  </td>';
-                          }
-                        echo '<td class="action-buttons">
-                          <a href="#" 
-                                class="edit-btn text-decoration-none" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#accessoryDetailModal"
-                                data-description="' . htmlspecialchars($row['address']) . '">
-                                <img src="images/view.png" alt="" style="width: 24px;height: 25px;" />
-                          </a>
-                          
+                        <td>' . $row['user_name'] . '</td>
+                         <td>' . $row['reason'] . '</td>
+                          <td>' . $row['report_details'] . '</td>
+                       
+                        <td class="action-buttons">
+                         
                             <div class="delete-btn" data-id="' . $row['id'] . '" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
                                 <img src="images/delete.svg" alt="" />
                             </div>
@@ -472,29 +427,6 @@ if(isset($_SESSION['admin'])){
       </div>
     </div>
 
-    <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="paymentModalLabel">Choose Payment Method</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <form id="paymentForm">
-        <input type="hidden" name="record_id" id="recordId">
-        <select class="form-select" id="paymentMethod" required>  
-            <option value="">Select payment method</option>
-            <option value="Cash">Cash</option>
-            <option value="Online">Online</option>
-          </select>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" id="submitPayment" class="btn btn-primary" style = "background-color: #976239;border: none;">Submit</button>
-      </div>
-    </div>
-  </div>
-</div>
 
     <!-- JavaScript Libraries - Order is important! -->
     <!-- jQuery must come first -->
@@ -657,7 +589,7 @@ const deleteCategoryModal = document.getElementById('deleteConfirmModal');
 deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     const button = event.relatedTarget; // Button that triggered the modal
     const categoryId = button.getAttribute('data-id'); // Extract info from data-* attributes
-    const message = `Are you sure you want to delete Accessories Sale?`;
+    const message = `Are you sure you want to delete this report?`;
 
     console.log(categoryId);
     
@@ -668,7 +600,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
     // Add event listener for the delete button
     const deleteButton = deleteCategoryModal.querySelector('.d_deletebtn');
     deleteButton.onclick = function() {
-        fetch(`crud.php?what=delete_acc_sale`, {
+        fetch(`crud.php?what=delete_report`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -695,7 +627,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 const status = this.checked ? 'Active' : 'Block';
 
                 // AJAX request to update status
-                fetch('crud.php?what=update_status_inquiry', {
+                fetch('crud.php?what=update_status_user', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -713,136 +645,7 @@ deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
                 .catch(error => console.error('Error:', error));
             });
         });
-        $(document).ready(function () {
-            // When a pending button is clicked
-            $(document).on('click', '.btn-warning', function () {
-              const recordId = $(this).data('id');
-              $('#recordId').val(recordId);
-              $('#paymentModal').modal('show');
-            });
 
-            // When the Submit button in the modal is clicked
-            $('#submitPayment').on('click', function () {
-              const id = $('#recordId').val();
-              const method = $('#paymentMethod').val();
-
-              if (method === "") {
-                var toastHTML = `
-                                <div aria-live="polite" aria-atomic="true" class="position-relative">
-                                    <div class="toast-container position-fixed top-0 end-0 p-3">
-                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                            <div class="toast-header">
-                                                <strong class="me-auto">Notification</strong>
-                                                <small class="text-muted">just now</small>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                            <div class="toast-body" style="background-color: #ec7063; color: white;"> 
-                                               Please select a payment method.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                    
-                            // Append the toast HTML to the body
-                            $('body').append(toastHTML);
-                    
-                            // Show the toast
-                            var toastEl = document.getElementById("errorToast");
-                            var toast = new bootstrap.Toast(toastEl);
-                            toast.show();
-                    
-                            // Redirect after 2 seconds
-                            setTimeout(function() {
-                              
-                            }, 2000); // 2000 milliseconds = 2 seconds
-                            return;
-                          }
-
-                        // Optional: Send AJAX request to update the record in database
-                        $.ajax({
-                    url: 'crud.php?what=payment_acc',
-                    method: 'POST',
-                    data: {
-                      id: id,
-                      status: method
-                    },
-                    success: function (response) {
-                      console.log("Response:", response);
-                      if (response.success) {
-                            // Create the toast HTML
-                            var toastHTML = `
-                                <div aria-live="polite" aria-atomic="true" class="position-relative">
-                                    <div class="toast-container position-fixed top-0 end-0 p-3">
-                                        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                            <div class="toast-header">
-                                                <strong class="me-auto">Notification</strong>
-                                                <small class="text-muted">just now</small>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                            <div class="toast-body" style="background-color: #7dcea0; color: white;"> 
-                                                ${response.message}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                    
-                            // Append the toast HTML to the body
-                            $('body').append(toastHTML);
-                    
-                            // Show the toast
-                            var toastEl = document.getElementById("successToast");
-                            var toast = new bootstrap.Toast(toastEl);
-                            toast.show();
-                    
-                            // Redirect after 2 seconds
-                            setTimeout(function() {
-                                location.reload();
-                            }, 2000); // 2000 milliseconds = 2 seconds
-                        }
-                        else{
-                            var toastHTML = `
-                                <div aria-live="polite" aria-atomic="true" class="position-relative">
-                                    <div class="toast-container position-fixed top-0 end-0 p-3">
-                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                            <div class="toast-header">
-                                                <strong class="me-auto">Notification</strong>
-                                                <small class="text-muted">just now</small>
-                                                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                            <div class="toast-body" style="background-color: #ec7063; color: white;"> 
-                                                ${response.message}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                    
-                            // Append the toast HTML to the body
-                            $('body').append(toastHTML);
-                    
-                            // Show the toast
-                            var toastEl = document.getElementById("errorToast");
-                            var toast = new bootstrap.Toast(toastEl);
-                            toast.show();
-                    
-                            // Redirect after 2 seconds
-                            setTimeout(function() {
-                              
-                            }, 2000); // 2000 milliseconds = 2 seconds
-                        }
-                          },
-                          error: function (xhr, status, error) {
-                            console.error("AJAX Error:", xhr.responseText);
-                            alert("AJAX request failed.");
-                          }
-                        });
-
-                  $('#paymentModal').modal('hide');
-                });
-              });
-   
    
     </script>
     

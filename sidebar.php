@@ -11,7 +11,7 @@
 
 /* When active */
 .submenu.show {
-  max-height: 200px; /* Adjust based on expected submenu size */
+  max-height: 274px; /* Adjust based on expected submenu size */
   opacity: 1;
 }
 
@@ -68,7 +68,7 @@
       </div>
       <ul class="k-sidebar-menu">
         <li>
-          <a href="dashbord.php" class="d-flex align-items-center">
+          <a href="dashbord.php" class="d-flex align-items-center" style="margin-top: -20px;">
             <i class="fas fa-home"></i>
             <span>Dashboard</span>
           </a>
@@ -185,10 +185,12 @@
             </a>
 
             <ul class="submenu" style="margin-left: 10px;">
-              <li><a href="aboutus.php" class="submenu-link">About Us</a></li>
-              <li><a href="terms.php" class="submenu-link">Terms & Condtiton</a></li>
-              <li><a href="privacy.php" class="submenu-link">Privacy Policy</a></li>
-              <li><a href="faq.php" class="submenu-link">FAQ Message</a></li>
+                <li><a href="aboutus.php" class="submenu-link">About Us</a></li>
+                <li><a href="terms.php" class="submenu-link">Terms & Condtiton</a></li>
+                <li><a href="privacy.php" class="submenu-link">Privacy Policy</a></li>
+               <li><a href="faq.php" class="submenu-link">FAQ Message</a></li>
+              <li><a href="report.php" class="submenu-link">Report</a></li>
+              
             </ul>
           </li>
        

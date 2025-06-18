@@ -2208,5 +2208,21 @@ if($_GET['what'] == "payment_service"){
     header('Content-Type: application/json');
     echo json_encode($response);
 }  
-    
+if ($_GET['what'] == "delete_report") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM report WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+   
+}
 ?>
