@@ -100,8 +100,7 @@ if(isset($_SESSION['admin'])){
                   
                     <div class="k-form-group">
                      <label for="image" class="k-form-label mt-3">Description</label>
-                     <textarea name="des" id="des" class="k-form-control" rows="3" placeholder="Descrition"><?php if(isset($_GET['id'])){ echo $des; } ?>
-                     </textarea>
+                     <textarea name="des" id="des" class="k-form-control" rows="3" placeholder="Descrition"><?php if(isset($_GET['id'])){ echo $des; } else { echo ''; } ?></textarea>
                     <br><br>
                 </div>
                 </div>

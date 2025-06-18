@@ -5,6 +5,9 @@ $(document).ready(function() {
             name: {
                 required: true
             },
+            image: {
+                required: true
+            },
         
            
         },
@@ -13,7 +16,11 @@ $(document).ready(function() {
             name: {
                 required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
             },
+            image: {
+                required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
+            },
            
+
         },
         submitHandler: function(form) {
             form.submit();
@@ -100,6 +107,9 @@ $("#btnSubmit").click(function (event) {
 $("#btnUpdate").click(function (event) {
     event.preventDefault(); // Prevent form from submitting normally
 
+    // Remove 'required' validation for image field
+    $("#image").rules("remove", "required");
+    
     if ($("#frm").valid()) {
         const formData = new FormData($("#frm")[0]); // Create FormData object from the form
         console.log(formData);

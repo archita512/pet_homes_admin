@@ -79,28 +79,12 @@ if(isset($_SESSION['admin'])){
                 <input id="id_about" name="id_about" value="<?php if (isset($_GET['id'])) {
                     echo $row_about['id'];
                 } ?>" hidden />
-                <!-- <div class="mb-3">
-                <div class="k-form-group">
-                    <label class="k-form-label">Title</label>
-                    <input
-                        type="text"
-                        class="k-form-control"
-                        placeholder="Title"
-                        name="name"
-                        id="name"
-                        value="<?php if (isset($_GET['id'])) {
-                            echo $name;
-                        } else{
-                            echo '';
-                        }?>"
-                    />
-                    </div>
-                    </div> -->
+                
                   
                     <div class="k-form-group">
                      <label for="image" class="k-form-label mt-3">Description</label>
-                     <textarea name="des" id="des" class="k-form-control" rows="3" placeholder="Descrition"><?php if(isset($_GET['id'])){ echo $des; } ?>
-                     </textarea>
+                     <textarea name="description" id="description" class="k-form-control" rows="3" placeholder="Descrition"><?php if(isset($_GET['id'])){ echo $des; } else { echo ''; } ?></textarea>
+
                     <br><br>
                 </div>
                 </div>

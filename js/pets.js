@@ -7,9 +7,9 @@ $(document).ready(function() {
             cat_id: {
                 required: true
             },
-            // image : {
-            //     required: true
-            // },
+            images : {
+                required: true
+            },
             type_list : {
                 required: true
             },
@@ -32,6 +32,9 @@ $(document).ready(function() {
                 required: true
             },
             pet_loc : {
+                required: true
+            },
+            country : {
                 required: true
             },
         
@@ -44,9 +47,9 @@ $(document).ready(function() {
             cat_id: {
                 required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
             },
-            // image: {
-            //     required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
-            // },
+            images: {
+                required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
+            },
             type_list : {
                 required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
             },
@@ -72,6 +75,9 @@ $(document).ready(function() {
             pet_loc : {
                 required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
 
+            },
+            country : {
+                required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
             }
 
 
@@ -242,6 +248,9 @@ $("#btnSubmit").click(function (event) {
 });
 $("#btnUpdate").click(function (event) {
     event.preventDefault(); // Prevent form from submitting normally
+
+    // Remove 'required' validation for image field
+    $("#image").rules("remove", "required");
 
     if ($("#frm").valid()) {
         const formData = new FormData($("#frm")[0]); // Create FormData object from the form

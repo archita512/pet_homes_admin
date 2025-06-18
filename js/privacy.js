@@ -1,21 +1,18 @@
 
+
 $(document).ready(function() {
     $("#frm").validate({
         rules: {
-           
-            des: {
+            description: {
                 required: true
-            }
-        
+            },
            
         },
         messages: {
            
-            
-            des : {
+            description: {
                 required: "<span class='text-danger' style='font-size:small;'>This field is required.</span>",
-            }
-           
+            },
         },
         submitHandler: function(form) {
             form.submit();

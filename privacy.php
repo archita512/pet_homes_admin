@@ -398,6 +398,41 @@ if(isset($_SESSION['admin'])){
     <!-- <script src="js/chnage_password.js"></script> -->
     <!-- DataTable Initialization -->
     <script>
+      const deleteCategoryModal = document.getElementById('deleteConfirmModal');
+deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
+    const button = event.relatedTarget; // Button that triggered the modal
+    const categoryId = button.getAttribute('data-id'); // Extract info from data-* attributes
+    const message = `Are you sure you want to delete this Privacy Policy?`;
+
+    console.log(categoryId);
+    
+    // Update the modal's content
+    const modalMessage = deleteCategoryModal.querySelector('.modal-body p'); // Corrected selector to target the paragraph
+    modalMessage.textContent = message; // Update the message in the modal
+
+    // Add event listener for the delete button
+    const deleteButton = deleteCategoryModal.querySelector('.d_deletebtn');
+    deleteButton.onclick = function() {
+        fetch(`crud.php?what=delete_privacy`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: categoryId }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Category deleted successfully');
+                location.reload(); // Reload the page to see the changes
+            } else {
+                console.error('Error deleting category');
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    };
+});
+
       $("#btnchnage").click(function (event) {
        event.preventDefault(); // Prevent form from submitting normally
 

@@ -1595,7 +1595,7 @@ if ($_GET['what'] == "add_aboutus") {
     $response = [];
 
    
-    if (!empty($name) && !empty($des)) {
+    if (isset($_POST['des']) && !empty(trim($_POST['des']))) {
       
             // Insert category with status
             $query_insert = mysqli_query($cnn, "INSERT INTO about_us (name,des, status) VALUES ('$name','$des', 'Active')");
@@ -1610,7 +1610,7 @@ if ($_GET['what'] == "add_aboutus") {
         
     } else {
         $response['success'] = false;
-        $response['message'] = "About Us name is required.";
+        $response['message'] = "About Us Description is required.";
     }
     ob_clean();
     header('Content-Type: application/json');
@@ -1769,33 +1769,34 @@ if($_GET['what'] == "update_status_terms"){
     $stmt->close();
 }
 if ($_GET['what'] == "add_privacy") {
-    // $name = mysqli_real_escape_string($cnn, $_POST['name']);
-    $des = mysqli_real_escape_string($cnn, $_POST['des']);
-    
+    // include 'connection.php'; // ensure DB connection
+
     $response = [];
 
-   
-    if (!empty($des)) {
-      
-            // Insert category with status
-            $query_insert = mysqli_query($cnn, "INSERT INTO privacy (des, status) VALUES ('$des', 'Active')");
-            if ($query_insert) {
-                $response['success'] = true;
-                $response['message'] = "Privacy Policy added successfully.";
-            } else {
-                // Capture SQL error
-                $response['success'] = false;
-                $response['message'] = "Failed to add Privacy Policy. SQL Error: " . mysqli_error($cnn);
-            }
-        
+    // Check if 'description' is set and not empty
+    if (isset($_POST['description']) && !empty(trim($_POST['description']))) {
+        $des = mysqli_real_escape_string($cnn, $_POST['description']);
+
+        $query_insert = mysqli_query($cnn, "INSERT INTO privacy (des, status) VALUES ('$des', 'Active')");
+
+        if ($query_insert) {
+            $response['success'] = true;
+            $response['message'] = "Privacy Policy added successfully.";
+        } else {
+            $response['success'] = false;
+            $response['message'] = "Failed to add Privacy Policy. SQL Error: " . mysqli_error($cnn);
+        }
     } else {
         $response['success'] = false;
-        $response['message'] = "All Feild is required.";
+        $response['message'] = "All field is required.";
     }
+
     ob_clean();
     header('Content-Type: application/json');
     echo json_encode($response);
+    // exit;
 }
+
 
 if ($_GET['what'] == "update_privacy") {
     $id_about = mysqli_real_escape_string($cnn, $_POST['id_about']);
@@ -2213,6 +2214,23 @@ if ($_GET['what'] == "delete_report") {
     $id = $input['id'];
 
     $query = mysqli_query($cnn, "DELETE FROM report WHERE id = " . intval($id));
+
+    if ($query) {
+        $response['success'] = true;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Record Deleted successfully</span>";
+    } else {
+        $response['success'] = false;
+        $response['message'] = "<span style='font-weight:100;color:black;font-size:15px;'>Some error occurred. Please try again</span>";
+    }
+
+    echo json_encode($response);
+   
+}
+if ($_GET['what'] == "delete_privacy") {
+    $input = json_decode(file_get_contents('php://input'), true);
+    $id = $input['id'];
+
+    $query = mysqli_query($cnn, "DELETE FROM privacy WHERE id = " . intval($id));
 
     if ($query) {
         $response['success'] = true;
