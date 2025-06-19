@@ -166,7 +166,7 @@ if(isset($_SESSION['admin'])){
                                   <b><h5 id="petName" class="card-title mb-2"></h5></b>
                                   
                                   <div class="row">
-                                  <div class="col-sm-6">
+                                  <div class="col-sm-12">
                                     <!-- <p class="card-text">
                                       <b>Gender:</b> <span id="petgender"></span>
                                     </p> -->

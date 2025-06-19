@@ -88,6 +88,59 @@ if(isset($_SESSION['admin'])){
 .ds_noti-inner {
     padding-right: 10px; /* Add padding to the right */
 }
+/* For screens 0px to 320px */
+@media (max-width: 320px) {
+  .k-pie-chart {
+    display: block;
+    box-sizing: border-box;
+    height: 253px !important;
+    width: 256px !important;
+  }
+}
+
+/* For screens 321px to 375px */
+@media (min-width: 321px) and (max-width: 375px) {
+  .k-pie-chart {
+    display: block;
+    box-sizing: border-box;
+    height: 288px !important;
+    width: 319px !important;
+  }
+  .line_chart {
+    display: block;
+    box-sizing: border-box;
+    height: 280px !important;
+    width: 330px !important;
+    margin-top: -50px;
+  }
+}
+
+/* For screens 376px to 425px */
+@media (min-width: 376px) and (max-width: 425px) {
+  .k-pie-chart {
+    display: block;
+    box-sizing: border-box;
+    height: 293px !important;
+    width: 334px !important;
+  }
+  .line_chart {
+    display: block;
+    box-sizing: border-box;
+    height: 300px !important;
+    width: 340px !important;
+    margin-top: -50px;
+  }
+}
+@media (min-width: 426px) and (max-width: 768px) {
+ .line_chart{
+    display: block;
+    box-sizing: border-box;
+    height: 299px;
+    width: 645px;
+    margin-top: -50px;
+ }
+}
+
   </style>
   <body>
     <!-- Sidebar -->
@@ -285,7 +338,7 @@ if(isset($_SESSION['admin'])){
                 </div>
               </div>
               <div class="k-card-body">
-                <canvas id="adoptionChart" style="display: block; box-sizing: border-box; height: 374px; width: 993px;margin-top: -50px;"></canvas>
+                <canvas id="adoptionChart" class="line_chart" style="display: block; box-sizing: border-box; height: 374px; width: 993px;margin-top: -50px;"></canvas>
               </div>
             </div>
           </div>
@@ -478,55 +531,134 @@ if(isset($_SESSION['admin'])){
             </div>
           </div>
           <ul class="k-sidebar-menu">
-            <li>
-              <a href="dashbord.html">
-                <i class="fas fa-home"></i>
-                <span>Dashboard</span>
-              </a>
-            </li>
-            <li>
-              <a href="category.html" class="active d-flex align-items-center">
-                <img src="images/s2.svg" alt="" class="text-dark" />
-                <span class="ps-2">Category</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="d-flex align-items-center">
-                <i class="fas fa-layer-group"></i>
-                <span>Subcategory</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="d-flex align-items-center">
+        <li>
+          <a href="dashbord.php" class="d-flex align-items-center" style="margin-top: -20px;">
+            <i class="fas fa-home"></i>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
                 <i class="fas fa-paw"></i>
-                <span>Pets</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="d-flex align-items-center">
-                <i class="fas fa-shopping-basket"></i>
-                <span>Accessories</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="d-flex align-items-center">
-                <i class="fas fa-concierge-bell"></i>
-                <span>Services</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="d-flex align-items-center">
-                <i class="fas fa-user"></i>
-                <span>User</span>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="d-flex align-items-center">
-                <i class="fas fa-history"></i>
-                <span>Adoption History</span>
-              </a>
-            </li>
-          </ul>
+                <span class="ps-2">Pets</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="    margin-left: 37px;">
+              <li><a href="category.php" class="submenu-link">Category</a></li>
+              <li><a href="subcategory.php" class="submenu-link">Subcategory</a></li>
+              <li><a href="pets.php" class="submenu-link">Pets</a></li>
+            </ul>
+          </li>
+
+
+        <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+              <i class="fas fa-shopping-basket"></i>    
+                <span class="ps-2">Accessories</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="margin-left: 10px;">
+              <li><a href="acc_category.php" class="submenu-link">Accessories Catgeory</a></li>
+              <li><a href="accessories.php" class="submenu-link">Accessories</a></li>
+              
+            </ul>
+          </li>
+
+          <li>
+          <a href="service.php" class="d-flex align-items-center">
+            <i class="fas fa-concierge-bell"></i>
+            <span>Services</span>
+          </a>
+        </li>
+        <li>
+          <a href="offer.php" class="d-flex align-items-center">
+          <i class="bi bi-bookmark-star-fill"></i>
+            <span>Offers</span>
+          </a>
+        </li>
+        <li>
+          <a href="banner.php" class="d-flex align-items-center">
+          <i class="fa-solid fa-image"></i>
+            <span>Banner</span>
+          </a>
+        </li>
+         <li>
+          <a href="Inquiry.php" class="d-flex align-items-center">
+          <i class="bi bi-patch-question-fill"></i>
+            <span>Inquiry</span>
+          </a>
+        </li>
+       
+        <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+              <i class="fa-solid fa-cat fa-flip-horizontal"></i>
+                <span class="ps-2">Pet Adoption / Return</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="margin-left: 10px;">
+              <li><a href="addoption.php" class="submenu-link">Pet Adoption</a></li>
+              <li><a href="pet_return.php" class="submenu-link">Pet Return</a></li>
+              
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+              <i class="fa-solid fa-cart-shopping"></i>
+                <span class="ps-2">Accessories Sale</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="margin-left: 10px;">
+              <li><a href="ass_pur.php" class="submenu-link">Accessories Sale</a></li>
+              <li><a href="ass_retu.php" class="submenu-link">Accessories Return</a></li>
+              
+            </ul>
+          </li>
+       
+        <li>
+          <a href="service_m.php" class="d-flex align-items-center">
+          <i class="fa-solid fa-house-chimney-medical"></i>
+
+            <span>Services Maintain</span>
+          </a>
+        </li>
+        <li>
+          <a href="user_view.php" class="d-flex align-items-center">
+          <i class="fa-solid fa-users"></i>
+            <span>Users</span>
+          </a>
+        </li>
+        <li class="nav-item">
+            <a href="javascript:void(0);" class="nav-link d-flex align-items-center justify-content-between" onclick="toggleDropdown(this)">
+              <div>
+              <i class="fa-solid fa-circle-info"></i>
+                <span class="ps-2">Others</span>
+              </div>
+              <i class="fas fa-chevron-down dropdown-arrow"></i>
+            </a>
+
+            <ul class="submenu" style="margin-left: 10px;">
+                <li><a href="aboutus.php" class="submenu-link">About Us</a></li>
+                <li><a href="terms.php" class="submenu-link">Terms & Condtiton</a></li>
+                <li><a href="privacy.php" class="submenu-link">Privacy Policy</a></li>
+               <li><a href="faq.php" class="submenu-link">FAQ Message</a></li>
+              <li><a href="report.php" class="submenu-link">Report</a></li>
+              
+            </ul>
+          </li>
+       
+      </ul>
         </div>
       </div>
     </div>

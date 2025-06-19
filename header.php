@@ -22,7 +22,7 @@ if(isset($_SESSION['admin'])){
               class="k-toggle-sidebar"
               data-bs-toggle="offcanvas"
               data-bs-target="#offcanvasExample">
-              <i class="fas fa-bars"></i>
+              <i class="fas fa-bars" style="margin-right: -70px;"></i>
             </button>
           </div>
           <div class="k-user-info dropdown">
