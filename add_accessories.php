@@ -259,7 +259,7 @@ if(isset($_SESSION['admin'])){
                                 </div>
                             </div>
                             <div class="col-sm-4" style="margin-top: 40px;">
-                                <a class="k-btn-remove btn_key" style="text-decoration:none;color:#976239">Remove</a>
+                                <button class="k-btn-remove btn_key" style="text-decoration:none;color:#976239;border: none;background: none;">Remove</button>
                             </div>
                         </div>
                     <?php endforeach; ?>
@@ -522,7 +522,7 @@ document.getElementById('addMoreBtn').addEventListener('click', function() {
             </div>
         </div>
         <div class="col-sm-4" style="margin-top: 40px;">
-            <a class="k-btn-remove btn_key" style="text-decoration:none;color:#976239">Remove</a>
+            <button class="k-btn-remove btn_key" style="text-decoration:none;color:#976239;border: none;background: none;">Remove</button>
         </div>
     `;
     container.appendChild(newRow);

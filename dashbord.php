@@ -332,9 +332,9 @@ if(isset($_SESSION['admin'])){
                   <small class="text-muted">2025</small>
                 </div>
                 <div class="k-card-actions">
-                  <button class="btn btn-sm btn-light">
+                  <!-- <button class="btn btn-sm btn-light">
                     <i class="fas fa-ellipsis-v"></i>
-                  </button>
+                  </button> -->
                 </div>
               </div>
               <div class="k-card-body">
@@ -350,9 +350,9 @@ if(isset($_SESSION['admin'])){
                     <span class="text-muted">This Month</span>
                   </div>
                   <div class="k-card-actions">
-                    <button class="k-card-menu-btn">
+                    <!-- <button class="k-card-menu-btn">
                       <i class="fas fa-ellipsis-v"></i>
-                    </button>
+                    </button> -->
                   </div>
                 </div>
                 <div style="display: flex; justify-content: center; align-items: center;height: 366px;" >
@@ -372,9 +372,9 @@ if(isset($_SESSION['admin'])){
                     <span class="text-muted">User Inquiry</span>
                   </div>
                   <div class="k-card-actions">
-                    <button class="k-card-menu-btn">
+                    <!-- <button class="k-card-menu-btn">
                       <i class="fas fa-ellipsis-v"></i>
-                    </button>
+                    </button> -->
                   </div>
                 </div>
               
@@ -417,9 +417,9 @@ if(isset($_SESSION['admin'])){
                     >
                   </div>
                   <div class="k-card-actions">
-                    <button class="k-card-menu-btn">
+                    <!-- <button class="k-card-menu-btn">
                       <i class="fas fa-ellipsis-v"></i>
-                    </button>
+                    </button> -->
                   </div>
                 </div>
                 <div class="k-card-body">
@@ -1011,12 +1011,12 @@ document.addEventListener('DOMContentLoaded', function () {
             plugins: {
                 legend: {
                     position: 'right',
-                    labels: { usePointStyle: true }
+                    labels: { usePointStyle: true, font: { size: 18} }
                 },
                 datalabels: {
                     color: '#fff',
                     formatter: (value, ctx) => ctx.chart.data.labels[ctx.dataIndex],
-                    font: { weight: 'bold' },
+                    font: { weight: 'bold'},
                     
                 },
                 tooltip: {

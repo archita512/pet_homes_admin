@@ -608,30 +608,33 @@ document.getElementById('accessoryDetailModal').addEventListener('show.bs.modal'
     const accessoryKey = button.getAttribute('data-key');
     const accessoryValue = button.getAttribute('data-value');
 
+    const modalContent = this.querySelector('.modal-body'); // Select the modal body
+    modalContent.innerHTML = ''; // Clear previous content
+
     if (accessoryKey && accessoryValue) {
         try {
-            // Parse the keys and values into arrays
             const keysArray = JSON.parse(accessoryKey);
             const valuesArray = JSON.parse(accessoryValue);
 
-            // Format the keys and values for display, filtering out empty strings
             const formattedDetails = keysArray
                 .map((key, index) => {
-                    const cleanKey = key.replace(/"/g, '').trim().replace(/^\[|\]$/g, ''); // Remove brackets from key
-                    const cleanValue = valuesArray[index] ? valuesArray[index].replace(/"/g, '').trim().replace(/^\[|\]$/g, '') : ''; // Remove brackets from value
-                    return `${cleanKey}: ${cleanValue}`; // Create key: value pairs
+                    const cleanKey = key.replace(/"/g, '').trim().replace(/^\[|\]$/g, '');
+                    const cleanValue = valuesArray[index] ? valuesArray[index].replace(/"/g, '').trim().replace(/^\[|\]$/g, '') : '';
+                    return `${cleanKey}: ${cleanValue}`;
                 })
-                .filter(detail => detail.split(': ')[1] !== '') // Filter out empty values
-                .join('<br>'); // Join pairs with line breaks
+                .filter(detail => detail.split(': ')[1] !== '')
+                .join('<br>');
 
-            // Update the modal's content
-            const modalContent = this.querySelector('.modal-body'); // Select the modal body
-            modalContent.innerHTML = formattedDetails;  // Display formatted key: value pairs
+            modalContent.innerHTML = formattedDetails || '<em>No accessory detail stored</em>';
         } catch (error) {
             console.error('Error parsing JSON:', error);
+            modalContent.innerHTML = '<em>No accessory detail stored</em>';
         }
+    } else {
+        modalContent.innerHTML = '<em>No accessory detail stored</em>';
     }
 });
+
 
 const deleteCategoryModal = document.getElementById('deleteConfirmModal');
 deleteCategoryModal.addEventListener('show.bs.modal', function (event) {
