@@ -67,6 +67,49 @@ if(isset($_SESSION['admin'])){
                     object-fit: cover; /* Maintain aspect ratio */
                 }
 
+                @media (max-width: 1440px) {
+          .card{
+            width: 978px !important;
+
+          }
+          .imgBox{
+            margin-left: 6px !important;
+            width: 443px !important;
+        }
+      }
+        @media (max-width: 1024px) {
+          .card{
+            width: 626px !important;
+            
+          }
+          .imgBox{
+            margin-left: -8px !important;
+            width: 290px !important;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .card{
+            width: 546px !important;
+
+          }
+          .imgBox{
+            margin-left: 16px !important;
+            width: 223px !important;
+          }
+        }
+        @media (max-width: 320px) {
+          .card{
+            width: 259px !important;
+
+          }
+          .imgBox{
+            margin-left: 16px !important;
+            width: 189px !important;
+          }
+          
+        }
+
         </style>
      <?php
           if (isset($_GET['id']) && !empty($_GET['id'])) {

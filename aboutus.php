@@ -37,16 +37,18 @@ if(isset($_SESSION['admin'])){
     <link rel="stylesheet" href="css/profile.css" />
   </head>
  <style>
-  @media (max-width: 320px) {
-    .about-card{
-      width: 254px !important;
-    } 
+@media (max-width: 320px) {
+  .about-card {
+    width: 254px !important;
   }
-  @media (max-width: 375px) {
-    .about-card{
-      width: 100% !important;
-    } 
+}
+
+@media (max-width: 375px) {
+  .about-card {
+    width: 270px !important;
   }
+}
+
   
   
  </style>

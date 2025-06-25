@@ -49,6 +49,21 @@ if(isset($_SESSION['admin'])){
         .key_Add {
             width: 82% !important;
         }
+        @media (max-width: 1440px) {
+          .card{
+            width: 978px !important;
+
+          }
+        }
+        @media (max-width: 1024px) {
+          .card{
+            width: 626px !important;
+            
+          }
+          .imgBox{
+            margin-left: 32px !important;
+          }
+        }
     </style>
         <style>
     

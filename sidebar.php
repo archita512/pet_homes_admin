@@ -82,7 +82,7 @@
               <i class="fas fa-chevron-down dropdown-arrow"></i>
             </a>
 
-            <ul class="submenu" style="    margin-left: 37px;">
+            <ul class="submenu" style="margin-left: 11px;">
               <li><a href="category.php" class="submenu-link">Category</a></li>
               <li><a href="subcategory.php" class="submenu-link">Subcategory</a></li>
               <li><a href="pets.php" class="submenu-link">Pets</a></li>

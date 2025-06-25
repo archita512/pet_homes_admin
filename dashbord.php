@@ -174,7 +174,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-stat-icon">
-                  <i class="fas fa-cat"></i>
+                  <i class="fas fa-cat dashboard-icon"></i>
                 </div>
               </div>
             </div>
@@ -193,7 +193,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-stat-icon">
-                <i class="fas fa-shopping-basket"></i>    
+                <i class="fas fa-shopping-basket dashboard-icon"></i>    
                 </div>
               </div>
             </div>
@@ -212,7 +212,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-stat-icon">
-                  <i class="fas fa-concierge-bell"></i>
+                  <i class="fas fa-concierge-bell dashboard-icon"></i>
                 </div>
               </div>
             </div>
@@ -231,7 +231,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-stat-icon">
-                  <i class="fas fa-users"></i>
+                  <i class="fas fa-users dashboard-icon"></i>
                 </div>
               </div>
             </div>
@@ -256,7 +256,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-stat-icon">
-                  <i class="fas fa-cat"></i>
+                  <i class="fas fa-cat dashboard-icon"></i>
                 </div>
               </div>
             </div>
@@ -275,7 +275,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-stat-icon">
-                  <i class="fas fa-paw"></i>
+                  <i class="fas fa-paw dashboard-icon"></i>
                 </div>
               </div>
             </div>
@@ -294,7 +294,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-stat-icon">
-                  <i class="fas fa-hourglass-half"></i>
+                  <i class="fas fa-hourglass-half dashboard-icon"></i>
                 </div>
               </div>
             </div>
@@ -313,7 +313,7 @@ if(isset($_SESSION['admin'])){
                   </div>
                 </div>
                 <div class="k-stat-icon">
-                  <i class="fas fa-check-circle"></i>
+                  <i class="fas fa-check-circle dashboard-icon"></i>
                 </div>
               </div>
             </div>

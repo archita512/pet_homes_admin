@@ -67,6 +67,34 @@ if(isset($_SESSION['admin'])){
                     object-fit: cover; /* Maintain aspect ratio */
                 }
 
+                @media (max-width: 1440px) {
+          .card{
+            width: 978px !important;
+
+          }
+          .imgBox{
+            margin-left: 6px !important;
+            width: 443px !important;
+        }
+      }
+        @media (max-width: 1024px) {
+          .card{
+            width: 626px !important;
+            
+          }
+          .imgBox{
+            margin-left: -8px !important;
+            width: 290px !important;
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .card{
+            width: 1431px !important;
+
+          }
+        }
+
         </style>
      <?php
           if (isset($_GET['id']) && !empty($_GET['id'])) {
@@ -96,7 +124,7 @@ if(isset($_SESSION['admin'])){
        <?php include 'header.php'; ?>
         <div class="k-modal">
           <div class="add-btn">
-            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Offer'; } else { echo 'Add Offer'; } ?></h2>
+            <h2 class="k-modal-title ps-4"><?php if(isset($_GET['id'])){ echo 'Updated Banner'; } else { echo 'Add Banner'; } ?></h2>
           </div>
           <form id="frm" action="" method="POST" enctype="multipart/form-data">
           <div class="card" style="width: 1517px; margin-left: 50px; margin-top: 30px;height: auto;">
